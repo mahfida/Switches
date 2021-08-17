@@ -7,7 +7,7 @@ It cotains different scripts that we run at
 
 Most scripts are to play with the switches and see
 how our p4 scripts interact with the network elements
-and the in-coimg data packets.
+and the in-comming data packets.
 
 Befor running the scripts, we installed  simple_switch
 and p4c complier on the switches using the commands from https://opennetworking.org/news-and-events/blog/getting-started-with-p4/.
