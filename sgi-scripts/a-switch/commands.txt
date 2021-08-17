@@ -1,0 +1,2 @@
+table_add tbl_switch out_port 1 => 0
+table_add tbl_switch out_port 0 => 1

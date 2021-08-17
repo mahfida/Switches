@@ -1,0 +1,2 @@
+table_add dmac forward 1 => fa:16:3e:c7:3b:60 0
+table_add dmac forward 0 => fa:16:3e:ff:9b:71 1

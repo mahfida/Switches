@@ -1,0 +1,3 @@
+table_add ipv4_lpm ipv4_forward 128.39.37.171/24 => fa:16:3e:ff:9b:71 1
+table_add ipv4_lpm ipv4_forward 77.88.71.143/24=> fa:16:3e:ff:9b:71 1
+
