@@ -1,0 +1,2 @@
+table_add switch_port port_forward 0 => 1
+table_add switch_port port_forward 1 => 0
