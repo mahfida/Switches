@@ -4,15 +4,18 @@
       "name" : "scalars_0",
       "id" : 0,
       "fields" : [
-        ["tmp", 72, false],
-        ["tmp_0", 10, false],
-        ["tmp_1", 72, false],
-        ["tmp_2", 10, false],
-        ["tmp_3", 72, false],
-        ["tmp_4", 10, false],
-        ["tmp_5", 32, false],
+        ["tmp", 1, false],
+        ["tmp_0", 72, false],
+        ["tmp_1", 10, false],
+        ["tmp_2", 72, false],
+        ["tmp_3", 10, false],
+        ["tmp_4", 72, false],
+        ["tmp_5", 10, false],
         ["tmp_6", 32, false],
         ["tmp_7", 32, false],
+        ["tmp_8", 32, false],
+        ["tmp_9", 72, false],
+        ["tmp_10", 32, false],
         ["userMetadata.flowid", 72, false],
         ["userMetadata.index1", 32, false],
         ["userMetadata.index2", 32, false],
@@ -21,7 +24,8 @@
         ["userMetadata.count2", 32, false],
         ["userMetadata.count3", 32, false],
         ["userMetadata.min_count", 32, false],
-        ["_padding_0", 2, false]
+        ["userMetadata.num_lost_packets", 32, false],
+        ["_padding_0", 1, false]
       ]
     },
     {
@@ -75,39 +79,8 @@
       ]
     },
     {
-      "name" : "udp_t",
+      "name" : "ipv4_option_t",
       "id" : 4,
-      "fields" : [
-        ["srcPort", 16, false],
-        ["dstPort", 16, false],
-        ["plength", 16, false],
-        ["checksum", 16, false]
-      ]
-    },
-    {
-      "name" : "gtp_common_t",
-      "id" : 5,
-      "fields" : [
-        ["version", 3, false],
-        ["pFlag", 1, false],
-        ["tFlag", 1, false],
-        ["eFlag", 1, false],
-        ["sFlag", 1, false],
-        ["pnFlag", 1, false],
-        ["messageType", 8, false],
-        ["messageLength", 16, false]
-      ]
-    },
-    {
-      "name" : "gtp_teid_t",
-      "id" : 6,
-      "fields" : [
-        ["teid", 32, false]
-      ]
-    },
-    {
-      "name" : "ipv4_inner_option_t",
-      "id" : 7,
       "fields" : [
         ["copyFlag", 1, false],
         ["optClass", 2, false],
@@ -117,14 +90,14 @@
     },
     {
       "name" : "mri_t",
-      "id" : 8,
+      "id" : 5,
       "fields" : [
         ["count", 16, false]
       ]
     },
     {
       "name" : "switch_t",
-      "id" : 9,
+      "id" : 6,
       "fields" : [
         ["swid", 32, false],
         ["packet_count", 32, false]
@@ -154,57 +127,29 @@
       "pi_omit" : true
     },
     {
-      "name" : "ipv4_outer",
+      "name" : "ipv4",
       "id" : 3,
       "header_type" : "ipv4_t",
       "metadata" : false,
       "pi_omit" : true
     },
     {
-      "name" : "udp_outer",
+      "name" : "ipv4_option",
       "id" : 4,
-      "header_type" : "udp_t",
-      "metadata" : false,
-      "pi_omit" : true
-    },
-    {
-      "name" : "gtp_common",
-      "id" : 5,
-      "header_type" : "gtp_common_t",
-      "metadata" : false,
-      "pi_omit" : true
-    },
-    {
-      "name" : "gtp_teid",
-      "id" : 6,
-      "header_type" : "gtp_teid_t",
-      "metadata" : false,
-      "pi_omit" : true
-    },
-    {
-      "name" : "ipv4_inner",
-      "id" : 7,
-      "header_type" : "ipv4_t",
-      "metadata" : false,
-      "pi_omit" : true
-    },
-    {
-      "name" : "ipv4_inner_option",
-      "id" : 8,
-      "header_type" : "ipv4_inner_option_t",
+      "header_type" : "ipv4_option_t",
       "metadata" : false,
       "pi_omit" : true
     },
     {
       "name" : "mri",
-      "id" : 9,
+      "id" : 5,
       "header_type" : "mri_t",
       "metadata" : false,
       "pi_omit" : true
     },
     {
       "name" : "swtraces",
-      "id" : 10,
+      "id" : 6,
       "header_type" : "switch_t",
       "metadata" : false,
       "pi_omit" : true
@@ -222,7 +167,8 @@
     ["StackOutOfBounds", 3],
     ["HeaderTooShort", 4],
     ["ParserTimeout", 5],
-    ["ParserInvalidArgument", 6]
+    ["ParserInvalidArgument", 6],
+    ["IPHeaderTooShort", 7]
   ],
   "enums" : [],
   "parsers" : [
@@ -250,7 +196,7 @@
               "type" : "hexstr",
               "value" : "0x0800",
               "mask" : null,
-              "next_state" : "parse_ipv4_outer"
+              "next_state" : "parse_ipv4"
             },
             {
               "type" : "default",
@@ -267,49 +213,102 @@
           ]
         },
         {
-          "name" : "parse_ipv4_outer",
+          "name" : "parse_ipv4",
           "id" : 1,
           "parser_ops" : [
             {
               "parameters" : [
                 {
                   "type" : "regular",
-                  "value" : "ipv4_outer"
+                  "value" : "ipv4"
                 }
               ],
               "op" : "extract"
+            },
+            {
+              "parameters" : [
+                {
+                  "type" : "field",
+                  "value" : ["scalars", "tmp"]
+                },
+                {
+                  "type" : "expression",
+                  "value" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "b2d",
+                      "left" : null,
+                      "right" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : ">=",
+                          "left" : {
+                            "type" : "field",
+                            "value" : ["ipv4", "ihl"]
+                          },
+                          "right" : {
+                            "type" : "hexstr",
+                            "value" : "0x05"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              ],
+              "op" : "set"
+            },
+            {
+              "parameters" : [
+                {
+                  "type" : "expression",
+                  "value" : {
+                    "op" : "d2b",
+                    "left" : null,
+                    "right" : {
+                      "type" : "field",
+                      "value" : ["scalars", "tmp"]
+                    }
+                  }
+                },
+                {
+                  "type" : "hexstr",
+                  "value" : "0x7"
+                }
+              ],
+              "op" : "verify"
             }
           ],
           "transitions" : [
             {
               "type" : "hexstr",
-              "value" : "0x11",
+              "value" : "0x05",
               "mask" : null,
-              "next_state" : "parse_udp_outer"
+              "next_state" : null
             },
             {
               "type" : "default",
               "value" : null,
               "mask" : null,
-              "next_state" : null
+              "next_state" : "parse_ipv4_option"
             }
           ],
           "transition_key" : [
             {
               "type" : "field",
-              "value" : ["ipv4_outer", "protocol"]
+              "value" : ["ipv4", "ihl"]
             }
           ]
         },
         {
-          "name" : "parse_udp_outer",
+          "name" : "parse_ipv4_option",
           "id" : 2,
           "parser_ops" : [
             {
               "parameters" : [
                 {
                   "type" : "regular",
-                  "value" : "udp_outer"
+                  "value" : "ipv4_option"
                 }
               ],
               "op" : "extract"
@@ -318,9 +317,9 @@
           "transitions" : [
             {
               "type" : "hexstr",
-              "value" : "0x0868",
+              "value" : "0x1f",
               "mask" : null,
-              "next_state" : "parse_gtp"
+              "next_state" : "parse_mri"
             },
             {
               "type" : "default",
@@ -332,19 +331,19 @@
           "transition_key" : [
             {
               "type" : "field",
-              "value" : ["udp_outer", "dstPort"]
+              "value" : ["ipv4_option", "option"]
             }
           ]
         },
         {
-          "name" : "parse_gtp",
+          "name" : "parse_mri",
           "id" : 3,
           "parser_ops" : [
             {
               "parameters" : [
                 {
                   "type" : "regular",
-                  "value" : "gtp_common"
+                  "value" : "mri"
                 }
               ],
               "op" : "extract"
@@ -353,58 +352,33 @@
           "transitions" : [
             {
               "type" : "hexstr",
-              "value" : "0x0100",
+              "value" : "0x0000",
               "mask" : null,
-              "next_state" : "parse_teid"
-            },
-            {
-              "type" : "hexstr",
-              "value" : "0x0101",
-              "mask" : null,
-              "next_state" : "parse_teid"
-            },
-            {
-              "type" : "hexstr",
-              "value" : "0x0201",
-              "mask" : null,
-              "next_state" : "parse_teid"
+              "next_state" : null
             },
             {
               "type" : "default",
               "value" : null,
               "mask" : null,
-              "next_state" : null
+              "next_state" : "parse_swtrace"
             }
           ],
           "transition_key" : [
             {
               "type" : "field",
-              "value" : ["gtp_common", "version"]
-            },
-            {
-              "type" : "field",
-              "value" : ["gtp_common", "tFlag"]
+              "value" : ["mri", "count"]
             }
           ]
         },
         {
-          "name" : "parse_teid",
+          "name" : "parse_swtrace",
           "id" : 4,
           "parser_ops" : [
             {
               "parameters" : [
                 {
                   "type" : "regular",
-                  "value" : "gtp_teid"
-                }
-              ],
-              "op" : "extract"
-            },
-            {
-              "parameters" : [
-                {
-                  "type" : "regular",
-                  "value" : "ipv4_inner"
+                  "value" : "swtraces"
                 }
               ],
               "op" : "extract"
@@ -429,12 +403,12 @@
       "name" : "deparser",
       "id" : 0,
       "source_info" : {
-        "filename" : "gtp-inline.p4",
-        "line" : 325,
+        "filename" : "packet_loss.p4",
+        "line" : 250,
         "column" : 8,
         "source_fragment" : "MyDeparser"
       },
-      "order" : ["ethernet", "ipv4_outer", "udp_outer", "gtp_common", "gtp_teid", "ipv4_inner", "ipv4_inner_option", "mri", "swtraces"],
+      "order" : ["ethernet", "ipv4"],
       "primitives" : []
     }
   ],
@@ -445,8 +419,8 @@
       "name" : "hashtable1",
       "id" : 0,
       "source_info" : {
-        "filename" : "gtp-inline.p4",
-        "line" : 16,
+        "filename" : "packet_loss.p4",
+        "line" : 14,
         "column" : 35,
         "source_fragment" : "hashtable1"
       },
@@ -457,8 +431,8 @@
       "name" : "hashtable2",
       "id" : 1,
       "source_info" : {
-        "filename" : "gtp-inline.p4",
-        "line" : 17,
+        "filename" : "packet_loss.p4",
+        "line" : 15,
         "column" : 35,
         "source_fragment" : "hashtable2"
       },
@@ -469,8 +443,8 @@
       "name" : "hashtable3",
       "id" : 2,
       "source_info" : {
-        "filename" : "gtp-inline.p4",
-        "line" : 18,
+        "filename" : "packet_loss.p4",
+        "line" : 16,
         "column" : 35,
         "source_fragment" : "hashtable3"
       },
@@ -486,11 +460,11 @@
       "input" : [
         {
           "type" : "field",
-          "value" : ["scalars", "tmp"]
+          "value" : ["scalars", "tmp_0"]
         },
         {
           "type" : "field",
-          "value" : ["scalars", "tmp_0"]
+          "value" : ["scalars", "tmp_1"]
         }
       ]
     },
@@ -501,11 +475,11 @@
       "input" : [
         {
           "type" : "field",
-          "value" : ["scalars", "tmp_1"]
+          "value" : ["scalars", "tmp_2"]
         },
         {
           "type" : "field",
-          "value" : ["scalars", "tmp_2"]
+          "value" : ["scalars", "tmp_3"]
         }
       ]
     },
@@ -516,11 +490,11 @@
       "input" : [
         {
           "type" : "field",
-          "value" : ["scalars", "tmp_3"]
+          "value" : ["scalars", "tmp_4"]
         },
         {
           "type" : "field",
-          "value" : ["scalars", "tmp_4"]
+          "value" : ["scalars", "tmp_5"]
         }
       ]
     },
@@ -528,65 +502,8 @@
       "name" : "calc_2",
       "id" : 3,
       "source_info" : {
-        "filename" : "gtp-inline.p4",
-        "line" : 286,
-        "column" : 2,
-        "source_fragment" : "update_checksum( ..."
-      },
-      "algo" : "csum16",
-      "input" : [
-        {
-          "type" : "field",
-          "value" : ["ipv4_inner", "version"]
-        },
-        {
-          "type" : "field",
-          "value" : ["ipv4_inner", "ihl"]
-        },
-        {
-          "type" : "field",
-          "value" : ["ipv4_inner", "diffserv"]
-        },
-        {
-          "type" : "field",
-          "value" : ["ipv4_inner", "totalLen"]
-        },
-        {
-          "type" : "field",
-          "value" : ["ipv4_inner", "identification"]
-        },
-        {
-          "type" : "field",
-          "value" : ["ipv4_inner", "flags"]
-        },
-        {
-          "type" : "field",
-          "value" : ["ipv4_inner", "fragOffset"]
-        },
-        {
-          "type" : "field",
-          "value" : ["ipv4_inner", "ttl"]
-        },
-        {
-          "type" : "field",
-          "value" : ["ipv4_inner", "protocol"]
-        },
-        {
-          "type" : "field",
-          "value" : ["ipv4_inner", "srcAddr"]
-        },
-        {
-          "type" : "field",
-          "value" : ["ipv4_inner", "dstAddr"]
-        }
-      ]
-    },
-    {
-      "name" : "calc_3",
-      "id" : 4,
-      "source_info" : {
-        "filename" : "gtp-inline.p4",
-        "line" : 302,
+        "filename" : "packet_loss.p4",
+        "line" : 227,
         "column" : 1,
         "source_fragment" : "update_checksum( ..."
       },
@@ -594,47 +511,47 @@
       "input" : [
         {
           "type" : "field",
-          "value" : ["ipv4_outer", "version"]
+          "value" : ["ipv4", "version"]
         },
         {
           "type" : "field",
-          "value" : ["ipv4_outer", "ihl"]
+          "value" : ["ipv4", "ihl"]
         },
         {
           "type" : "field",
-          "value" : ["ipv4_outer", "diffserv"]
+          "value" : ["ipv4", "diffserv"]
         },
         {
           "type" : "field",
-          "value" : ["ipv4_outer", "totalLen"]
+          "value" : ["ipv4", "totalLen"]
         },
         {
           "type" : "field",
-          "value" : ["ipv4_outer", "identification"]
+          "value" : ["ipv4", "identification"]
         },
         {
           "type" : "field",
-          "value" : ["ipv4_outer", "flags"]
+          "value" : ["ipv4", "flags"]
         },
         {
           "type" : "field",
-          "value" : ["ipv4_outer", "fragOffset"]
+          "value" : ["ipv4", "fragOffset"]
         },
         {
           "type" : "field",
-          "value" : ["ipv4_outer", "ttl"]
+          "value" : ["ipv4", "ttl"]
         },
         {
           "type" : "field",
-          "value" : ["ipv4_outer", "protocol"]
+          "value" : ["ipv4", "protocol"]
         },
         {
           "type" : "field",
-          "value" : ["ipv4_outer", "srcAddr"]
+          "value" : ["ipv4", "srcAddr"]
         },
         {
           "type" : "field",
-          "value" : ["ipv4_outer", "dstAddr"]
+          "value" : ["ipv4", "dstAddr"]
         }
       ]
     }
@@ -655,8 +572,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "gtp-inline.p4",
-            "line" : 173,
+            "filename" : "packet_loss.p4",
+            "line" : 145,
             "column" : 8,
             "source_fragment" : "mark_to_drop(standard_metadata)"
           }
@@ -686,8 +603,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "gtp-inline.p4",
-            "line" : 177,
+            "filename" : "packet_loss.p4",
+            "line" : 149,
             "column" : 8,
             "source_fragment" : "standard_metadata.egress_port = port"
           }
@@ -695,14 +612,8 @@
       ]
     },
     {
-      "name" : "NoAction",
-      "id" : 2,
-      "runtime_data" : [],
-      "primitives" : []
-    },
-    {
       "name" : "MyEgress.compute_flowid",
-      "id" : 3,
+      "id" : 2,
       "runtime_data" : [],
       "primitives" : [
         {
@@ -742,7 +653,7 @@
                           "op" : "&",
                           "left" : {
                             "type" : "field",
-                            "value" : ["ipv4_inner", "srcAddr"]
+                            "value" : ["ipv4", "srcAddr"]
                           },
                           "right" : {
                             "type" : "hexstr",
@@ -761,10 +672,10 @@
             }
           ],
           "source_info" : {
-            "filename" : "gtp-inline.p4",
-            "line" : 205,
+            "filename" : "packet_loss.p4",
+            "line" : 177,
             "column" : 4,
-            "source_fragment" : "meta.flowid[31:0] = hdr.ipv4_inner.srcAddr"
+            "source_fragment" : "meta.flowid[31:0] = hdr.ipv4.srcAddr"
           }
         },
         {
@@ -812,7 +723,7 @@
                                   "op" : "&",
                                   "left" : {
                                     "type" : "field",
-                                    "value" : ["ipv4_inner", "dstAddr"]
+                                    "value" : ["ipv4", "dstAddr"]
                                   },
                                   "right" : {
                                     "type" : "hexstr",
@@ -843,10 +754,10 @@
             }
           ],
           "source_info" : {
-            "filename" : "gtp-inline.p4",
-            "line" : 206,
+            "filename" : "packet_loss.p4",
+            "line" : 178,
             "column" : 1,
-            "source_fragment" : "meta.flowid[63:32] = hdr.ipv4_inner.dstAddr"
+            "source_fragment" : "meta.flowid[63:32] = hdr.ipv4.dstAddr"
           }
         },
         {
@@ -894,7 +805,7 @@
                                   "op" : "&",
                                   "left" : {
                                     "type" : "field",
-                                    "value" : ["ipv4_inner", "protocol"]
+                                    "value" : ["ipv4", "protocol"]
                                   },
                                   "right" : {
                                     "type" : "hexstr",
@@ -925,17 +836,17 @@
             }
           ],
           "source_info" : {
-            "filename" : "gtp-inline.p4",
-            "line" : 207,
+            "filename" : "packet_loss.p4",
+            "line" : 179,
             "column" : 1,
-            "source_fragment" : "meta.flowid[71:64] = hdr.ipv4_inner.protocol"
+            "source_fragment" : "meta.flowid[71:64] = hdr.ipv4.protocol"
           }
         }
       ]
     },
     {
       "name" : "MyEgress.compute_index",
-      "id" : 4,
+      "id" : 3,
       "runtime_data" : [],
       "primitives" : [
         {
@@ -943,7 +854,7 @@
           "parameters" : [
             {
               "type" : "field",
-              "value" : ["scalars", "tmp"]
+              "value" : ["scalars", "tmp_0"]
             },
             {
               "type" : "field",
@@ -951,8 +862,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "gtp-inline.p4",
-            "line" : 210,
+            "filename" : "packet_loss.p4",
+            "line" : 182,
             "column" : 47,
             "source_fragment" : "meta.flowid"
           }
@@ -962,7 +873,7 @@
           "parameters" : [
             {
               "type" : "field",
-              "value" : ["scalars", "tmp_0"]
+              "value" : ["scalars", "tmp_1"]
             },
             {
               "type" : "hexstr",
@@ -970,8 +881,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "gtp-inline.p4",
-            "line" : 210,
+            "filename" : "packet_loss.p4",
+            "line" : 182,
             "column" : 60,
             "source_fragment" : "10w33"
           }
@@ -997,29 +908,10 @@
             }
           ],
           "source_info" : {
-            "filename" : "gtp-inline.p4",
-            "line" : 210,
+            "filename" : "packet_loss.p4",
+            "line" : 182,
             "column" : 1,
             "source_fragment" : "hash(meta.index1, HashAlgorithm.crc16, 10w0, {meta.flowid, 10w33}, 10w1023)"
-          }
-        },
-        {
-          "op" : "assign",
-          "parameters" : [
-            {
-              "type" : "field",
-              "value" : ["scalars", "tmp_1"]
-            },
-            {
-              "type" : "field",
-              "value" : ["scalars", "userMetadata.flowid"]
-            }
-          ],
-          "source_info" : {
-            "filename" : "gtp-inline.p4",
-            "line" : 211,
-            "column" : 47,
-            "source_fragment" : "meta.flowid"
           }
         },
         {
@@ -1030,13 +922,32 @@
               "value" : ["scalars", "tmp_2"]
             },
             {
+              "type" : "field",
+              "value" : ["scalars", "userMetadata.flowid"]
+            }
+          ],
+          "source_info" : {
+            "filename" : "packet_loss.p4",
+            "line" : 183,
+            "column" : 47,
+            "source_fragment" : "meta.flowid"
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "tmp_3"]
+            },
+            {
               "type" : "hexstr",
               "value" : "0x00ca"
             }
           ],
           "source_info" : {
-            "filename" : "gtp-inline.p4",
-            "line" : 211,
+            "filename" : "packet_loss.p4",
+            "line" : 183,
             "column" : 60,
             "source_fragment" : "10w202"
           }
@@ -1062,29 +973,10 @@
             }
           ],
           "source_info" : {
-            "filename" : "gtp-inline.p4",
-            "line" : 211,
+            "filename" : "packet_loss.p4",
+            "line" : 183,
             "column" : 1,
             "source_fragment" : "hash(meta.index2, HashAlgorithm.crc16, 10w0, {meta.flowid, 10w202}, 10w1023)"
-          }
-        },
-        {
-          "op" : "assign",
-          "parameters" : [
-            {
-              "type" : "field",
-              "value" : ["scalars", "tmp_3"]
-            },
-            {
-              "type" : "field",
-              "value" : ["scalars", "userMetadata.flowid"]
-            }
-          ],
-          "source_info" : {
-            "filename" : "gtp-inline.p4",
-            "line" : 212,
-            "column" : 47,
-            "source_fragment" : "meta.flowid"
           }
         },
         {
@@ -1095,13 +987,32 @@
               "value" : ["scalars", "tmp_4"]
             },
             {
+              "type" : "field",
+              "value" : ["scalars", "userMetadata.flowid"]
+            }
+          ],
+          "source_info" : {
+            "filename" : "packet_loss.p4",
+            "line" : 184,
+            "column" : 47,
+            "source_fragment" : "meta.flowid"
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "tmp_5"]
+            },
+            {
               "type" : "hexstr",
               "value" : "0x021d"
             }
           ],
           "source_info" : {
-            "filename" : "gtp-inline.p4",
-            "line" : 212,
+            "filename" : "packet_loss.p4",
+            "line" : 184,
             "column" : 60,
             "source_fragment" : "10w541"
           }
@@ -1127,8 +1038,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "gtp-inline.p4",
-            "line" : 212,
+            "filename" : "packet_loss.p4",
+            "line" : 184,
             "column" : 1,
             "source_fragment" : "hash(meta.index3, HashAlgorithm.crc16, 10w0, {meta.flowid, 10w541}, 10w1023)"
           }
@@ -1137,7 +1048,7 @@
     },
     {
       "name" : "MyEgress.increment_count",
-      "id" : 5,
+      "id" : 4,
       "runtime_data" : [],
       "primitives" : [
         {
@@ -1157,8 +1068,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "gtp-inline.p4",
-            "line" : 215,
+            "filename" : "packet_loss.p4",
+            "line" : 187,
             "column" : 1,
             "source_fragment" : "hashtable1.read(meta.count1, meta.index1)"
           }
@@ -1180,8 +1091,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "gtp-inline.p4",
-            "line" : 216,
+            "filename" : "packet_loss.p4",
+            "line" : 188,
             "column" : 1,
             "source_fragment" : "hashtable2.read(meta.count2, meta.index2)"
           }
@@ -1203,8 +1114,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "gtp-inline.p4",
-            "line" : 217,
+            "filename" : "packet_loss.p4",
+            "line" : 189,
             "column" : 1,
             "source_fragment" : "hashtable3.read(meta.count3, meta.index3)"
           }
@@ -1214,7 +1125,7 @@
           "parameters" : [
             {
               "type" : "field",
-              "value" : ["scalars", "tmp_5"]
+              "value" : ["scalars", "tmp_6"]
             },
             {
               "type" : "expression",
@@ -1245,8 +1156,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "gtp-inline.p4",
-            "line" : 219,
+            "filename" : "packet_loss.p4",
+            "line" : 191,
             "column" : 31,
             "source_fragment" : "meta.count1 + 1"
           }
@@ -1264,12 +1175,12 @@
             },
             {
               "type" : "field",
-              "value" : ["scalars", "tmp_5"]
+              "value" : ["scalars", "tmp_6"]
             }
           ],
           "source_info" : {
-            "filename" : "gtp-inline.p4",
-            "line" : 219,
+            "filename" : "packet_loss.p4",
+            "line" : 191,
             "column" : 1,
             "source_fragment" : "hashtable1.write(meta.index1, meta.count1 + 1)"
           }
@@ -1279,7 +1190,7 @@
           "parameters" : [
             {
               "type" : "field",
-              "value" : ["scalars", "tmp_6"]
+              "value" : ["scalars", "tmp_7"]
             },
             {
               "type" : "expression",
@@ -1310,8 +1221,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "gtp-inline.p4",
-            "line" : 220,
+            "filename" : "packet_loss.p4",
+            "line" : 192,
             "column" : 31,
             "source_fragment" : "meta.count2 + 1"
           }
@@ -1329,12 +1240,12 @@
             },
             {
               "type" : "field",
-              "value" : ["scalars", "tmp_6"]
+              "value" : ["scalars", "tmp_7"]
             }
           ],
           "source_info" : {
-            "filename" : "gtp-inline.p4",
-            "line" : 220,
+            "filename" : "packet_loss.p4",
+            "line" : 192,
             "column" : 1,
             "source_fragment" : "hashtable2.write(meta.index2, meta.count2 + 1)"
           }
@@ -1344,7 +1255,7 @@
           "parameters" : [
             {
               "type" : "field",
-              "value" : ["scalars", "tmp_7"]
+              "value" : ["scalars", "tmp_8"]
             },
             {
               "type" : "expression",
@@ -1375,8 +1286,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "gtp-inline.p4",
-            "line" : 221,
+            "filename" : "packet_loss.p4",
+            "line" : 193,
             "column" : 31,
             "source_fragment" : "meta.count3 + 1"
           }
@@ -1394,12 +1305,12 @@
             },
             {
               "type" : "field",
-              "value" : ["scalars", "tmp_7"]
+              "value" : ["scalars", "tmp_8"]
             }
           ],
           "source_info" : {
-            "filename" : "gtp-inline.p4",
-            "line" : 221,
+            "filename" : "packet_loss.p4",
+            "line" : 193,
             "column" : 1,
             "source_fragment" : "hashtable3.write(meta.index3, meta.count3 + 1)"
           }
@@ -1408,7 +1319,7 @@
     },
     {
       "name" : "MyEgress.compute_mincount",
-      "id" : 6,
+      "id" : 5,
       "runtime_data" : [],
       "primitives" : [
         {
@@ -1424,8 +1335,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "gtp-inline.p4",
-            "line" : 224,
+            "filename" : "packet_loss.p4",
+            "line" : 196,
             "column" : 6,
             "source_fragment" : "meta.min_count = cnt1; ..."
           }
@@ -1557,46 +1468,119 @@
               }
             }
           ]
-        }
-      ]
-    },
-    {
-      "name" : "MyEgress.add_option_header",
-      "id" : 7,
-      "runtime_data" : [],
-      "primitives" : [
-        {
-          "op" : "add_header",
-          "parameters" : [
-            {
-              "type" : "header",
-              "value" : "ipv4_inner_option"
-            }
-          ],
-          "source_info" : {
-            "filename" : "gtp-inline.p4",
-            "line" : 235,
-            "column" : 1,
-            "source_fragment" : "hdr.ipv4_inner_option.setValid()"
-          }
         },
         {
           "op" : "assign",
           "parameters" : [
             {
               "type" : "field",
-              "value" : ["ipv4_inner_option", "copyFlag"]
+              "value" : ["scalars", "userMetadata.num_lost_packets"]
             },
             {
-              "type" : "hexstr",
-              "value" : "0x00"
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "&",
+                  "left" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "-",
+                      "left" : {
+                        "type" : "field",
+                        "value" : ["swtraces", "packet_count"]
+                      },
+                      "right" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : "?",
+                          "left" : {
+                            "type" : "field",
+                            "value" : ["scalars", "userMetadata.count3"]
+                          },
+                          "right" : {
+                            "type" : "expression",
+                            "value" : {
+                              "op" : "?",
+                              "left" : {
+                                "type" : "field",
+                                "value" : ["scalars", "userMetadata.count2"]
+                              },
+                              "right" : {
+                                "type" : "field",
+                                "value" : ["scalars", "userMetadata.count1"]
+                              },
+                              "cond" : {
+                                "type" : "expression",
+                                "value" : {
+                                  "op" : ">",
+                                  "left" : {
+                                    "type" : "field",
+                                    "value" : ["scalars", "userMetadata.count1"]
+                                  },
+                                  "right" : {
+                                    "type" : "field",
+                                    "value" : ["scalars", "userMetadata.count2"]
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "cond" : {
+                            "type" : "expression",
+                            "value" : {
+                              "op" : ">",
+                              "left" : {
+                                "type" : "expression",
+                                "value" : {
+                                  "op" : "?",
+                                  "left" : {
+                                    "type" : "field",
+                                    "value" : ["scalars", "userMetadata.count2"]
+                                  },
+                                  "right" : {
+                                    "type" : "field",
+                                    "value" : ["scalars", "userMetadata.count1"]
+                                  },
+                                  "cond" : {
+                                    "type" : "expression",
+                                    "value" : {
+                                      "op" : ">",
+                                      "left" : {
+                                        "type" : "field",
+                                        "value" : ["scalars", "userMetadata.count1"]
+                                      },
+                                      "right" : {
+                                        "type" : "field",
+                                        "value" : ["scalars", "userMetadata.count2"]
+                                      }
+                                    }
+                                  }
+                                }
+                              },
+                              "right" : {
+                                "type" : "field",
+                                "value" : ["scalars", "userMetadata.count3"]
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "right" : {
+                    "type" : "hexstr",
+                    "value" : "0xffffffff"
+                  }
+                }
+              }
             }
           ],
           "source_info" : {
-            "filename" : "gtp-inline.p4",
-            "line" : 236,
+            "filename" : "packet_loss.p4",
+            "line" : 204,
             "column" : 1,
-            "source_fragment" : "hdr.ipv4_inner_option.copyFlag=0"
+            "source_fragment" : "meta.num_lost_packets = hdr.swtraces.packet_count - meta.min_count"
           }
         },
         {
@@ -1604,163 +1588,7 @@
           "parameters" : [
             {
               "type" : "field",
-              "value" : ["ipv4_inner_option", "optClass"]
-            },
-            {
-              "type" : "hexstr",
-              "value" : "0x02"
-            }
-          ],
-          "source_info" : {
-            "filename" : "gtp-inline.p4",
-            "line" : 237,
-            "column" : 1,
-            "source_fragment" : "hdr.ipv4_inner_option.optClass=2"
-          }
-        },
-        {
-          "op" : "assign",
-          "parameters" : [
-            {
-              "type" : "field",
-              "value" : ["ipv4_inner_option", "option"]
-            },
-            {
-              "type" : "hexstr",
-              "value" : "0x1f"
-            }
-          ],
-          "source_info" : {
-            "filename" : "gtp-inline.p4",
-            "line" : 238,
-            "column" : 1,
-            "source_fragment" : "hdr.ipv4_inner_option.option= 31"
-          }
-        },
-        {
-          "op" : "assign",
-          "parameters" : [
-            {
-              "type" : "field",
-              "value" : ["ipv4_inner_option", "optionLength"]
-            },
-            {
-              "type" : "hexstr",
-              "value" : "0x04"
-            }
-          ],
-          "source_info" : {
-            "filename" : "gtp-inline.p4",
-            "line" : 239,
-            "column" : 1,
-            "source_fragment" : "hdr.ipv4_inner_option.optionLength=4"
-          }
-        },
-        {
-          "op" : "add_header",
-          "parameters" : [
-            {
-              "type" : "header",
-              "value" : "mri"
-            }
-          ],
-          "source_info" : {
-            "filename" : "gtp-inline.p4",
-            "line" : 241,
-            "column" : 8,
-            "source_fragment" : "hdr.mri.setValid()"
-          }
-        },
-        {
-          "op" : "assign",
-          "parameters" : [
-            {
-              "type" : "field",
-              "value" : ["mri", "count"]
-            },
-            {
-              "type" : "hexstr",
-              "value" : "0x0001"
-            }
-          ],
-          "source_info" : {
-            "filename" : "gtp-inline.p4",
-            "line" : 242,
-            "column" : 1,
-            "source_fragment" : "hdr.mri.count = 1"
-          }
-        }
-      ]
-    },
-    {
-      "name" : "MyEgress.add_swtrace",
-      "id" : 8,
-      "runtime_data" : [
-        {
-          "name" : "swid",
-          "bitwidth" : 32
-        }
-      ],
-      "primitives" : [
-        {
-          "op" : "add_header",
-          "parameters" : [
-            {
-              "type" : "header",
-              "value" : "swtraces"
-            }
-          ],
-          "source_info" : {
-            "filename" : "gtp-inline.p4",
-            "line" : 245,
-            "column" : 1,
-            "source_fragment" : "hdr.swtraces.setValid()"
-          }
-        },
-        {
-          "op" : "assign",
-          "parameters" : [
-            {
-              "type" : "field",
-              "value" : ["swtraces", "swid"]
-            },
-            {
-              "type" : "runtime_data",
-              "value" : 0
-            }
-          ],
-          "source_info" : {
-            "filename" : "gtp-inline.p4",
-            "line" : 246,
-            "column" : 1,
-            "source_fragment" : "hdr.swtraces.swid = swid"
-          }
-        },
-        {
-          "op" : "assign",
-          "parameters" : [
-            {
-              "type" : "field",
-              "value" : ["swtraces", "packet_count"]
-            },
-            {
-              "type" : "field",
-              "value" : ["scalars", "userMetadata.min_count"]
-            }
-          ],
-          "source_info" : {
-            "filename" : "gtp-inline.p4",
-            "line" : 247,
-            "column" : 1,
-            "source_fragment" : "hdr.swtraces.packet_count = meta.min_count"
-          }
-        },
-        {
-          "op" : "assign",
-          "parameters" : [
-            {
-              "type" : "field",
-              "value" : ["ipv4_inner", "ihl"]
+              "value" : ["ipv4", "ihl"]
             },
             {
               "type" : "expression",
@@ -1774,11 +1602,11 @@
                       "op" : "+",
                       "left" : {
                         "type" : "field",
-                        "value" : ["ipv4_inner", "ihl"]
+                        "value" : ["ipv4", "ihl"]
                       },
                       "right" : {
                         "type" : "hexstr",
-                        "value" : "0x03"
+                        "value" : "0x0d"
                       }
                     }
                   },
@@ -1791,10 +1619,10 @@
             }
           ],
           "source_info" : {
-            "filename" : "gtp-inline.p4",
-            "line" : 249,
+            "filename" : "packet_loss.p4",
+            "line" : 205,
             "column" : 1,
-            "source_fragment" : "hdr.ipv4_inner.ihl = hdr.ipv4_inner.ihl +1 + 2"
+            "source_fragment" : "hdr.ipv4.ihl = hdr.ipv4.ihl - 1 - 2"
           }
         },
         {
@@ -1802,7 +1630,7 @@
           "parameters" : [
             {
               "type" : "field",
-              "value" : ["ipv4_inner_option", "optionLength"]
+              "value" : ["ipv4", "totalLen"]
             },
             {
               "type" : "expression",
@@ -1816,53 +1644,11 @@
                       "op" : "+",
                       "left" : {
                         "type" : "field",
-                        "value" : ["ipv4_inner_option", "optionLength"]
+                        "value" : ["ipv4", "totalLen"]
                       },
                       "right" : {
                         "type" : "hexstr",
-                        "value" : "0x08"
-                      }
-                    }
-                  },
-                  "right" : {
-                    "type" : "hexstr",
-                    "value" : "0xff"
-                  }
-                }
-              }
-            }
-          ],
-          "source_info" : {
-            "filename" : "gtp-inline.p4",
-            "line" : 250,
-            "column" : 1,
-            "source_fragment" : "hdr.ipv4_inner_option.optionLength = hdr.ipv4_inner_option.optionLength + 8"
-          }
-        },
-        {
-          "op" : "assign",
-          "parameters" : [
-            {
-              "type" : "field",
-              "value" : ["ipv4_inner", "totalLen"]
-            },
-            {
-              "type" : "expression",
-              "value" : {
-                "type" : "expression",
-                "value" : {
-                  "op" : "&",
-                  "left" : {
-                    "type" : "expression",
-                    "value" : {
-                      "op" : "+",
-                      "left" : {
-                        "type" : "field",
-                        "value" : ["ipv4_inner", "totalLen"]
-                      },
-                      "right" : {
-                        "type" : "hexstr",
-                        "value" : "0x000c"
+                        "value" : "0xfff4"
                       }
                     }
                   },
@@ -1875,10 +1661,36 @@
             }
           ],
           "source_info" : {
-            "filename" : "gtp-inline.p4",
-            "line" : 251,
+            "filename" : "packet_loss.p4",
+            "line" : 206,
             "column" : 1,
-            "source_fragment" : "hdr.ipv4_inner.totalLen = hdr.ipv4_inner.totalLen +4 + 8"
+            "source_fragment" : "hdr.ipv4.totalLen = hdr.ipv4.totalLen - 4 - 8"
+          }
+        }
+      ]
+    },
+    {
+      "name" : "packet_loss215",
+      "id" : 6,
+      "runtime_data" : [],
+      "primitives" : [
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "tmp_9"]
+            },
+            {
+              "type" : "field",
+              "value" : ["scalars", "userMetadata.flowid"]
+            }
+          ],
+          "source_info" : {
+            "filename" : "packet_loss.p4",
+            "line" : 215,
+            "column" : 45,
+            "source_fragment" : "  log_msg(\\\"flow id = {}, lost packets = {}\\\",{meta.flowid, meta.num_lost_packets});"
           }
         },
         {
@@ -1886,125 +1698,46 @@
           "parameters" : [
             {
               "type" : "field",
-              "value" : ["gtp_common", "messageLength"]
+              "value" : ["scalars", "tmp_10"]
             },
             {
-              "type" : "expression",
-              "value" : {
-                "type" : "expression",
-                "value" : {
-                  "op" : "&",
-                  "left" : {
-                    "type" : "expression",
-                    "value" : {
-                      "op" : "+",
-                      "left" : {
-                        "type" : "field",
-                        "value" : ["gtp_common", "messageLength"]
-                      },
-                      "right" : {
-                        "type" : "hexstr",
-                        "value" : "0x000c"
-                      }
-                    }
-                  },
-                  "right" : {
-                    "type" : "hexstr",
-                    "value" : "0xffff"
-                  }
-                }
-              }
+              "type" : "field",
+              "value" : ["scalars", "userMetadata.num_lost_packets"]
             }
           ],
           "source_info" : {
-            "filename" : "gtp-inline.p4",
-            "line" : 253,
-            "column" : 1,
-            "source_fragment" : "hdr.gtp_common.messageLength = hdr.gtp_common.messageLength +4 +8"
+            "filename" : "packet_loss.p4",
+            "line" : 215,
+            "column" : 58,
+            "source_fragment" : "  log_msg(\\\"flow id = {}, lost packets = {}\\\",{meta.flowid, meta.num_lost_packets});"
           }
         },
         {
-          "op" : "assign",
+          "op" : "log_msg",
           "parameters" : [
             {
-              "type" : "field",
-              "value" : ["udp_outer", "plength"]
+              "type" : "string",
+              "value" : "flow id = {}, lost packets = {}"
             },
             {
-              "type" : "expression",
-              "value" : {
-                "type" : "expression",
-                "value" : {
-                  "op" : "&",
-                  "left" : {
-                    "type" : "expression",
-                    "value" : {
-                      "op" : "+",
-                      "left" : {
-                        "type" : "field",
-                        "value" : ["udp_outer", "plength"]
-                      },
-                      "right" : {
-                        "type" : "hexstr",
-                        "value" : "0x000c"
-                      }
-                    }
-                  },
-                  "right" : {
-                    "type" : "hexstr",
-                    "value" : "0xffff"
-                  }
+              "type" : "parameters_vector",
+              "value" : [
+                {
+                  "type" : "field",
+                  "value" : ["scalars", "tmp_9"]
+                },
+                {
+                  "type" : "field",
+                  "value" : ["scalars", "tmp_10"]
                 }
-              }
+              ]
             }
           ],
           "source_info" : {
-            "filename" : "gtp-inline.p4",
-            "line" : 254,
-            "column" : 8,
-            "source_fragment" : "hdr.udp_outer.plength = hdr.udp_outer.plength +4 + 8"
-          }
-        },
-        {
-          "op" : "assign",
-          "parameters" : [
-            {
-              "type" : "field",
-              "value" : ["ipv4_outer", "totalLen"]
-            },
-            {
-              "type" : "expression",
-              "value" : {
-                "type" : "expression",
-                "value" : {
-                  "op" : "&",
-                  "left" : {
-                    "type" : "expression",
-                    "value" : {
-                      "op" : "+",
-                      "left" : {
-                        "type" : "field",
-                        "value" : ["ipv4_outer", "totalLen"]
-                      },
-                      "right" : {
-                        "type" : "hexstr",
-                        "value" : "0x000c"
-                      }
-                    }
-                  },
-                  "right" : {
-                    "type" : "hexstr",
-                    "value" : "0xffff"
-                  }
-                }
-              }
-            }
-          ],
-          "source_info" : {
-            "filename" : "gtp-inline.p4",
-            "line" : 255,
-            "column" : 1,
-            "source_fragment" : "hdr.ipv4_outer.totalLen = hdr.ipv4_outer.totalLen +4 + 8"
+            "filename" : "packet_loss.p4",
+            "line" : 215,
+            "column" : 2,
+            "source_fragment" : "  log_msg(\\\"flow id = {}, lost packets = {}\\\",{meta.flowid, meta.num_lost_packets});"
           }
         }
       ]
@@ -2015,8 +1748,8 @@
       "name" : "ingress",
       "id" : 0,
       "source_info" : {
-        "filename" : "gtp-inline.p4",
-        "line" : 168,
+        "filename" : "packet_loss.p4",
+        "line" : 140,
         "column" : 8,
         "source_fragment" : "MyIngress"
       },
@@ -2026,8 +1759,8 @@
           "name" : "MyIngress.packet_forward",
           "id" : 0,
           "source_info" : {
-            "filename" : "gtp-inline.p4",
-            "line" : 181,
+            "filename" : "packet_loss.p4",
+            "line" : 153,
             "column" : 9,
             "source_fragment" : "packet_forward"
           },
@@ -2067,8 +1800,8 @@
       "name" : "egress",
       "id" : 1,
       "source_info" : {
-        "filename" : "gtp-inline.p4",
-        "line" : 199,
+        "filename" : "packet_loss.p4",
+        "line" : 171,
         "column" : 8,
         "source_fragment" : "MyEgress"
       },
@@ -2078,8 +1811,8 @@
           "name" : "tbl_compute_flowid",
           "id" : 1,
           "source_info" : {
-            "filename" : "gtp-inline.p4",
-            "line" : 268,
+            "filename" : "packet_loss.p4",
+            "line" : 211,
             "column" : 2,
             "source_fragment" : "compute_flowid()"
           },
@@ -2090,14 +1823,14 @@
           "with_counters" : false,
           "support_timeout" : false,
           "direct_meters" : null,
-          "action_ids" : [3],
+          "action_ids" : [2],
           "actions" : ["MyEgress.compute_flowid"],
           "base_default_next" : "tbl_compute_index",
           "next_tables" : {
             "MyEgress.compute_flowid" : "tbl_compute_index"
           },
           "default_entry" : {
-            "action_id" : 3,
+            "action_id" : 2,
             "action_const" : true,
             "action_data" : [],
             "action_entry_const" : true
@@ -2107,8 +1840,8 @@
           "name" : "tbl_compute_index",
           "id" : 2,
           "source_info" : {
-            "filename" : "gtp-inline.p4",
-            "line" : 269,
+            "filename" : "packet_loss.p4",
+            "line" : 212,
             "column" : 2,
             "source_fragment" : "compute_index()"
           },
@@ -2119,14 +1852,14 @@
           "with_counters" : false,
           "support_timeout" : false,
           "direct_meters" : null,
-          "action_ids" : [4],
+          "action_ids" : [3],
           "actions" : ["MyEgress.compute_index"],
           "base_default_next" : "tbl_increment_count",
           "next_tables" : {
             "MyEgress.compute_index" : "tbl_increment_count"
           },
           "default_entry" : {
-            "action_id" : 4,
+            "action_id" : 3,
             "action_const" : true,
             "action_data" : [],
             "action_entry_const" : true
@@ -2136,8 +1869,8 @@
           "name" : "tbl_increment_count",
           "id" : 3,
           "source_info" : {
-            "filename" : "gtp-inline.p4",
-            "line" : 270,
+            "filename" : "packet_loss.p4",
+            "line" : 213,
             "column" : 2,
             "source_fragment" : "increment_count()"
           },
@@ -2148,14 +1881,14 @@
           "with_counters" : false,
           "support_timeout" : false,
           "direct_meters" : null,
-          "action_ids" : [5],
+          "action_ids" : [4],
           "actions" : ["MyEgress.increment_count"],
           "base_default_next" : "tbl_compute_mincount",
           "next_tables" : {
             "MyEgress.increment_count" : "tbl_compute_mincount"
           },
           "default_entry" : {
-            "action_id" : 5,
+            "action_id" : 4,
             "action_const" : true,
             "action_data" : [],
             "action_entry_const" : true
@@ -2165,8 +1898,8 @@
           "name" : "tbl_compute_mincount",
           "id" : 4,
           "source_info" : {
-            "filename" : "gtp-inline.p4",
-            "line" : 271,
+            "filename" : "packet_loss.p4",
+            "line" : 214,
             "column" : 2,
             "source_fragment" : "compute_mincount(meta.count1, meta.count2, meta.count3)"
           },
@@ -2177,76 +1910,46 @@
           "with_counters" : false,
           "support_timeout" : false,
           "direct_meters" : null,
-          "action_ids" : [6],
+          "action_ids" : [5],
           "actions" : ["MyEgress.compute_mincount"],
-          "base_default_next" : "tbl_add_option_header",
+          "base_default_next" : "tbl_packet_loss215",
           "next_tables" : {
-            "MyEgress.compute_mincount" : "tbl_add_option_header"
+            "MyEgress.compute_mincount" : "tbl_packet_loss215"
+          },
+          "default_entry" : {
+            "action_id" : 5,
+            "action_const" : true,
+            "action_data" : [],
+            "action_entry_const" : true
+          }
+        },
+        {
+          "name" : "tbl_packet_loss215",
+          "id" : 5,
+          "source_info" : {
+            "filename" : "packet_loss.p4",
+            "line" : 215,
+            "column" : 2,
+            "source_fragment" : "  log_msg(\\\"flow id = {}, lost packets = {}\\\",{meta.flowid, meta.num_lost_packets});"
+          },
+          "key" : [],
+          "match_type" : "exact",
+          "type" : "simple",
+          "max_size" : 1024,
+          "with_counters" : false,
+          "support_timeout" : false,
+          "direct_meters" : null,
+          "action_ids" : [6],
+          "actions" : ["packet_loss215"],
+          "base_default_next" : null,
+          "next_tables" : {
+            "packet_loss215" : null
           },
           "default_entry" : {
             "action_id" : 6,
             "action_const" : true,
             "action_data" : [],
             "action_entry_const" : true
-          }
-        },
-        {
-          "name" : "tbl_add_option_header",
-          "id" : 5,
-          "source_info" : {
-            "filename" : "gtp-inline.p4",
-            "line" : 272,
-            "column" : 2,
-            "source_fragment" : "add_option_header()"
-          },
-          "key" : [],
-          "match_type" : "exact",
-          "type" : "simple",
-          "max_size" : 1024,
-          "with_counters" : false,
-          "support_timeout" : false,
-          "direct_meters" : null,
-          "action_ids" : [7],
-          "actions" : ["MyEgress.add_option_header"],
-          "base_default_next" : "MyEgress.swtrace",
-          "next_tables" : {
-            "MyEgress.add_option_header" : "MyEgress.swtrace"
-          },
-          "default_entry" : {
-            "action_id" : 7,
-            "action_const" : true,
-            "action_data" : [],
-            "action_entry_const" : true
-          }
-        },
-        {
-          "name" : "MyEgress.swtrace",
-          "id" : 6,
-          "source_info" : {
-            "filename" : "gtp-inline.p4",
-            "line" : 258,
-            "column" : 12,
-            "source_fragment" : "swtrace"
-          },
-          "key" : [],
-          "match_type" : "exact",
-          "type" : "simple",
-          "max_size" : 1024,
-          "with_counters" : false,
-          "support_timeout" : false,
-          "direct_meters" : null,
-          "action_ids" : [8, 2],
-          "actions" : ["MyEgress.add_swtrace", "NoAction"],
-          "base_default_next" : null,
-          "next_tables" : {
-            "MyEgress.add_swtrace" : null,
-            "NoAction" : null
-          },
-          "default_entry" : {
-            "action_id" : 2,
-            "action_const" : false,
-            "action_data" : [],
-            "action_entry_const" : false
           }
         }
       ],
@@ -2256,10 +1959,10 @@
           "name" : "node_5",
           "id" : 0,
           "source_info" : {
-            "filename" : "gtp-inline.p4",
-            "line" : 267,
+            "filename" : "packet_loss.p4",
+            "line" : 210,
             "column" : 4,
-            "source_fragment" : "hdr.ipv4_inner.isValid()"
+            "source_fragment" : "hdr.ipv4_option.isValid()"
           },
           "expression" : {
             "type" : "expression",
@@ -2268,7 +1971,7 @@
               "left" : null,
               "right" : {
                 "type" : "field",
-                "value" : ["ipv4_inner", "$valid$"]
+                "value" : ["ipv4_option", "$valid$"]
               }
             }
           },
@@ -2283,12 +1986,12 @@
       "name" : "cksum",
       "id" : 0,
       "source_info" : {
-        "filename" : "gtp-inline.p4",
-        "line" : 286,
-        "column" : 2,
+        "filename" : "packet_loss.p4",
+        "line" : 227,
+        "column" : 1,
         "source_fragment" : "update_checksum( ..."
       },
-      "target" : ["ipv4_inner", "hdrChecksum"],
+      "target" : ["ipv4", "hdrChecksum"],
       "type" : "generic",
       "calculation" : "calc_2",
       "verify" : false,
@@ -2300,33 +2003,7 @@
           "left" : null,
           "right" : {
             "type" : "field",
-            "value" : ["ipv4_inner", "$valid$"]
-          }
-        }
-      }
-    },
-    {
-      "name" : "cksum_0",
-      "id" : 1,
-      "source_info" : {
-        "filename" : "gtp-inline.p4",
-        "line" : 302,
-        "column" : 1,
-        "source_fragment" : "update_checksum( ..."
-      },
-      "target" : ["ipv4_outer", "hdrChecksum"],
-      "type" : "generic",
-      "calculation" : "calc_3",
-      "verify" : false,
-      "update" : true,
-      "if_cond" : {
-        "type" : "expression",
-        "value" : {
-          "op" : "d2b",
-          "left" : null,
-          "right" : {
-            "type" : "field",
-            "value" : ["ipv4_outer", "$valid$"]
+            "value" : ["ipv4", "$valid$"]
           }
         }
       }
@@ -2372,7 +2049,7 @@
       ["standard_metadata", "priority"]
     ]
   ],
-  "program" : "gtp-inline.bmv2/gtp-inline.p4i",
+  "program" : "packet_loss.bmv2/packet_loss.p4i",
   "__meta__" : {
     "version" : [2, 23],
     "compiler" : "https://github.com/p4lang/p4c"
