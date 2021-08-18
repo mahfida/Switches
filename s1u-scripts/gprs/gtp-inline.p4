@@ -1,16 +1,3 @@
-// Copyright 2018 Eotvos Lorand University, Budapest, Hungary
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
 
 /* -*- P4_16 -*- */
 #include <core.p4>
@@ -24,6 +11,12 @@ const bit<8>  IPPROTO_UDP   = 0x11;
 const bit<16> GTP_UDP_PORT     = 2152;
 const bit<32> GW_IP = 0x0A000001; // 10.0.0.1
 
+//HASH COUNT RELATED FIELDS
+const bit<32> HASH_TABLE_SIZE = 1024;
+register<bit<32>>(HASH_TABLE_SIZE) hashtable1;
+register<bit<32>>(HASH_TABLE_SIZE) hashtable2;
+register<bit<32>>(HASH_TABLE_SIZE) hashtable3;
+
 /*************************************************************************
 *********************** H E A D E R S  ***********************************
 *************************************************************************/
@@ -34,6 +27,9 @@ typedef bit<48> mac_addr_t;
 typedef bit<32> ip4Addr_t;
 typedef bit<32> ipv4_addr_t;
 typedef bit<9> port_id_t;
+typedef bit<32> switchID_t;
+typedef bit<32> packet_count_t;
+
 
 /* GPRS Tunnelling Protocol (GTP) common part for v1 and v2 */
 
@@ -52,21 +48,37 @@ header gtp_teid_t {
     bit<32> teid;
 }
 
-/* GPRS Tunnelling Protocol (GTP) v1 */
-
-/*
-This header part exists if any of the E, S, or PN flags are on.
-*/
-
-header gtpv1_optional_t {
-    bit<16> sNumber;
-    bit<8> pnNumber;
-    bit<8> nextExtHdrType;
+// Option field for inner ipv4
+header ipv4_inner_option_t{
+	bit<1> copyFlag;
+	bit<2> optClass;
+        bit<5> option;
+        bit<8> optionLength;
 }
 
+header mri_t{
+	bit<16> count;
+}
+
+header switch_t{
+	switchID_t swid;
+	packet_count_t packet_count;
+}
 
 struct metadata {
-    
+   	bit<72> flowid;
+
+	//hash indices;
+	bit<32> index1;
+	bit<32> index2;
+	bit<32> index3;
+
+	//count at each index
+	bit<32> count1;
+	bit<32> count2;
+	bit<32> count3;
+	bit<32> min_count;
+	   
    }
 
 struct headers {
@@ -74,9 +86,11 @@ struct headers {
     ipv4_t       ipv4_outer;
     udp_t        udp_outer;
     gtp_common_t gtp_common;
-    gtp_teid_t gtp_teid;
-    ipv4_t ipv4_inner;
-    udp_t udp_inner;
+    gtp_teid_t   gtp_teid;
+    ipv4_t 	 ipv4_inner;
+    ipv4_inner_option_t ipv4_inner_option;
+    mri_t 	mri;
+    switch_t[9] swtraces;
 }
 
 /*************************************************************************
@@ -185,31 +199,123 @@ control MyIngress(inout headers hdr,
 control MyEgress(inout headers hdr,
                  inout metadata meta,
                  inout standard_metadata_t standard_metadata) {
-    apply {  }
+
+  // MATCH-ACTIOON TBLE FOR THE PACKET COUNT
+   action compute_flowid(){
+   	meta.flowid[31:0] = hdr.ipv4_inner.srcAddr;
+	meta.flowid[63:32] = hdr.ipv4_inner.dstAddr;
+	meta.flowid[71:64] = hdr.ipv4_inner.protocol;
+	}
+   action compute_index(){
+	hash(meta.index1, HashAlgorithm.crc16, 10w0, {meta.flowid, 10w33}, 10w1023);
+	hash(meta.index2, HashAlgorithm.crc16, 10w0, {meta.flowid, 10w202}, 10w1023);
+	hash(meta.index3, HashAlgorithm.crc16, 10w0, {meta.flowid, 10w541}, 10w1023);
+	}
+   action increment_count(){
+	hashtable1.read(meta.count1, meta.index1);
+	hashtable2.read(meta.count2, meta.index2);
+	hashtable3.read(meta.count3, meta.index3);
+
+	hashtable1.write(meta.index1, meta.count1 + 1);
+	hashtable2.write(meta.index2, meta.count2 + 1);
+	hashtable3.write(meta.index3, meta.count3 + 1);
+	}
+    action compute_mincount(in bit<32> cnt1, in bit<32> cnt2, in bit<32> cnt3){
+     	meta.min_count = cnt1;
+	if(meta.min_count > cnt2){
+		meta.min_count = cnt2;
+		}
+	if(meta.min_count > cnt3){
+		meta.min_count = cnt3;
+		}
+	}
+    
+    //MATCH-ACTION TABLE FOR  SWITCH HEADER
+    action add_option_header(){
+	hdr.ipv4_inner_option.setValid();
+	hdr.ipv4_inner_option.copyFlag=0; // do not copy options in fragments
+	hdr.ipv4_inner_option.optClass=2; // Measurement purpose
+	hdr.ipv4_inner_option.option= 31;
+	hdr.ipv4_inner_option.optionLength=4; // length of option fields in bytes
+        
+        hdr.mri.setValid();
+	hdr.mri.count = 1;
+	}
+    action add_swtrace(switchID_t  swid){
+	hdr.swtraces[0].setValid();
+	hdr.swtraces[0].swid = swid;
+	hdr.swtraces[0].packet_count = meta.min_count;
+
+	hdr.ipv4_inner.ihl = hdr.ipv4_inner.ihl +1 + 2; //  option,mri and swtrace (in 32bits)
+	hdr.ipv4_inner_option.optionLength = hdr.ipv4_inner_option.optionLength + 8;
+	hdr.ipv4_inner.totalLen  = hdr.ipv4_inner.totalLen +4 + 8;// increase in bytes
+
+	hdr.gtp_common.messageLength  = hdr.gtp_common.messageLength +4 +8;
+        hdr.udp_outer.plength = hdr.udp_outer.plength +4 + 8;
+	hdr.ipv4_outer.totalLen  = hdr.ipv4_outer.totalLen +4 + 8;// increase in bytes
+	}
+
+      table swtrace{
+		actions={
+		add_swtrace;
+		NoAction;
+		}
+		default_action = NoAction();
+	}
+
+    apply {
+	if(hdr.ipv4_inner.isValid()){
+		compute_flowid();
+		compute_index();
+		increment_count();
+		compute_mincount(meta.count1, meta.count2, meta.count3);
+		add_option_header();
+		swtrace.apply();
+		}  
+	}
 }
 
 /*************************************************************************
 *************   C H E C K S U M    C O M P U T A T I O N   **************
 *************************************************************************/
 
-control Ipv4ComputeChecksum(inout headers  hdr, inout metadata meta) {
-     apply {
-/*  update_checksum(
-        hdr.ipv4.isValid(),
-            { hdr.ipv4.version,
-              hdr.ipv4.ihl,
-              hdr.ipv4.diffserv,
-              hdr.ipv4.totalLen,
-              hdr.ipv4.identification,
-              hdr.ipv4.flags,
-              hdr.ipv4.fragOffset,
-              hdr.ipv4.ttl,
-              hdr.ipv4.protocol,
-              hdr.ipv4.srcAddr,
-              hdr.ipv4.dstAddr },
-            hdr.ipv4.hdrChecksum,
-            HashAlgorithm.csum16);*/
-    }
+control MyComputeChecksum(inout headers  hdr, inout metadata meta) {
+
+	apply {
+
+	 update_checksum(
+            hdr.ipv4_inner.isValid(),
+            { hdr.ipv4_inner.version,
+              hdr.ipv4_inner.ihl,
+              hdr.ipv4_inner.diffserv,
+              hdr.ipv4_inner.totalLen,
+              hdr.ipv4_inner.identification,
+              hdr.ipv4_inner.flags,
+              hdr.ipv4_inner.fragOffset,
+              hdr.ipv4_inner.ttl,
+              hdr.ipv4_inner.protocol,
+              hdr.ipv4_inner.srcAddr,
+              hdr.ipv4_inner.dstAddr },
+            hdr.ipv4_inner.hdrChecksum,
+            HashAlgorithm.csum16);
+
+	update_checksum(
+        hdr.ipv4_outer.isValid(),
+            { hdr.ipv4_outer.version,
+              hdr.ipv4_outer.ihl,
+              hdr.ipv4_outer.diffserv,
+              hdr.ipv4_outer.totalLen,
+              hdr.ipv4_outer.identification,
+              hdr.ipv4_outer.flags,
+              hdr.ipv4_outer.fragOffset,
+              hdr.ipv4_outer.ttl,
+              hdr.ipv4_outer.protocol,
+              hdr.ipv4_outer.srcAddr,
+              hdr.ipv4_outer.dstAddr },
+            hdr.ipv4_outer.hdrChecksum,
+            HashAlgorithm.csum16);
+   
+	}
 }
 
 /*************************************************************************
@@ -224,8 +330,10 @@ control MyDeparser(packet_out packet, in headers hdr) {
         packet.emit(hdr.gtp_common);
         packet.emit(hdr.gtp_teid);
         packet.emit(hdr.ipv4_inner);
-        packet.emit(hdr.udp_inner);
-    }
+	packet.emit(hdr.ipv4_inner_option);
+	packet.emit(hdr.mri);
+	packet.emit(hdr.swtraces);
+    	  }
 }
 
 /*************************************************************************
@@ -237,6 +345,6 @@ V1Switch(
     MyVerifyChecksum(),
     MyIngress(),
     MyEgress(),
-    Ipv4ComputeChecksum(),
+    MyComputeChecksum(),
     MyDeparser()
 ) main;

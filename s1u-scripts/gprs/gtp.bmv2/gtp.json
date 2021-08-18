@@ -3,10 +3,7 @@
     {
       "name" : "scalars_0",
       "id" : 0,
-      "fields" : [
-        ["userMetadata._gtp_metadata_teid0", 32, false],
-        ["userMetadata._gtp_metadata_color1", 8, false]
-      ]
+      "fields" : []
     },
     {
       "name" : "standard_metadata",
@@ -59,8 +56,18 @@
       ]
     },
     {
-      "name" : "gtp_common_t",
+      "name" : "udp_t",
       "id" : 4,
+      "fields" : [
+        ["srcPort", 16, false],
+        ["dstPort", 16, false],
+        ["plength", 16, false],
+        ["checksum", 16, false]
+      ]
+    },
+    {
+      "name" : "gtp_common_t",
+      "id" : 5,
       "fields" : [
         ["version", 3, false],
         ["pFlag", 1, false],
@@ -74,46 +81,9 @@
     },
     {
       "name" : "gtp_teid_t",
-      "id" : 5,
-      "fields" : [
-        ["teid", 32, false]
-      ]
-    },
-    {
-      "name" : "gtpv1_extension_hdr_t",
       "id" : 6,
       "fields" : [
-        ["plength", 8, false],
-        ["contents", "*"],
-        ["nextExtHdrType", 8, false]
-      ],
-      "max_length" : 18
-    },
-    {
-      "name" : "gtpv1_optional_t",
-      "id" : 7,
-      "fields" : [
-        ["sNumber", 16, false],
-        ["pnNumber", 8, false],
-        ["nextExtHdrType", 8, false]
-      ]
-    },
-    {
-      "name" : "gtpv2_ending_t",
-      "id" : 8,
-      "fields" : [
-        ["sNumber", 24, false],
-        ["reserved", 8, false]
-      ]
-    },
-    {
-      "name" : "udp_t",
-      "id" : 9,
-      "fields" : [
-        ["srcPort", 16, false],
-        ["dstPort", 16, false],
-        ["plength", 16, false],
-        ["checksum", 16, false]
+        ["teid", 32, false]
       ]
     }
   ],
@@ -140,16 +110,16 @@
       "pi_omit" : true
     },
     {
-      "name" : "ipv4",
+      "name" : "ipv4_outer",
       "id" : 3,
       "header_type" : "ipv4_t",
       "metadata" : false,
       "pi_omit" : true
     },
     {
-      "name" : "inner_ipv4",
+      "name" : "udp_outer",
       "id" : 4,
-      "header_type" : "ipv4_t",
+      "header_type" : "udp_t",
       "metadata" : false,
       "pi_omit" : true
     },
@@ -168,36 +138,15 @@
       "pi_omit" : true
     },
     {
-      "name" : "gtpv1_extension_hdr",
+      "name" : "ipv4_inner",
       "id" : 7,
-      "header_type" : "gtpv1_extension_hdr_t",
+      "header_type" : "ipv4_t",
       "metadata" : false,
       "pi_omit" : true
     },
     {
-      "name" : "gtpv1_optional",
+      "name" : "udp_inner",
       "id" : 8,
-      "header_type" : "gtpv1_optional_t",
-      "metadata" : false,
-      "pi_omit" : true
-    },
-    {
-      "name" : "gtpv2_ending",
-      "id" : 9,
-      "header_type" : "gtpv2_ending_t",
-      "metadata" : false,
-      "pi_omit" : true
-    },
-    {
-      "name" : "udp",
-      "id" : 10,
-      "header_type" : "udp_t",
-      "metadata" : false,
-      "pi_omit" : true
-    },
-    {
-      "name" : "inner_udp",
-      "id" : 11,
       "header_type" : "udp_t",
       "metadata" : false,
       "pi_omit" : true
@@ -243,7 +192,7 @@
               "type" : "hexstr",
               "value" : "0x0800",
               "mask" : null,
-              "next_state" : "parse_ipv4"
+              "next_state" : "parse_ipv4_outer"
             },
             {
               "type" : "default",
@@ -260,14 +209,14 @@
           ]
         },
         {
-          "name" : "parse_ipv4",
+          "name" : "parse_ipv4_outer",
           "id" : 1,
           "parser_ops" : [
             {
               "parameters" : [
                 {
                   "type" : "regular",
-                  "value" : "ipv4"
+                  "value" : "ipv4_outer"
                 }
               ],
               "op" : "extract"
@@ -278,7 +227,7 @@
               "type" : "hexstr",
               "value" : "0x11",
               "mask" : null,
-              "next_state" : "parse_udp"
+              "next_state" : "parse_udp_outer"
             },
             {
               "type" : "default",
@@ -290,19 +239,19 @@
           "transition_key" : [
             {
               "type" : "field",
-              "value" : ["ipv4", "protocol"]
+              "value" : ["ipv4_outer", "protocol"]
             }
           ]
         },
         {
-          "name" : "parse_udp",
+          "name" : "parse_udp_outer",
           "id" : 2,
           "parser_ops" : [
             {
               "parameters" : [
                 {
                   "type" : "regular",
-                  "value" : "udp"
+                  "value" : "udp_outer"
                 }
               ],
               "op" : "extract"
@@ -325,7 +274,7 @@
           "transition_key" : [
             {
               "type" : "field",
-              "value" : ["udp", "dstPort"]
+              "value" : ["udp_outer", "dstPort"]
             }
           ]
         },
@@ -363,12 +312,6 @@
               "next_state" : "parse_teid"
             },
             {
-              "type" : "hexstr",
-              "value" : "0x0200",
-              "mask" : null,
-              "next_state" : "parse_gtpv2"
-            },
-            {
               "type" : "default",
               "value" : null,
               "mask" : null,
@@ -398,27 +341,12 @@
                 }
               ],
               "op" : "extract"
-            }
-          ],
-          "transitions" : [
-            {
-              "type" : "default",
-              "value" : null,
-              "mask" : null,
-              "next_state" : null
-            }
-          ],
-          "transition_key" : []
-        },
-        {
-          "name" : "parse_gtpv2",
-          "id" : 5,
-          "parser_ops" : [
+            },
             {
               "parameters" : [
                 {
                   "type" : "regular",
-                  "value" : "gtpv2_ending"
+                  "value" : "ipv4_inner"
                 }
               ],
               "op" : "extract"
@@ -444,330 +372,58 @@
       "id" : 0,
       "source_info" : {
         "filename" : "gtp.p4",
-        "line" : 408,
+        "line" : 219,
         "column" : 8,
         "source_fragment" : "MyDeparser"
       },
-      "order" : ["ethernet", "ipv4", "udp", "gtp_common", "gtp_teid", "inner_ipv4", "inner_udp"],
+      "order" : ["ethernet", "ipv4_outer", "udp_outer", "gtp_common", "gtp_teid", "ipv4_inner", "udp_inner"],
       "primitives" : []
     }
   ],
-  "meter_arrays" : [
-    {
-      "name" : "MyIngress.teid_meters",
-      "id" : 0,
-      "source_info" : {
-        "filename" : "gtp.p4",
-        "line" : 222,
-        "column" : 32,
-        "source_fragment" : "teid_meters"
-      },
-      "is_direct" : false,
-      "size" : 256,
-      "rate_count" : 2,
-      "type" : "bytes"
-    }
-  ],
+  "meter_arrays" : [],
   "counter_arrays" : [],
   "register_arrays" : [],
   "calculations" : [],
   "learn_lists" : [],
   "actions" : [
     {
-      "name" : "NoAction",
+      "name" : "MyIngress.drop",
       "id" : 0,
       "runtime_data" : [],
-      "primitives" : []
+      "primitives" : [
+        {
+          "op" : "mark_to_drop",
+          "parameters" : [
+            {
+              "type" : "header",
+              "value" : "standard_metadata"
+            }
+          ],
+          "source_info" : {
+            "filename" : "gtp.p4",
+            "line" : 159,
+            "column" : 8,
+            "source_fragment" : "mark_to_drop(standard_metadata)"
+          }
+        }
+      ]
     },
     {
-      "name" : "NoAction",
+      "name" : "MyIngress.forward",
       "id" : 1,
-      "runtime_data" : [],
-      "primitives" : []
-    },
-    {
-      "name" : "MyIngress.drop",
-      "id" : 2,
-      "runtime_data" : [],
-      "primitives" : [
-        {
-          "op" : "mark_to_drop",
-          "parameters" : [
-            {
-              "type" : "header",
-              "value" : "standard_metadata"
-            }
-          ],
-          "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 225,
-            "column" : 8,
-            "source_fragment" : "mark_to_drop(standard_metadata)"
-          }
-        }
-      ]
-    },
-    {
-      "name" : "MyIngress.drop",
-      "id" : 3,
-      "runtime_data" : [],
-      "primitives" : [
-        {
-          "op" : "mark_to_drop",
-          "parameters" : [
-            {
-              "type" : "header",
-              "value" : "standard_metadata"
-            }
-          ],
-          "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 225,
-            "column" : 8,
-            "source_fragment" : "mark_to_drop(standard_metadata)"
-          }
-        }
-      ]
-    },
-    {
-      "name" : "MyIngress.drop",
-      "id" : 4,
-      "runtime_data" : [],
-      "primitives" : [
-        {
-          "op" : "mark_to_drop",
-          "parameters" : [
-            {
-              "type" : "header",
-              "value" : "standard_metadata"
-            }
-          ],
-          "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 225,
-            "column" : 8,
-            "source_fragment" : "mark_to_drop(standard_metadata)"
-          }
-        }
-      ]
-    },
-    {
-      "name" : "MyIngress.gtp_encapsulate",
-      "id" : 5,
       "runtime_data" : [
         {
-          "name" : "teid",
-          "bitwidth" : 32
-        },
-        {
-          "name" : "ip",
-          "bitwidth" : 32
+          "name" : "port",
+          "bitwidth" : 9
         }
       ],
       "primitives" : [
         {
-          "op" : "add_header",
-          "parameters" : [
-            {
-              "type" : "header",
-              "value" : "inner_ipv4"
-            }
-          ],
-          "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 238,
-            "column" : 8,
-            "source_fragment" : "hdr.inner_ipv4.setValid()"
-          }
-        },
-        {
-          "op" : "assign_header",
-          "parameters" : [
-            {
-              "type" : "header",
-              "value" : "inner_ipv4"
-            },
-            {
-              "type" : "header",
-              "value" : "ipv4"
-            }
-          ],
-          "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 239,
-            "column" : 8,
-            "source_fragment" : "hdr.inner_ipv4 = hdr.ipv4"
-          }
-        },
-        {
-          "op" : "assign_header",
-          "parameters" : [
-            {
-              "type" : "header",
-              "value" : "inner_udp"
-            },
-            {
-              "type" : "header",
-              "value" : "udp"
-            }
-          ],
-          "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 240,
-            "column" : 8,
-            "source_fragment" : "hdr.inner_udp = hdr.udp"
-          }
-        },
-        {
-          "op" : "add_header",
-          "parameters" : [
-            {
-              "type" : "header",
-              "value" : "udp"
-            }
-          ],
-          "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 241,
-            "column" : 8,
-            "source_fragment" : "hdr.udp.setValid()"
-          }
-        },
-        {
-          "op" : "add_header",
-          "parameters" : [
-            {
-              "type" : "header",
-              "value" : "gtp_common"
-            }
-          ],
-          "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 242,
-            "column" : 8,
-            "source_fragment" : "hdr.gtp_common.setValid()"
-          }
-        },
-        {
-          "op" : "add_header",
-          "parameters" : [
-            {
-              "type" : "header",
-              "value" : "gtp_teid"
-            }
-          ],
-          "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 243,
-            "column" : 8,
-            "source_fragment" : "hdr.gtp_teid.setValid()"
-          }
-        },
-        {
           "op" : "assign",
           "parameters" : [
             {
               "type" : "field",
-              "value" : ["udp", "srcPort"]
-            },
-            {
-              "type" : "hexstr",
-              "value" : "0x0868"
-            }
-          ],
-          "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 24,
-            "column" : 29,
-            "source_fragment" : "2152; ..."
-          }
-        },
-        {
-          "op" : "assign",
-          "parameters" : [
-            {
-              "type" : "field",
-              "value" : ["udp", "dstPort"]
-            },
-            {
-              "type" : "hexstr",
-              "value" : "0x0868"
-            }
-          ],
-          "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 24,
-            "column" : 29,
-            "source_fragment" : "2152; ..."
-          }
-        },
-        {
-          "op" : "assign",
-          "parameters" : [
-            {
-              "type" : "field",
-              "value" : ["udp", "checksum"]
-            },
-            {
-              "type" : "hexstr",
-              "value" : "0x0000"
-            }
-          ],
-          "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 246,
-            "column" : 8,
-            "source_fragment" : "hdr.udp.checksum = 0"
-          }
-        },
-        {
-          "op" : "assign",
-          "parameters" : [
-            {
-              "type" : "field",
-              "value" : ["udp", "plength"]
-            },
-            {
-              "type" : "expression",
-              "value" : {
-                "type" : "expression",
-                "value" : {
-                  "op" : "&",
-                  "left" : {
-                    "type" : "expression",
-                    "value" : {
-                      "op" : "+",
-                      "left" : {
-                        "type" : "field",
-                        "value" : ["ipv4", "totalLen"]
-                      },
-                      "right" : {
-                        "type" : "hexstr",
-                        "value" : "0x0008"
-                      }
-                    }
-                  },
-                  "right" : {
-                    "type" : "hexstr",
-                    "value" : "0xffff"
-                  }
-                }
-              }
-            }
-          ],
-          "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 247,
-            "column" : 8,
-            "source_fragment" : "hdr.udp.plength = hdr.ipv4.totalLen + 8"
-          }
-        },
-        {
-          "op" : "assign",
-          "parameters" : [
-            {
-              "type" : "field",
-              "value" : ["gtp_teid", "teid"]
+              "value" : ["standard_metadata", "egress_port"]
             },
             {
               "type" : "runtime_data",
@@ -776,405 +432,9 @@
           ],
           "source_info" : {
             "filename" : "gtp.p4",
-            "line" : 248,
+            "line" : 163,
             "column" : 8,
-            "source_fragment" : "hdr.gtp_teid.teid = teid"
-          }
-        },
-        {
-          "op" : "assign",
-          "parameters" : [
-            {
-              "type" : "field",
-              "value" : ["gtp_common", "version"]
-            },
-            {
-              "type" : "hexstr",
-              "value" : "0x01"
-            }
-          ],
-          "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 249,
-            "column" : 8,
-            "source_fragment" : "hdr.gtp_common.version = 1"
-          }
-        },
-        {
-          "op" : "assign",
-          "parameters" : [
-            {
-              "type" : "field",
-              "value" : ["gtp_common", "pFlag"]
-            },
-            {
-              "type" : "hexstr",
-              "value" : "0x01"
-            }
-          ],
-          "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 250,
-            "column" : 8,
-            "source_fragment" : "hdr.gtp_common.pFlag = 1"
-          }
-        },
-        {
-          "op" : "assign",
-          "parameters" : [
-            {
-              "type" : "field",
-              "value" : ["gtp_common", "messageType"]
-            },
-            {
-              "type" : "hexstr",
-              "value" : "0xff"
-            }
-          ],
-          "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 251,
-            "column" : 8,
-            "source_fragment" : "hdr.gtp_common.messageType = 255"
-          }
-        },
-        {
-          "op" : "assign",
-          "parameters" : [
-            {
-              "type" : "field",
-              "value" : ["gtp_common", "messageLength"]
-            },
-            {
-              "type" : "expression",
-              "value" : {
-                "type" : "expression",
-                "value" : {
-                  "op" : "&",
-                  "left" : {
-                    "type" : "expression",
-                    "value" : {
-                      "op" : "+",
-                      "left" : {
-                        "type" : "field",
-                        "value" : ["ipv4", "totalLen"]
-                      },
-                      "right" : {
-                        "type" : "hexstr",
-                        "value" : "0x0008"
-                      }
-                    }
-                  },
-                  "right" : {
-                    "type" : "hexstr",
-                    "value" : "0xffff"
-                  }
-                }
-              }
-            }
-          ],
-          "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 252,
-            "column" : 8,
-            "source_fragment" : "hdr.gtp_common.messageLength = hdr.ipv4.totalLen + 8"
-          }
-        },
-        {
-          "op" : "assign",
-          "parameters" : [
-            {
-              "type" : "field",
-              "value" : ["ipv4", "srcAddr"]
-            },
-            {
-              "type" : "hexstr",
-              "value" : "0x0a000001"
-            }
-          ],
-          "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 27,
-            "column" : 22,
-            "source_fragment" : "0x0A000001; // 10.0.0.1 ..."
-          }
-        },
-        {
-          "op" : "assign",
-          "parameters" : [
-            {
-              "type" : "field",
-              "value" : ["ipv4", "dstAddr"]
-            },
-            {
-              "type" : "runtime_data",
-              "value" : 1
-            }
-          ],
-          "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 254,
-            "column" : 8,
-            "source_fragment" : "hdr.ipv4.dstAddr = ip"
-          }
-        },
-        {
-          "op" : "assign",
-          "parameters" : [
-            {
-              "type" : "field",
-              "value" : ["ipv4", "protocol"]
-            },
-            {
-              "type" : "hexstr",
-              "value" : "0x11"
-            }
-          ],
-          "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 23,
-            "column" : 27,
-            "source_fragment" : "0x11; ..."
-          }
-        },
-        {
-          "op" : "assign",
-          "parameters" : [
-            {
-              "type" : "field",
-              "value" : ["ipv4", "ttl"]
-            },
-            {
-              "type" : "hexstr",
-              "value" : "0xff"
-            }
-          ],
-          "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 256,
-            "column" : 8,
-            "source_fragment" : "hdr.ipv4.ttl = 255"
-          }
-        },
-        {
-          "op" : "assign",
-          "parameters" : [
-            {
-              "type" : "field",
-              "value" : ["ipv4", "totalLen"]
-            },
-            {
-              "type" : "expression",
-              "value" : {
-                "type" : "expression",
-                "value" : {
-                  "op" : "&",
-                  "left" : {
-                    "type" : "expression",
-                    "value" : {
-                      "op" : "+",
-                      "left" : {
-                        "type" : "expression",
-                        "value" : {
-                          "op" : "&",
-                          "left" : {
-                            "type" : "expression",
-                            "value" : {
-                              "op" : "+",
-                              "left" : {
-                                "type" : "field",
-                                "value" : ["ipv4", "totalLen"]
-                              },
-                              "right" : {
-                                "type" : "hexstr",
-                                "value" : "0x0008"
-                              }
-                            }
-                          },
-                          "right" : {
-                            "type" : "hexstr",
-                            "value" : "0xffff"
-                          }
-                        }
-                      },
-                      "right" : {
-                        "type" : "hexstr",
-                        "value" : "0x001c"
-                      }
-                    }
-                  },
-                  "right" : {
-                    "type" : "hexstr",
-                    "value" : "0xffff"
-                  }
-                }
-              }
-            }
-          ],
-          "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 257,
-            "column" : 8,
-            "source_fragment" : "hdr.ipv4.totalLen = hdr.udp.plength + 28"
-          }
-        },
-        {
-          "op" : "assign",
-          "parameters" : [
-            {
-              "type" : "field",
-              "value" : ["scalars", "userMetadata._gtp_metadata_teid0"]
-            },
-            {
-              "type" : "runtime_data",
-              "value" : 0
-            }
-          ],
-          "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 258,
-            "column" : 8,
-            "source_fragment" : "meta.gtp_metadata.teid = teid"
-          }
-        }
-      ]
-    },
-    {
-      "name" : "MyIngress.gtp_decapsulate",
-      "id" : 6,
-      "runtime_data" : [],
-      "primitives" : [
-        {
-          "op" : "assign_header",
-          "parameters" : [
-            {
-              "type" : "header",
-              "value" : "ipv4"
-            },
-            {
-              "type" : "header",
-              "value" : "inner_ipv4"
-            }
-          ],
-          "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 262,
-            "column" : 8,
-            "source_fragment" : "hdr.ipv4 = hdr.inner_ipv4"
-          }
-        },
-        {
-          "op" : "assign",
-          "parameters" : [
-            {
-              "type" : "field",
-              "value" : ["scalars", "userMetadata._gtp_metadata_teid0"]
-            },
-            {
-              "type" : "field",
-              "value" : ["gtp_teid", "teid"]
-            }
-          ],
-          "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 263,
-            "column" : 8,
-            "source_fragment" : "meta.gtp_metadata.teid = hdr.gtp_teid.teid"
-          }
-        },
-        {
-          "op" : "remove_header",
-          "parameters" : [
-            {
-              "type" : "header",
-              "value" : "udp"
-            }
-          ],
-          "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 264,
-            "column" : 8,
-            "source_fragment" : "hdr.udp.setInvalid()"
-          }
-        },
-        {
-          "op" : "remove_header",
-          "parameters" : [
-            {
-              "type" : "header",
-              "value" : "gtp_common"
-            }
-          ],
-          "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 265,
-            "column" : 8,
-            "source_fragment" : "hdr.gtp_common.setInvalid()"
-          }
-        },
-        {
-          "op" : "remove_header",
-          "parameters" : [
-            {
-              "type" : "header",
-              "value" : "gtp_teid"
-            }
-          ],
-          "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 266,
-            "column" : 8,
-            "source_fragment" : "hdr.gtp_teid.setInvalid()"
-          }
-        },
-        {
-          "op" : "remove_header",
-          "parameters" : [
-            {
-              "type" : "header",
-              "value" : "inner_ipv4"
-            }
-          ],
-          "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 267,
-            "column" : 8,
-            "source_fragment" : "hdr.inner_ipv4.setInvalid()"
-          }
-        }
-      ]
-    },
-    {
-      "name" : "MyIngress.apply_meter",
-      "id" : 7,
-      "runtime_data" : [
-        {
-          "name" : "mid",
-          "bitwidth" : 32
-        }
-      ],
-      "primitives" : [
-        {
-          "op" : "execute_meter",
-          "parameters" : [
-            {
-              "type" : "meter_array",
-              "value" : "MyIngress.teid_meters"
-            },
-            {
-              "type" : "runtime_data",
-              "value" : 0
-            },
-            {
-              "type" : "field",
-              "value" : ["scalars", "userMetadata._gtp_metadata_color1"]
-            }
-          ],
-          "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 277,
-            "column" : 8,
-            "source_fragment" : "teid_meters.execute_meter(mid, meta.gtp_metadata.color )"
+            "source_fragment" : "standard_metadata.egress_port = port"
           }
         }
       ]
@@ -1186,126 +446,44 @@
       "id" : 0,
       "source_info" : {
         "filename" : "gtp.p4",
-        "line" : 218,
+        "line" : 154,
         "column" : 8,
         "source_fragment" : "MyIngress"
       },
-      "init_table" : "node_2",
+      "init_table" : "MyIngress.packet_forward",
       "tables" : [
         {
-          "name" : "MyIngress.ue_selector",
+          "name" : "MyIngress.packet_forward",
           "id" : 0,
           "source_info" : {
             "filename" : "gtp.p4",
-            "line" : 305,
-            "column" : 10,
-            "source_fragment" : "ue_selector"
-          },
-          "key" : [
-            {
-              "match_type" : "lpm",
-              "name" : "hdr.ipv4.dstAddr",
-              "target" : ["ipv4", "dstAddr"],
-              "mask" : null
-            },
-            {
-              "match_type" : "ternary",
-              "name" : "hdr.udp.dstPort",
-              "target" : ["udp", "dstPort"],
-              "mask" : null
-            }
-          ],
-          "match_type" : "ternary",
-          "type" : "simple",
-          "max_size" : 10000,
-          "with_counters" : false,
-          "support_timeout" : false,
-          "direct_meters" : null,
-          "action_ids" : [2, 5, 6],
-          "actions" : ["MyIngress.drop", "MyIngress.gtp_encapsulate", "MyIngress.gtp_decapsulate"],
-          "base_default_next" : "MyIngress.teid_rate_limiter",
-          "next_tables" : {
-            "MyIngress.drop" : "MyIngress.teid_rate_limiter",
-            "MyIngress.gtp_encapsulate" : "MyIngress.teid_rate_limiter",
-            "MyIngress.gtp_decapsulate" : "MyIngress.teid_rate_limiter"
-          },
-          "default_entry" : {
-            "action_id" : 2,
-            "action_const" : false,
-            "action_data" : [],
-            "action_entry_const" : false
-          }
-        },
-        {
-          "name" : "MyIngress.teid_rate_limiter",
-          "id" : 1,
-          "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 315,
-            "column" : 10,
-            "source_fragment" : "teid_rate_limiter"
+            "line" : 167,
+            "column" : 9,
+            "source_fragment" : "packet_forward"
           },
           "key" : [
             {
               "match_type" : "exact",
-              "name" : "meta.gtp_metadata.teid",
-              "target" : ["scalars", "userMetadata._gtp_metadata_teid0"],
+              "name" : "standard_metadata.ingress_port",
+              "target" : ["standard_metadata", "ingress_port"],
               "mask" : null
             }
           ],
           "match_type" : "exact",
           "type" : "simple",
-          "max_size" : 256,
+          "max_size" : 64,
           "with_counters" : false,
           "support_timeout" : false,
           "direct_meters" : null,
-          "action_ids" : [7, 0, 3],
-          "actions" : ["MyIngress.apply_meter", "NoAction", "MyIngress.drop"],
-          "base_default_next" : "MyIngress.m_filter",
-          "next_tables" : {
-            "MyIngress.apply_meter" : "MyIngress.m_filter",
-            "NoAction" : "MyIngress.m_filter",
-            "MyIngress.drop" : "MyIngress.m_filter"
-          },
-          "default_entry" : {
-            "action_id" : 3,
-            "action_const" : false,
-            "action_data" : [],
-            "action_entry_const" : false
-          }
-        },
-        {
-          "name" : "MyIngress.m_filter",
-          "id" : 2,
-          "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 324,
-            "column" : 10,
-            "source_fragment" : "m_filter"
-          },
-          "key" : [
-            {
-              "match_type" : "exact",
-              "name" : "meta.gtp_metadata.color",
-              "target" : ["scalars", "userMetadata._gtp_metadata_color1"],
-              "mask" : null
-            }
-          ],
-          "match_type" : "exact",
-          "type" : "simple",
-          "max_size" : 256,
-          "with_counters" : false,
-          "support_timeout" : false,
-          "direct_meters" : null,
-          "action_ids" : [4, 1],
-          "actions" : ["MyIngress.drop", "NoAction"],
+          "action_ids" : [1, 0],
+          "actions" : ["MyIngress.forward", "MyIngress.drop"],
           "base_default_next" : null,
           "next_tables" : {
-            "MyIngress.drop" : null,
-            "NoAction" : null
+            "MyIngress.forward" : null,
+            "MyIngress.drop" : null
           },
           "default_entry" : {
-            "action_id" : 1,
+            "action_id" : 0,
             "action_const" : false,
             "action_data" : [],
             "action_entry_const" : false
@@ -1313,38 +491,14 @@
         }
       ],
       "action_profiles" : [],
-      "conditionals" : [
-        {
-          "name" : "node_2",
-          "id" : 0,
-          "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 359,
-            "column" : 17,
-            "source_fragment" : "hdr.ipv4.isValid()"
-          },
-          "expression" : {
-            "type" : "expression",
-            "value" : {
-              "op" : "d2b",
-              "left" : null,
-              "right" : {
-                "type" : "field",
-                "value" : ["ipv4", "$valid$"]
-              }
-            }
-          },
-          "false_next" : null,
-          "true_next" : "MyIngress.ue_selector"
-        }
-      ]
+      "conditionals" : []
     },
     {
       "name" : "egress",
       "id" : 1,
       "source_info" : {
         "filename" : "gtp.p4",
-        "line" : 374,
+        "line" : 185,
         "column" : 8,
         "source_fragment" : "MyEgress"
       },
