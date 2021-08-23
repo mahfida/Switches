@@ -1,0 +1,2 @@
+table_add switch_port_srcIP port_forward 192.168.0.0/16 => 1
+table_add switch_port_dstIP port_forward 192.168.0.0/16 => 0
