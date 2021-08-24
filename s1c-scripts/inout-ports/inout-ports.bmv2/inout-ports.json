@@ -27,33 +27,6 @@
         ["priority", 3, false],
         ["_padding", 3, false]
       ]
-    },
-    {
-      "name" : "ethernet_t",
-      "id" : 2,
-      "fields" : [
-        ["dstAddr", 48, false],
-        ["srcAddr", 48, false],
-        ["etherType", 16, false]
-      ]
-    },
-    {
-      "name" : "ipv4_t",
-      "id" : 3,
-      "fields" : [
-        ["version", 4, false],
-        ["ihl", 4, false],
-        ["diffserv", 8, false],
-        ["totalLen", 16, false],
-        ["identification", 16, false],
-        ["flags", 3, false],
-        ["fragOffset", 13, false],
-        ["ttl", 8, false],
-        ["protocol", 8, false],
-        ["hdrChecksum", 16, false],
-        ["srcAddr", 32, false],
-        ["dstAddr", 32, false]
-      ]
     }
   ],
   "headers" : [
@@ -69,20 +42,6 @@
       "id" : 1,
       "header_type" : "standard_metadata",
       "metadata" : true,
-      "pi_omit" : true
-    },
-    {
-      "name" : "ethernet",
-      "id" : 2,
-      "header_type" : "ethernet_t",
-      "metadata" : false,
-      "pi_omit" : true
-    },
-    {
-      "name" : "ipv4",
-      "id" : 3,
-      "header_type" : "ipv4_t",
-      "metadata" : false,
       "pi_omit" : true
     }
   ],
@@ -110,52 +69,7 @@
         {
           "name" : "start",
           "id" : 0,
-          "parser_ops" : [
-            {
-              "parameters" : [
-                {
-                  "type" : "regular",
-                  "value" : "ethernet"
-                }
-              ],
-              "op" : "extract"
-            }
-          ],
-          "transitions" : [
-            {
-              "type" : "hexstr",
-              "value" : "0x0800",
-              "mask" : null,
-              "next_state" : "parse_ipv4"
-            },
-            {
-              "type" : "default",
-              "value" : null,
-              "mask" : null,
-              "next_state" : null
-            }
-          ],
-          "transition_key" : [
-            {
-              "type" : "field",
-              "value" : ["ethernet", "etherType"]
-            }
-          ]
-        },
-        {
-          "name" : "parse_ipv4",
-          "id" : 1,
-          "parser_ops" : [
-            {
-              "parameters" : [
-                {
-                  "type" : "regular",
-                  "value" : "ipv4"
-                }
-              ],
-              "op" : "extract"
-            }
-          ],
+          "parser_ops" : [],
           "transitions" : [
             {
               "type" : "default",
@@ -175,12 +89,12 @@
       "name" : "deparser",
       "id" : 0,
       "source_info" : {
-        "filename" : "filterIPs.p4",
-        "line" : 152,
+        "filename" : "inout-ports.p4",
+        "line" : 98,
         "column" : 8,
         "source_fragment" : "MyDeparser"
       },
-      "order" : ["ethernet", "ipv4"],
+      "order" : [],
       "primitives" : []
     }
   ],
@@ -197,10 +111,26 @@
       "primitives" : []
     },
     {
-      "name" : "NoAction",
+      "name" : "MyIngress.drop",
       "id" : 1,
       "runtime_data" : [],
-      "primitives" : []
+      "primitives" : [
+        {
+          "op" : "mark_to_drop",
+          "parameters" : [
+            {
+              "type" : "header",
+              "value" : "standard_metadata"
+            }
+          ],
+          "source_info" : {
+            "filename" : "inout-ports.p4",
+            "line" : 48,
+            "column" : 8,
+            "source_fragment" : "mark_to_drop(standard_metadata)"
+          }
+        }
+      ]
     },
     {
       "name" : "MyIngress.port_forward",
@@ -225,39 +155,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "filterIPs.p4",
-            "line" : 94,
-            "column" : 8,
-            "source_fragment" : "standard_metadata.egress_spec = port"
-          }
-        }
-      ]
-    },
-    {
-      "name" : "MyIngress.port_forward",
-      "id" : 3,
-      "runtime_data" : [
-        {
-          "name" : "port",
-          "bitwidth" : 9
-        }
-      ],
-      "primitives" : [
-        {
-          "op" : "assign",
-          "parameters" : [
-            {
-              "type" : "field",
-              "value" : ["standard_metadata", "egress_spec"]
-            },
-            {
-              "type" : "runtime_data",
-              "value" : 0
-            }
-          ],
-          "source_info" : {
-            "filename" : "filterIPs.p4",
-            "line" : 94,
+            "filename" : "inout-ports.p4",
+            "line" : 52,
             "column" : 8,
             "source_fragment" : "standard_metadata.egress_spec = port"
           }
@@ -270,27 +169,27 @@
       "name" : "ingress",
       "id" : 0,
       "source_info" : {
-        "filename" : "filterIPs.p4",
-        "line" : 86,
+        "filename" : "inout-ports.p4",
+        "line" : 44,
         "column" : 8,
         "source_fragment" : "MyIngress"
       },
-      "init_table" : "MyIngress.switch_port_srcIP",
+      "init_table" : "MyIngress.switch_port",
       "tables" : [
         {
-          "name" : "MyIngress.switch_port_srcIP",
+          "name" : "MyIngress.switch_port",
           "id" : 0,
           "source_info" : {
-            "filename" : "filterIPs.p4",
-            "line" : 97,
+            "filename" : "inout-ports.p4",
+            "line" : 55,
             "column" : 10,
-            "source_fragment" : "switch_port_srcIP"
+            "source_fragment" : "switch_port"
           },
           "key" : [
             {
               "match_type" : "exact",
-              "name" : "hdr.ipv4.srcAddr",
-              "target" : ["ipv4", "srcAddr"],
+              "name" : "standard_metadata.ingress_port",
+              "target" : ["standard_metadata", "ingress_port"],
               "mask" : null
             }
           ],
@@ -300,48 +199,12 @@
           "with_counters" : false,
           "support_timeout" : false,
           "direct_meters" : null,
-          "action_ids" : [2, 0],
-          "actions" : ["MyIngress.port_forward", "NoAction"],
-          "base_default_next" : "MyIngress.switch_port_dstIP",
-          "next_tables" : {
-            "MyIngress.port_forward" : "MyIngress.switch_port_dstIP",
-            "NoAction" : "MyIngress.switch_port_dstIP"
-          },
-          "default_entry" : {
-            "action_id" : 0,
-            "action_const" : false,
-            "action_data" : [],
-            "action_entry_const" : false
-          }
-        },
-        {
-          "name" : "MyIngress.switch_port_dstIP",
-          "id" : 1,
-          "source_info" : {
-            "filename" : "filterIPs.p4",
-            "line" : 109,
-            "column" : 10,
-            "source_fragment" : "switch_port_dstIP"
-          },
-          "key" : [
-            {
-              "match_type" : "exact",
-              "name" : "hdr.ipv4.dstAddr",
-              "target" : ["ipv4", "dstAddr"],
-              "mask" : null
-            }
-          ],
-          "match_type" : "exact",
-          "type" : "simple",
-          "max_size" : 1024,
-          "with_counters" : false,
-          "support_timeout" : false,
-          "direct_meters" : null,
-          "action_ids" : [3, 1],
-          "actions" : ["MyIngress.port_forward", "NoAction"],
+          "action_ids" : [2, 1, 0],
+          "actions" : ["MyIngress.port_forward", "MyIngress.drop", "NoAction"],
           "base_default_next" : null,
           "next_tables" : {
             "MyIngress.port_forward" : null,
+            "MyIngress.drop" : null,
             "NoAction" : null
           },
           "default_entry" : {
@@ -359,8 +222,8 @@
       "name" : "egress",
       "id" : 1,
       "source_info" : {
-        "filename" : "filterIPs.p4",
-        "line" : 132,
+        "filename" : "inout-ports.p4",
+        "line" : 78,
         "column" : 8,
         "source_fragment" : "MyEgress"
       },
@@ -411,7 +274,7 @@
       ["standard_metadata", "priority"]
     ]
   ],
-  "program" : "filterIPs.bmv2/filterIPs.p4i",
+  "program" : "inout-ports.bmv2/inout-ports.p4i",
   "__meta__" : {
     "version" : [2, 23],
     "compiler" : "https://github.com/p4lang/p4c"
