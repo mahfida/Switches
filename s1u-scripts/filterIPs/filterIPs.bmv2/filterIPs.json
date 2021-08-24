@@ -288,13 +288,13 @@
           },
           "key" : [
             {
-              "match_type" : "lpm",
+              "match_type" : "exact",
               "name" : "hdr.ipv4.srcAddr",
               "target" : ["ipv4", "srcAddr"],
               "mask" : null
             }
           ],
-          "match_type" : "lpm",
+          "match_type" : "exact",
           "type" : "simple",
           "max_size" : 1024,
           "with_counters" : false,
@@ -325,13 +325,13 @@
           },
           "key" : [
             {
-              "match_type" : "lpm",
+              "match_type" : "exact",
               "name" : "hdr.ipv4.dstAddr",
               "target" : ["ipv4", "dstAddr"],
               "mask" : null
             }
           ],
-          "match_type" : "lpm",
+          "match_type" : "exact",
           "type" : "simple",
           "max_size" : 1024,
           "with_counters" : false,

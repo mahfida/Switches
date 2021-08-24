@@ -96,7 +96,7 @@ control MyIngress(inout headers hdr,
     
     table switch_port_srcIP {
         key = {
-             hdr.ipv4.srcAddr: lpm;
+             hdr.ipv4.srcAddr: exact;
         }
         actions = {
             port_forward;
@@ -108,7 +108,7 @@ control MyIngress(inout headers hdr,
 
     table switch_port_dstIP {
         key = {
-             hdr.ipv4.dstAddr: lpm;
+             hdr.ipv4.dstAddr: exact;
         }
         actions = {
             port_forward;
