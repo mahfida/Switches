@@ -275,7 +275,7 @@
         "column" : 8,
         "source_fragment" : "MyIngress"
       },
-      "init_table" : "MyIngress.switch_port_srcIP",
+      "init_table" : "node_2",
       "tables" : [
         {
           "name" : "MyIngress.switch_port_srcIP",
@@ -302,10 +302,10 @@
           "direct_meters" : null,
           "action_ids" : [2, 0],
           "actions" : ["MyIngress.port_forward", "NoAction"],
-          "base_default_next" : "MyIngress.switch_port_dstIP",
+          "base_default_next" : null,
           "next_tables" : {
-            "MyIngress.port_forward" : "MyIngress.switch_port_dstIP",
-            "NoAction" : "MyIngress.switch_port_dstIP"
+            "MyIngress.port_forward" : null,
+            "NoAction" : null
           },
           "default_entry" : {
             "action_id" : 0,
@@ -353,7 +353,34 @@
         }
       ],
       "action_profiles" : [],
-      "conditionals" : []
+      "conditionals" : [
+        {
+          "name" : "node_2",
+          "id" : 0,
+          "source_info" : {
+            "filename" : "filterIPs.p4",
+            "line" : 121,
+            "column" : 14,
+            "source_fragment" : "standard_metadata.ingress_port == 0"
+          },
+          "expression" : {
+            "type" : "expression",
+            "value" : {
+              "op" : "==",
+              "left" : {
+                "type" : "field",
+                "value" : ["standard_metadata", "ingress_port"]
+              },
+              "right" : {
+                "type" : "hexstr",
+                "value" : "0x0000"
+              }
+            }
+          },
+          "true_next" : "MyIngress.switch_port_srcIP",
+          "false_next" : "MyIngress.switch_port_dstIP"
+        }
+      ]
     },
     {
       "name" : "egress",

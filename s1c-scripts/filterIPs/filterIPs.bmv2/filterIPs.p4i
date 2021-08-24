@@ -984,9 +984,11 @@ control MyIngress(inout headers hdr,
     }
 
 
-    apply {
-            switch_port_srcIP.apply();
-            switch_port_dstIP.apply();
+ apply {
+    if(standard_metadata.ingress_port == 0){
+            switch_port_srcIP.apply();}
+          else{
+            switch_port_dstIP.apply();}
         }
 }
 
