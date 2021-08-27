@@ -1113,23 +1113,49 @@ control MyIngress(inout headers hdr,
         mark_to_drop(standard_metadata);
     }
 
-    action forward(port_id_t port) {
-        standard_metadata.egress_port = port;
-    }
-
-
-   table packet_forward {
-        key = {
-            standard_metadata.ingress_port : exact;
+   table drop_packet{
+        actions = {
+            drop;
         }
-        actions = {forward; drop; }
-        size = 64;
-        default_action = drop;
+        default_action = drop();
     }
 
-    apply {
-           packet_forward.apply();
-      }
+   apply {
+ //ONLY ALLOW  PACKETS WITH  CERTAIN  MAC ADDRESSES
+        if(hdr.ethernet.dstAddr == 0xffffffffffff)
+                {
+                if(hdr.ethernet.srcAddr == 0x5254002cc5f9)
+                        {
+                                if(standard_metadata.ingress_port==1)
+                                {
+                                        standard_metadata.egress_spec =0;
+                         }
+                        }
+                else if(hdr.ethernet.srcAddr == 0xfa163e4c8769)
+                        {
+                         if(standard_metadata.ingress_port==0)
+                                {
+                                standard_metadata.egress_spec =1;
+    }
+                        }
+                 else {
+                        drop_packet.apply();
+                        }
+                }
+
+        else {
+                if(hdr.ethernet.dstAddr == 0x5254002cc5f9)
+                        {
+                                standard_metadata.egress_spec =1-standard_metadata.ingress_port;
+                        }
+                else if(hdr.ethernet.dstAddr == 0xfa163e4c8769){
+                                standard_metadata.egress_spec =1-standard_metadata.ingress_port;
+                        }
+                 else {
+                        drop_packet.apply();
+                        }
+            }
+        }
 }
 
 /*************************************************************************

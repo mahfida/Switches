@@ -404,7 +404,7 @@
       "id" : 0,
       "source_info" : {
         "filename" : "packet_loss.p4",
-        "line" : 250,
+        "line" : 276,
         "column" : 8,
         "source_fragment" : "MyDeparser"
       },
@@ -503,7 +503,7 @@
       "id" : 3,
       "source_info" : {
         "filename" : "packet_loss.p4",
-        "line" : 227,
+        "line" : 253,
         "column" : 1,
         "source_fragment" : "update_checksum( ..."
       },
@@ -581,39 +581,158 @@
       ]
     },
     {
-      "name" : "MyIngress.forward",
+      "name" : "packet_loss163",
       "id" : 1,
-      "runtime_data" : [
-        {
-          "name" : "port",
-          "bitwidth" : 9
-        }
-      ],
+      "runtime_data" : [],
       "primitives" : [
         {
           "op" : "assign",
           "parameters" : [
             {
               "type" : "field",
-              "value" : ["standard_metadata", "egress_port"]
+              "value" : ["standard_metadata", "egress_spec"]
             },
             {
-              "type" : "runtime_data",
-              "value" : 0
+              "type" : "hexstr",
+              "value" : "0x0000"
             }
           ],
           "source_info" : {
             "filename" : "packet_loss.p4",
-            "line" : 149,
-            "column" : 8,
-            "source_fragment" : "standard_metadata.egress_port = port"
+            "line" : 163,
+            "column" : 40,
+            "source_fragment" : "standard_metadata.egress_spec =0"
+          }
+        }
+      ]
+    },
+    {
+      "name" : "packet_loss170",
+      "id" : 2,
+      "runtime_data" : [],
+      "primitives" : [
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["standard_metadata", "egress_spec"]
+            },
+            {
+              "type" : "hexstr",
+              "value" : "0x0001"
+            }
+          ],
+          "source_info" : {
+            "filename" : "packet_loss.p4",
+            "line" : 170,
+            "column" : 32,
+            "source_fragment" : "standard_metadata.egress_spec =1"
+          }
+        }
+      ]
+    },
+    {
+      "name" : "packet_loss181",
+      "id" : 3,
+      "runtime_data" : [],
+      "primitives" : [
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["standard_metadata", "egress_spec"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "&",
+                  "left" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "-",
+                      "left" : {
+                        "type" : "hexstr",
+                        "value" : "0x0001"
+                      },
+                      "right" : {
+                        "type" : "field",
+                        "value" : ["standard_metadata", "ingress_port"]
+                      }
+                    }
+                  },
+                  "right" : {
+                    "type" : "hexstr",
+                    "value" : "0x01ff"
+                  }
+                }
+              }
+            }
+          ],
+          "source_info" : {
+            "filename" : "packet_loss.p4",
+            "line" : 181,
+            "column" : 32,
+            "source_fragment" : "standard_metadata.egress_spec =1-standard_metadata.ingress_port"
+          }
+        }
+      ]
+    },
+    {
+      "name" : "packet_loss184",
+      "id" : 4,
+      "runtime_data" : [],
+      "primitives" : [
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["standard_metadata", "egress_spec"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "&",
+                  "left" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "-",
+                      "left" : {
+                        "type" : "hexstr",
+                        "value" : "0x0001"
+                      },
+                      "right" : {
+                        "type" : "field",
+                        "value" : ["standard_metadata", "ingress_port"]
+                      }
+                    }
+                  },
+                  "right" : {
+                    "type" : "hexstr",
+                    "value" : "0x01ff"
+                  }
+                }
+              }
+            }
+          ],
+          "source_info" : {
+            "filename" : "packet_loss.p4",
+            "line" : 184,
+            "column" : 32,
+            "source_fragment" : "standard_metadata.egress_spec =1-standard_metadata.ingress_port"
           }
         }
       ]
     },
     {
       "name" : "MyEgress.compute_flowid",
-      "id" : 2,
+      "id" : 5,
       "runtime_data" : [],
       "primitives" : [
         {
@@ -673,7 +792,7 @@
           ],
           "source_info" : {
             "filename" : "packet_loss.p4",
-            "line" : 177,
+            "line" : 203,
             "column" : 4,
             "source_fragment" : "meta.flowid[31:0] = hdr.ipv4.srcAddr"
           }
@@ -755,7 +874,7 @@
           ],
           "source_info" : {
             "filename" : "packet_loss.p4",
-            "line" : 178,
+            "line" : 204,
             "column" : 1,
             "source_fragment" : "meta.flowid[63:32] = hdr.ipv4.dstAddr"
           }
@@ -837,7 +956,7 @@
           ],
           "source_info" : {
             "filename" : "packet_loss.p4",
-            "line" : 179,
+            "line" : 205,
             "column" : 1,
             "source_fragment" : "meta.flowid[71:64] = hdr.ipv4.protocol"
           }
@@ -846,7 +965,7 @@
     },
     {
       "name" : "MyEgress.compute_index",
-      "id" : 3,
+      "id" : 6,
       "runtime_data" : [],
       "primitives" : [
         {
@@ -863,7 +982,7 @@
           ],
           "source_info" : {
             "filename" : "packet_loss.p4",
-            "line" : 182,
+            "line" : 208,
             "column" : 47,
             "source_fragment" : "meta.flowid"
           }
@@ -882,7 +1001,7 @@
           ],
           "source_info" : {
             "filename" : "packet_loss.p4",
-            "line" : 182,
+            "line" : 208,
             "column" : 60,
             "source_fragment" : "10w33"
           }
@@ -909,7 +1028,7 @@
           ],
           "source_info" : {
             "filename" : "packet_loss.p4",
-            "line" : 182,
+            "line" : 208,
             "column" : 1,
             "source_fragment" : "hash(meta.index1, HashAlgorithm.crc16, 10w0, {meta.flowid, 10w33}, 10w1023)"
           }
@@ -928,7 +1047,7 @@
           ],
           "source_info" : {
             "filename" : "packet_loss.p4",
-            "line" : 183,
+            "line" : 209,
             "column" : 47,
             "source_fragment" : "meta.flowid"
           }
@@ -947,7 +1066,7 @@
           ],
           "source_info" : {
             "filename" : "packet_loss.p4",
-            "line" : 183,
+            "line" : 209,
             "column" : 60,
             "source_fragment" : "10w202"
           }
@@ -974,7 +1093,7 @@
           ],
           "source_info" : {
             "filename" : "packet_loss.p4",
-            "line" : 183,
+            "line" : 209,
             "column" : 1,
             "source_fragment" : "hash(meta.index2, HashAlgorithm.crc16, 10w0, {meta.flowid, 10w202}, 10w1023)"
           }
@@ -993,7 +1112,7 @@
           ],
           "source_info" : {
             "filename" : "packet_loss.p4",
-            "line" : 184,
+            "line" : 210,
             "column" : 47,
             "source_fragment" : "meta.flowid"
           }
@@ -1012,7 +1131,7 @@
           ],
           "source_info" : {
             "filename" : "packet_loss.p4",
-            "line" : 184,
+            "line" : 210,
             "column" : 60,
             "source_fragment" : "10w541"
           }
@@ -1039,7 +1158,7 @@
           ],
           "source_info" : {
             "filename" : "packet_loss.p4",
-            "line" : 184,
+            "line" : 210,
             "column" : 1,
             "source_fragment" : "hash(meta.index3, HashAlgorithm.crc16, 10w0, {meta.flowid, 10w541}, 10w1023)"
           }
@@ -1048,7 +1167,7 @@
     },
     {
       "name" : "MyEgress.increment_count",
-      "id" : 4,
+      "id" : 7,
       "runtime_data" : [],
       "primitives" : [
         {
@@ -1069,7 +1188,7 @@
           ],
           "source_info" : {
             "filename" : "packet_loss.p4",
-            "line" : 187,
+            "line" : 213,
             "column" : 1,
             "source_fragment" : "hashtable1.read(meta.count1, meta.index1)"
           }
@@ -1092,7 +1211,7 @@
           ],
           "source_info" : {
             "filename" : "packet_loss.p4",
-            "line" : 188,
+            "line" : 214,
             "column" : 1,
             "source_fragment" : "hashtable2.read(meta.count2, meta.index2)"
           }
@@ -1115,7 +1234,7 @@
           ],
           "source_info" : {
             "filename" : "packet_loss.p4",
-            "line" : 189,
+            "line" : 215,
             "column" : 1,
             "source_fragment" : "hashtable3.read(meta.count3, meta.index3)"
           }
@@ -1157,7 +1276,7 @@
           ],
           "source_info" : {
             "filename" : "packet_loss.p4",
-            "line" : 191,
+            "line" : 217,
             "column" : 31,
             "source_fragment" : "meta.count1 + 1"
           }
@@ -1180,7 +1299,7 @@
           ],
           "source_info" : {
             "filename" : "packet_loss.p4",
-            "line" : 191,
+            "line" : 217,
             "column" : 1,
             "source_fragment" : "hashtable1.write(meta.index1, meta.count1 + 1)"
           }
@@ -1222,7 +1341,7 @@
           ],
           "source_info" : {
             "filename" : "packet_loss.p4",
-            "line" : 192,
+            "line" : 218,
             "column" : 31,
             "source_fragment" : "meta.count2 + 1"
           }
@@ -1245,7 +1364,7 @@
           ],
           "source_info" : {
             "filename" : "packet_loss.p4",
-            "line" : 192,
+            "line" : 218,
             "column" : 1,
             "source_fragment" : "hashtable2.write(meta.index2, meta.count2 + 1)"
           }
@@ -1287,7 +1406,7 @@
           ],
           "source_info" : {
             "filename" : "packet_loss.p4",
-            "line" : 193,
+            "line" : 219,
             "column" : 31,
             "source_fragment" : "meta.count3 + 1"
           }
@@ -1310,7 +1429,7 @@
           ],
           "source_info" : {
             "filename" : "packet_loss.p4",
-            "line" : 193,
+            "line" : 219,
             "column" : 1,
             "source_fragment" : "hashtable3.write(meta.index3, meta.count3 + 1)"
           }
@@ -1319,7 +1438,7 @@
     },
     {
       "name" : "MyEgress.compute_mincount",
-      "id" : 5,
+      "id" : 8,
       "runtime_data" : [],
       "primitives" : [
         {
@@ -1336,7 +1455,7 @@
           ],
           "source_info" : {
             "filename" : "packet_loss.p4",
-            "line" : 196,
+            "line" : 222,
             "column" : 6,
             "source_fragment" : "meta.min_count = cnt1; ..."
           }
@@ -1578,7 +1697,7 @@
           ],
           "source_info" : {
             "filename" : "packet_loss.p4",
-            "line" : 204,
+            "line" : 230,
             "column" : 1,
             "source_fragment" : "meta.num_lost_packets = hdr.swtraces.packet_count - meta.min_count"
           }
@@ -1620,7 +1739,7 @@
           ],
           "source_info" : {
             "filename" : "packet_loss.p4",
-            "line" : 205,
+            "line" : 231,
             "column" : 1,
             "source_fragment" : "hdr.ipv4.ihl = hdr.ipv4.ihl - 1 - 2"
           }
@@ -1662,7 +1781,7 @@
           ],
           "source_info" : {
             "filename" : "packet_loss.p4",
-            "line" : 206,
+            "line" : 232,
             "column" : 1,
             "source_fragment" : "hdr.ipv4.totalLen = hdr.ipv4.totalLen - 4 - 8"
           }
@@ -1670,8 +1789,8 @@
       ]
     },
     {
-      "name" : "packet_loss215",
-      "id" : 6,
+      "name" : "packet_loss241",
+      "id" : 9,
       "runtime_data" : [],
       "primitives" : [
         {
@@ -1688,7 +1807,7 @@
           ],
           "source_info" : {
             "filename" : "packet_loss.p4",
-            "line" : 215,
+            "line" : 241,
             "column" : 45,
             "source_fragment" : "  log_msg(\\\"flow id = {}, lost packets = {}\\\",{meta.flowid, meta.num_lost_packets});"
           }
@@ -1707,7 +1826,7 @@
           ],
           "source_info" : {
             "filename" : "packet_loss.p4",
-            "line" : 215,
+            "line" : 241,
             "column" : 58,
             "source_fragment" : "  log_msg(\\\"flow id = {}, lost packets = {}\\\",{meta.flowid, meta.num_lost_packets});"
           }
@@ -1735,7 +1854,7 @@
           ],
           "source_info" : {
             "filename" : "packet_loss.p4",
-            "line" : 215,
+            "line" : 241,
             "column" : 2,
             "source_fragment" : "  log_msg(\\\"flow id = {}, lost packets = {}\\\",{meta.flowid, meta.num_lost_packets});"
           }
@@ -1753,36 +1872,86 @@
         "column" : 8,
         "source_fragment" : "MyIngress"
       },
-      "init_table" : "MyIngress.packet_forward",
+      "init_table" : "node_2",
       "tables" : [
         {
-          "name" : "MyIngress.packet_forward",
+          "name" : "tbl_packet_loss163",
           "id" : 0,
           "source_info" : {
             "filename" : "packet_loss.p4",
-            "line" : 153,
-            "column" : 9,
-            "source_fragment" : "packet_forward"
+            "line" : 163,
+            "column" : 70,
+            "source_fragment" : "="
           },
-          "key" : [
-            {
-              "match_type" : "exact",
-              "name" : "standard_metadata.ingress_port",
-              "target" : ["standard_metadata", "ingress_port"],
-              "mask" : null
-            }
-          ],
+          "key" : [],
           "match_type" : "exact",
           "type" : "simple",
-          "max_size" : 64,
+          "max_size" : 1024,
           "with_counters" : false,
           "support_timeout" : false,
           "direct_meters" : null,
-          "action_ids" : [1, 0],
-          "actions" : ["MyIngress.forward", "MyIngress.drop"],
+          "action_ids" : [1],
+          "actions" : ["packet_loss163"],
           "base_default_next" : null,
           "next_tables" : {
-            "MyIngress.forward" : null,
+            "packet_loss163" : null
+          },
+          "default_entry" : {
+            "action_id" : 1,
+            "action_const" : true,
+            "action_data" : [],
+            "action_entry_const" : true
+          }
+        },
+        {
+          "name" : "tbl_packet_loss170",
+          "id" : 1,
+          "source_info" : {
+            "filename" : "packet_loss.p4",
+            "line" : 170,
+            "column" : 62,
+            "source_fragment" : "="
+          },
+          "key" : [],
+          "match_type" : "exact",
+          "type" : "simple",
+          "max_size" : 1024,
+          "with_counters" : false,
+          "support_timeout" : false,
+          "direct_meters" : null,
+          "action_ids" : [2],
+          "actions" : ["packet_loss170"],
+          "base_default_next" : null,
+          "next_tables" : {
+            "packet_loss170" : null
+          },
+          "default_entry" : {
+            "action_id" : 2,
+            "action_const" : true,
+            "action_data" : [],
+            "action_entry_const" : true
+          }
+        },
+        {
+          "name" : "MyIngress.drop_packet",
+          "id" : 2,
+          "source_info" : {
+            "filename" : "packet_loss.p4",
+            "line" : 148,
+            "column" : 9,
+            "source_fragment" : "drop_packet"
+          },
+          "key" : [],
+          "match_type" : "exact",
+          "type" : "simple",
+          "max_size" : 1024,
+          "with_counters" : false,
+          "support_timeout" : false,
+          "direct_meters" : null,
+          "action_ids" : [0],
+          "actions" : ["MyIngress.drop"],
+          "base_default_next" : null,
+          "next_tables" : {
             "MyIngress.drop" : null
           },
           "default_entry" : {
@@ -1791,28 +1960,269 @@
             "action_data" : [],
             "action_entry_const" : false
           }
+        },
+        {
+          "name" : "tbl_packet_loss181",
+          "id" : 3,
+          "source_info" : {
+            "filename" : "packet_loss.p4",
+            "line" : 181,
+            "column" : 62,
+            "source_fragment" : "="
+          },
+          "key" : [],
+          "match_type" : "exact",
+          "type" : "simple",
+          "max_size" : 1024,
+          "with_counters" : false,
+          "support_timeout" : false,
+          "direct_meters" : null,
+          "action_ids" : [3],
+          "actions" : ["packet_loss181"],
+          "base_default_next" : null,
+          "next_tables" : {
+            "packet_loss181" : null
+          },
+          "default_entry" : {
+            "action_id" : 3,
+            "action_const" : true,
+            "action_data" : [],
+            "action_entry_const" : true
+          }
+        },
+        {
+          "name" : "tbl_packet_loss184",
+          "id" : 4,
+          "source_info" : {
+            "filename" : "packet_loss.p4",
+            "line" : 184,
+            "column" : 62,
+            "source_fragment" : "="
+          },
+          "key" : [],
+          "match_type" : "exact",
+          "type" : "simple",
+          "max_size" : 1024,
+          "with_counters" : false,
+          "support_timeout" : false,
+          "direct_meters" : null,
+          "action_ids" : [4],
+          "actions" : ["packet_loss184"],
+          "base_default_next" : null,
+          "next_tables" : {
+            "packet_loss184" : null
+          },
+          "default_entry" : {
+            "action_id" : 4,
+            "action_const" : true,
+            "action_data" : [],
+            "action_entry_const" : true
+          }
         }
       ],
       "action_profiles" : [],
-      "conditionals" : []
+      "conditionals" : [
+        {
+          "name" : "node_2",
+          "id" : 0,
+          "source_info" : {
+            "filename" : "packet_loss.p4",
+            "line" : 157,
+            "column" : 11,
+            "source_fragment" : "hdr.ethernet.dstAddr == 0xffffffffffff"
+          },
+          "expression" : {
+            "type" : "expression",
+            "value" : {
+              "op" : "==",
+              "left" : {
+                "type" : "field",
+                "value" : ["ethernet", "dstAddr"]
+              },
+              "right" : {
+                "type" : "hexstr",
+                "value" : "0xffffffffffff"
+              }
+            }
+          },
+          "true_next" : "node_3",
+          "false_next" : "node_10"
+        },
+        {
+          "name" : "node_3",
+          "id" : 1,
+          "source_info" : {
+            "filename" : "packet_loss.p4",
+            "line" : 159,
+            "column" : 19,
+            "source_fragment" : "hdr.ethernet.srcAddr == 0x5254002cc5f9"
+          },
+          "expression" : {
+            "type" : "expression",
+            "value" : {
+              "op" : "==",
+              "left" : {
+                "type" : "field",
+                "value" : ["ethernet", "srcAddr"]
+              },
+              "right" : {
+                "type" : "hexstr",
+                "value" : "0x5254002cc5f9"
+              }
+            }
+          },
+          "true_next" : "node_4",
+          "false_next" : "node_6"
+        },
+        {
+          "name" : "node_4",
+          "id" : 2,
+          "source_info" : {
+            "filename" : "packet_loss.p4",
+            "line" : 161,
+            "column" : 35,
+            "source_fragment" : "standard_metadata.ingress_port==1"
+          },
+          "expression" : {
+            "type" : "expression",
+            "value" : {
+              "op" : "==",
+              "left" : {
+                "type" : "field",
+                "value" : ["standard_metadata", "ingress_port"]
+              },
+              "right" : {
+                "type" : "hexstr",
+                "value" : "0x0001"
+              }
+            }
+          },
+          "false_next" : null,
+          "true_next" : "tbl_packet_loss163"
+        },
+        {
+          "name" : "node_6",
+          "id" : 3,
+          "source_info" : {
+            "filename" : "packet_loss.p4",
+            "line" : 166,
+            "column" : 24,
+            "source_fragment" : "hdr.ethernet.srcAddr == 0xfa163e4c8769"
+          },
+          "expression" : {
+            "type" : "expression",
+            "value" : {
+              "op" : "==",
+              "left" : {
+                "type" : "field",
+                "value" : ["ethernet", "srcAddr"]
+              },
+              "right" : {
+                "type" : "hexstr",
+                "value" : "0xfa163e4c8769"
+              }
+            }
+          },
+          "true_next" : "node_7",
+          "false_next" : "MyIngress.drop_packet"
+        },
+        {
+          "name" : "node_7",
+          "id" : 4,
+          "source_info" : {
+            "filename" : "packet_loss.p4",
+            "line" : 168,
+            "column" : 28,
+            "source_fragment" : "standard_metadata.ingress_port==0"
+          },
+          "expression" : {
+            "type" : "expression",
+            "value" : {
+              "op" : "==",
+              "left" : {
+                "type" : "field",
+                "value" : ["standard_metadata", "ingress_port"]
+              },
+              "right" : {
+                "type" : "hexstr",
+                "value" : "0x0000"
+              }
+            }
+          },
+          "false_next" : null,
+          "true_next" : "tbl_packet_loss170"
+        },
+        {
+          "name" : "node_10",
+          "id" : 5,
+          "source_info" : {
+            "filename" : "packet_loss.p4",
+            "line" : 179,
+            "column" : 19,
+            "source_fragment" : "hdr.ethernet.dstAddr == 0x5254002cc5f9"
+          },
+          "expression" : {
+            "type" : "expression",
+            "value" : {
+              "op" : "==",
+              "left" : {
+                "type" : "field",
+                "value" : ["ethernet", "dstAddr"]
+              },
+              "right" : {
+                "type" : "hexstr",
+                "value" : "0x5254002cc5f9"
+              }
+            }
+          },
+          "true_next" : "tbl_packet_loss181",
+          "false_next" : "node_12"
+        },
+        {
+          "name" : "node_12",
+          "id" : 6,
+          "source_info" : {
+            "filename" : "packet_loss.p4",
+            "line" : 183,
+            "column" : 24,
+            "source_fragment" : "hdr.ethernet.dstAddr == 0xfa163e4c8769"
+          },
+          "expression" : {
+            "type" : "expression",
+            "value" : {
+              "op" : "==",
+              "left" : {
+                "type" : "field",
+                "value" : ["ethernet", "dstAddr"]
+              },
+              "right" : {
+                "type" : "hexstr",
+                "value" : "0xfa163e4c8769"
+              }
+            }
+          },
+          "true_next" : "tbl_packet_loss184",
+          "false_next" : "MyIngress.drop_packet"
+        }
+      ]
     },
     {
       "name" : "egress",
       "id" : 1,
       "source_info" : {
         "filename" : "packet_loss.p4",
-        "line" : 171,
+        "line" : 197,
         "column" : 8,
         "source_fragment" : "MyEgress"
       },
-      "init_table" : "node_5",
+      "init_table" : "node_17",
       "tables" : [
         {
           "name" : "tbl_compute_flowid",
-          "id" : 1,
+          "id" : 5,
           "source_info" : {
             "filename" : "packet_loss.p4",
-            "line" : 211,
+            "line" : 237,
             "column" : 2,
             "source_fragment" : "compute_flowid()"
           },
@@ -1823,14 +2233,14 @@
           "with_counters" : false,
           "support_timeout" : false,
           "direct_meters" : null,
-          "action_ids" : [2],
+          "action_ids" : [5],
           "actions" : ["MyEgress.compute_flowid"],
           "base_default_next" : "tbl_compute_index",
           "next_tables" : {
             "MyEgress.compute_flowid" : "tbl_compute_index"
           },
           "default_entry" : {
-            "action_id" : 2,
+            "action_id" : 5,
             "action_const" : true,
             "action_data" : [],
             "action_entry_const" : true
@@ -1838,10 +2248,10 @@
         },
         {
           "name" : "tbl_compute_index",
-          "id" : 2,
+          "id" : 6,
           "source_info" : {
             "filename" : "packet_loss.p4",
-            "line" : 212,
+            "line" : 238,
             "column" : 2,
             "source_fragment" : "compute_index()"
           },
@@ -1852,14 +2262,14 @@
           "with_counters" : false,
           "support_timeout" : false,
           "direct_meters" : null,
-          "action_ids" : [3],
+          "action_ids" : [6],
           "actions" : ["MyEgress.compute_index"],
           "base_default_next" : "tbl_increment_count",
           "next_tables" : {
             "MyEgress.compute_index" : "tbl_increment_count"
           },
           "default_entry" : {
-            "action_id" : 3,
+            "action_id" : 6,
             "action_const" : true,
             "action_data" : [],
             "action_entry_const" : true
@@ -1867,10 +2277,10 @@
         },
         {
           "name" : "tbl_increment_count",
-          "id" : 3,
+          "id" : 7,
           "source_info" : {
             "filename" : "packet_loss.p4",
-            "line" : 213,
+            "line" : 239,
             "column" : 2,
             "source_fragment" : "increment_count()"
           },
@@ -1881,14 +2291,14 @@
           "with_counters" : false,
           "support_timeout" : false,
           "direct_meters" : null,
-          "action_ids" : [4],
+          "action_ids" : [7],
           "actions" : ["MyEgress.increment_count"],
           "base_default_next" : "tbl_compute_mincount",
           "next_tables" : {
             "MyEgress.increment_count" : "tbl_compute_mincount"
           },
           "default_entry" : {
-            "action_id" : 4,
+            "action_id" : 7,
             "action_const" : true,
             "action_data" : [],
             "action_entry_const" : true
@@ -1896,10 +2306,10 @@
         },
         {
           "name" : "tbl_compute_mincount",
-          "id" : 4,
+          "id" : 8,
           "source_info" : {
             "filename" : "packet_loss.p4",
-            "line" : 214,
+            "line" : 240,
             "column" : 2,
             "source_fragment" : "compute_mincount(meta.count1, meta.count2, meta.count3)"
           },
@@ -1910,25 +2320,25 @@
           "with_counters" : false,
           "support_timeout" : false,
           "direct_meters" : null,
-          "action_ids" : [5],
+          "action_ids" : [8],
           "actions" : ["MyEgress.compute_mincount"],
-          "base_default_next" : "tbl_packet_loss215",
+          "base_default_next" : "tbl_packet_loss241",
           "next_tables" : {
-            "MyEgress.compute_mincount" : "tbl_packet_loss215"
+            "MyEgress.compute_mincount" : "tbl_packet_loss241"
           },
           "default_entry" : {
-            "action_id" : 5,
+            "action_id" : 8,
             "action_const" : true,
             "action_data" : [],
             "action_entry_const" : true
           }
         },
         {
-          "name" : "tbl_packet_loss215",
-          "id" : 5,
+          "name" : "tbl_packet_loss241",
+          "id" : 9,
           "source_info" : {
             "filename" : "packet_loss.p4",
-            "line" : 215,
+            "line" : 241,
             "column" : 2,
             "source_fragment" : "  log_msg(\\\"flow id = {}, lost packets = {}\\\",{meta.flowid, meta.num_lost_packets});"
           },
@@ -1939,14 +2349,14 @@
           "with_counters" : false,
           "support_timeout" : false,
           "direct_meters" : null,
-          "action_ids" : [6],
-          "actions" : ["packet_loss215"],
+          "action_ids" : [9],
+          "actions" : ["packet_loss241"],
           "base_default_next" : null,
           "next_tables" : {
-            "packet_loss215" : null
+            "packet_loss241" : null
           },
           "default_entry" : {
-            "action_id" : 6,
+            "action_id" : 9,
             "action_const" : true,
             "action_data" : [],
             "action_entry_const" : true
@@ -1956,11 +2366,11 @@
       "action_profiles" : [],
       "conditionals" : [
         {
-          "name" : "node_5",
-          "id" : 0,
+          "name" : "node_17",
+          "id" : 7,
           "source_info" : {
             "filename" : "packet_loss.p4",
-            "line" : 210,
+            "line" : 236,
             "column" : 4,
             "source_fragment" : "hdr.ipv4_option.isValid()"
           },
@@ -1987,7 +2397,7 @@
       "id" : 0,
       "source_info" : {
         "filename" : "packet_loss.p4",
-        "line" : 227,
+        "line" : 253,
         "column" : 1,
         "source_fragment" : "update_checksum( ..."
       },
