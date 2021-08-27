@@ -116,7 +116,7 @@
       "id" : 0,
       "source_info" : {
         "filename" : "mac.p4",
-        "line" : 113,
+        "line" : 133,
         "column" : 8,
         "source_fragment" : "MyDeparser"
       },
@@ -131,8 +131,30 @@
   "learn_lists" : [],
   "actions" : [
     {
-      "name" : "mac65",
+      "name" : "MyIngress.drop",
       "id" : 0,
+      "runtime_data" : [],
+      "primitives" : [
+        {
+          "op" : "mark_to_drop",
+          "parameters" : [
+            {
+              "type" : "header",
+              "value" : "standard_metadata"
+            }
+          ],
+          "source_info" : {
+            "filename" : "mac.p4",
+            "line" : 58,
+            "column" : 8,
+            "source_fragment" : "mark_to_drop(standard_metadata)"
+          }
+        }
+      ]
+    },
+    {
+      "name" : "mac78",
+      "id" : 1,
       "runtime_data" : [],
       "primitives" : [
         {
@@ -149,7 +171,7 @@
           ],
           "source_info" : {
             "filename" : "mac.p4",
-            "line" : 65,
+            "line" : 78,
             "column" : 40,
             "source_fragment" : "standard_metadata.egress_spec =0"
           }
@@ -157,8 +179,8 @@
       ]
     },
     {
-      "name" : "mac72",
-      "id" : 1,
+      "name" : "mac85",
+      "id" : 2,
       "runtime_data" : [],
       "primitives" : [
         {
@@ -175,7 +197,7 @@
           ],
           "source_info" : {
             "filename" : "mac.p4",
-            "line" : 72,
+            "line" : 85,
             "column" : 32,
             "source_fragment" : "standard_metadata.egress_spec =1"
           }
@@ -183,56 +205,7 @@
       ]
     },
     {
-      "name" : "mac80",
-      "id" : 2,
-      "runtime_data" : [],
-      "primitives" : [
-        {
-          "op" : "assign",
-          "parameters" : [
-            {
-              "type" : "field",
-              "value" : ["standard_metadata", "egress_spec"]
-            },
-            {
-              "type" : "expression",
-              "value" : {
-                "type" : "expression",
-                "value" : {
-                  "op" : "&",
-                  "left" : {
-                    "type" : "expression",
-                    "value" : {
-                      "op" : "-",
-                      "left" : {
-                        "type" : "hexstr",
-                        "value" : "0x0001"
-                      },
-                      "right" : {
-                        "type" : "field",
-                        "value" : ["standard_metadata", "ingress_port"]
-                      }
-                    }
-                  },
-                  "right" : {
-                    "type" : "hexstr",
-                    "value" : "0x01ff"
-                  }
-                }
-              }
-            }
-          ],
-          "source_info" : {
-            "filename" : "mac.p4",
-            "line" : 80,
-            "column" : 32,
-            "source_fragment" : "standard_metadata.egress_spec =1-standard_metadata.ingress_port"
-          }
-        }
-      ]
-    },
-    {
-      "name" : "mac83",
+      "name" : "mac96",
       "id" : 3,
       "runtime_data" : [],
       "primitives" : [
@@ -273,7 +246,56 @@
           ],
           "source_info" : {
             "filename" : "mac.p4",
-            "line" : 83,
+            "line" : 96,
+            "column" : 32,
+            "source_fragment" : "standard_metadata.egress_spec =1-standard_metadata.ingress_port"
+          }
+        }
+      ]
+    },
+    {
+      "name" : "mac99",
+      "id" : 4,
+      "runtime_data" : [],
+      "primitives" : [
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["standard_metadata", "egress_spec"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "&",
+                  "left" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "-",
+                      "left" : {
+                        "type" : "hexstr",
+                        "value" : "0x0001"
+                      },
+                      "right" : {
+                        "type" : "field",
+                        "value" : ["standard_metadata", "ingress_port"]
+                      }
+                    }
+                  },
+                  "right" : {
+                    "type" : "hexstr",
+                    "value" : "0x01ff"
+                  }
+                }
+              }
+            }
+          ],
+          "source_info" : {
+            "filename" : "mac.p4",
+            "line" : 99,
             "column" : 32,
             "source_fragment" : "standard_metadata.egress_spec =1-standard_metadata.ingress_port"
           }
@@ -294,11 +316,11 @@
       "init_table" : "node_2",
       "tables" : [
         {
-          "name" : "tbl_mac65",
+          "name" : "tbl_mac78",
           "id" : 0,
           "source_info" : {
             "filename" : "mac.p4",
-            "line" : 65,
+            "line" : 78,
             "column" : 70,
             "source_fragment" : "="
           },
@@ -309,40 +331,11 @@
           "with_counters" : false,
           "support_timeout" : false,
           "direct_meters" : null,
-          "action_ids" : [0],
-          "actions" : ["mac65"],
-          "base_default_next" : null,
-          "next_tables" : {
-            "mac65" : null
-          },
-          "default_entry" : {
-            "action_id" : 0,
-            "action_const" : true,
-            "action_data" : [],
-            "action_entry_const" : true
-          }
-        },
-        {
-          "name" : "tbl_mac72",
-          "id" : 1,
-          "source_info" : {
-            "filename" : "mac.p4",
-            "line" : 72,
-            "column" : 62,
-            "source_fragment" : "="
-          },
-          "key" : [],
-          "match_type" : "exact",
-          "type" : "simple",
-          "max_size" : 1024,
-          "with_counters" : false,
-          "support_timeout" : false,
-          "direct_meters" : null,
           "action_ids" : [1],
-          "actions" : ["mac72"],
+          "actions" : ["mac78"],
           "base_default_next" : null,
           "next_tables" : {
-            "mac72" : null
+            "mac78" : null
           },
           "default_entry" : {
             "action_id" : 1,
@@ -352,11 +345,11 @@
           }
         },
         {
-          "name" : "tbl_mac80",
-          "id" : 2,
+          "name" : "tbl_mac85",
+          "id" : 1,
           "source_info" : {
             "filename" : "mac.p4",
-            "line" : 80,
+            "line" : 85,
             "column" : 62,
             "source_fragment" : "="
           },
@@ -368,10 +361,10 @@
           "support_timeout" : false,
           "direct_meters" : null,
           "action_ids" : [2],
-          "actions" : ["mac80"],
+          "actions" : ["mac85"],
           "base_default_next" : null,
           "next_tables" : {
-            "mac80" : null
+            "mac85" : null
           },
           "default_entry" : {
             "action_id" : 2,
@@ -381,11 +374,40 @@
           }
         },
         {
-          "name" : "tbl_mac83",
+          "name" : "MyIngress.drop_packet",
+          "id" : 2,
+          "source_info" : {
+            "filename" : "mac.p4",
+            "line" : 61,
+            "column" : 10,
+            "source_fragment" : "drop_packet"
+          },
+          "key" : [],
+          "match_type" : "exact",
+          "type" : "simple",
+          "max_size" : 1024,
+          "with_counters" : false,
+          "support_timeout" : false,
+          "direct_meters" : null,
+          "action_ids" : [0],
+          "actions" : ["MyIngress.drop"],
+          "base_default_next" : null,
+          "next_tables" : {
+            "MyIngress.drop" : null
+          },
+          "default_entry" : {
+            "action_id" : 0,
+            "action_const" : false,
+            "action_data" : [],
+            "action_entry_const" : false
+          }
+        },
+        {
+          "name" : "tbl_mac96",
           "id" : 3,
           "source_info" : {
             "filename" : "mac.p4",
-            "line" : 83,
+            "line" : 96,
             "column" : 62,
             "source_fragment" : "="
           },
@@ -397,13 +419,42 @@
           "support_timeout" : false,
           "direct_meters" : null,
           "action_ids" : [3],
-          "actions" : ["mac83"],
+          "actions" : ["mac96"],
           "base_default_next" : null,
           "next_tables" : {
-            "mac83" : null
+            "mac96" : null
           },
           "default_entry" : {
             "action_id" : 3,
+            "action_const" : true,
+            "action_data" : [],
+            "action_entry_const" : true
+          }
+        },
+        {
+          "name" : "tbl_mac99",
+          "id" : 4,
+          "source_info" : {
+            "filename" : "mac.p4",
+            "line" : 99,
+            "column" : 62,
+            "source_fragment" : "="
+          },
+          "key" : [],
+          "match_type" : "exact",
+          "type" : "simple",
+          "max_size" : 1024,
+          "with_counters" : false,
+          "support_timeout" : false,
+          "direct_meters" : null,
+          "action_ids" : [4],
+          "actions" : ["mac99"],
+          "base_default_next" : null,
+          "next_tables" : {
+            "mac99" : null
+          },
+          "default_entry" : {
+            "action_id" : 4,
             "action_const" : true,
             "action_data" : [],
             "action_entry_const" : true
@@ -417,7 +468,7 @@
           "id" : 0,
           "source_info" : {
             "filename" : "mac.p4",
-            "line" : 59,
+            "line" : 72,
             "column" : 11,
             "source_fragment" : "hdr.ethernet.dstAddr == 0xffffffffffff"
           },
@@ -436,14 +487,14 @@
             }
           },
           "true_next" : "node_3",
-          "false_next" : "node_9"
+          "false_next" : "node_10"
         },
         {
           "name" : "node_3",
           "id" : 1,
           "source_info" : {
             "filename" : "mac.p4",
-            "line" : 61,
+            "line" : 74,
             "column" : 19,
             "source_fragment" : "hdr.ethernet.srcAddr == 0xfa163ea51d5e"
           },
@@ -469,7 +520,7 @@
           "id" : 2,
           "source_info" : {
             "filename" : "mac.p4",
-            "line" : 63,
+            "line" : 76,
             "column" : 35,
             "source_fragment" : "standard_metadata.ingress_port==1"
           },
@@ -488,14 +539,14 @@
             }
           },
           "false_next" : null,
-          "true_next" : "tbl_mac65"
+          "true_next" : "tbl_mac78"
         },
         {
           "name" : "node_6",
           "id" : 3,
           "source_info" : {
             "filename" : "mac.p4",
-            "line" : 68,
+            "line" : 81,
             "column" : 24,
             "source_fragment" : "hdr.ethernet.srcAddr == 0x94c6911ef360"
           },
@@ -513,15 +564,15 @@
               }
             }
           },
-          "false_next" : null,
-          "true_next" : "node_7"
+          "true_next" : "node_7",
+          "false_next" : "MyIngress.drop_packet"
         },
         {
           "name" : "node_7",
           "id" : 4,
           "source_info" : {
             "filename" : "mac.p4",
-            "line" : 70,
+            "line" : 83,
             "column" : 28,
             "source_fragment" : "standard_metadata.ingress_port==0"
           },
@@ -540,14 +591,14 @@
             }
           },
           "false_next" : null,
-          "true_next" : "tbl_mac72"
+          "true_next" : "tbl_mac85"
         },
         {
-          "name" : "node_9",
+          "name" : "node_10",
           "id" : 5,
           "source_info" : {
             "filename" : "mac.p4",
-            "line" : 78,
+            "line" : 94,
             "column" : 19,
             "source_fragment" : "hdr.ethernet.dstAddr == 0xfa163ea51d5e"
           },
@@ -565,15 +616,15 @@
               }
             }
           },
-          "true_next" : "tbl_mac80",
-          "false_next" : "node_11"
+          "true_next" : "tbl_mac96",
+          "false_next" : "node_12"
         },
         {
-          "name" : "node_11",
+          "name" : "node_12",
           "id" : 6,
           "source_info" : {
             "filename" : "mac.p4",
-            "line" : 82,
+            "line" : 98,
             "column" : 24,
             "source_fragment" : "hdr.ethernet.dstAddr == 0x94c6911ef360"
           },
@@ -591,8 +642,8 @@
               }
             }
           },
-          "false_next" : null,
-          "true_next" : "tbl_mac83"
+          "true_next" : "tbl_mac99",
+          "false_next" : "MyIngress.drop_packet"
         }
       ]
     },
@@ -601,7 +652,7 @@
       "id" : 1,
       "source_info" : {
         "filename" : "mac.p4",
-        "line" : 93,
+        "line" : 113,
         "column" : 8,
         "source_fragment" : "MyEgress"
       },
