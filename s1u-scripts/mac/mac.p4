@@ -53,7 +53,17 @@ control MyVerifyChecksum(inout headers hdr, inout metadata meta) {
 control MyIngress(inout headers hdr,
                   inout metadata meta,
                   inout standard_metadata_t standard_metadata) {
+    action drop() {
+        mark_to_drop(standard_metadata);
+    }
     
+    table drop_packet{
+        actions = {
+            drop;
+        }
+     //   size = 1024;
+        default_action = drop();
+    }    
     apply {
 	
         if(hdr.ethernet.dstAddr == 0xffffffffffff)
@@ -72,6 +82,10 @@ control MyIngress(inout headers hdr,
 				standard_metadata.egress_spec =1;
 				}
 			}
+		else{
+			drop_packet.apply();
+			}
+			
 		}
 	    
 	else {
@@ -82,6 +96,9 @@ control MyIngress(inout headers hdr,
                 else if(hdr.ethernet.dstAddr == 0x94c6911ef360){
 				standard_metadata.egress_spec =1-standard_metadata.ingress_port;
 			}
+		else{   
+                        drop_packet.apply();
+                        }
 	    }	 
 	}
  }
