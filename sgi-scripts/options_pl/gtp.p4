@@ -25,8 +25,17 @@ typedef bit<48> mac_addr_t;
 typedef bit<32> ip4Addr_t;
 //typedef bit<32> ipv4_addr_t;
 typedef bit<9> port_id_t;
-typedef bit<32> switchID_t;
+typedef bit<16> switchID_t;
 typedef bit<32> packet_count_t;
+
+// Option field for ipv4
+header ipv4_option_t{
+	bit<8> value;
+        bit<8> optionLength;
+	switchID_t swid;
+	packet_count_t packet_count;
+}
+
 struct metadata {
    	bit<72> flowid;
 
@@ -40,13 +49,14 @@ struct metadata {
 	bit<32> count2;
 	bit<32> count3;
 	bit<32> min_count;
-        bit<8> num_lost_packets;	   
+        bit<32> num_lost_packets;	   
    }
 
 struct headers {
     ethernet_t   ethernet;
     ipv4_t       ipv4;
-   }
+    ipv4_option_t ipv4_option;
+}
 
 error { IPHeaderTooShort }
 
@@ -73,8 +83,17 @@ parser MyParser(packet_in packet,
 
         state parse_ipv4 {
         packet.extract(hdr.ipv4);
-	transition accept;
-     }
+        verify(hdr.ipv4.ihl >= 5, error.IPHeaderTooShort);
+        transition select(hdr.ipv4.ihl) {
+            5             : accept;
+            default       : parse_ipv4_option;
+         }
+    }
+
+    state parse_ipv4_option {
+        packet.extract(hdr.ipv4_option);
+        transition accept;     
+    }
 
 }
 
@@ -180,9 +199,7 @@ control MyEgress(inout headers hdr,
 	if(meta.min_count > cnt3){
 		meta.min_count = cnt3;
 		}
-
-	meta.num_lost_packets = hdr.ipv4.diffserv - (bit<8>) meta.min_count;
-     }
+	}
 
     apply {
 	if(hdr.ethernet.dstAddr == 0x5254002cc5f9){
@@ -191,9 +208,17 @@ control MyEgress(inout headers hdr,
 		compute_index();
 		increment_count();
 		compute_mincount(meta.count1, meta.count2, meta.count3);
-		log_msg("flow id = {},lasthop-packets={}, currenthop-packets={}, lost packets = {}",{meta.flowid, hdr.ipv4.diffserv, meta.min_count, meta.num_lost_packets});
-		}  
-       
+	}  
+
+		// Set invalid the headers
+		if(hdr.ipv4_option.isValid()){
+			meta.num_lost_packets = hdr.ipv4_option.packet_count - meta.min_count;
+        		hdr.ipv4.ihl = hdr.ipv4.ihl - 2;
+        		hdr.ipv4.totalLen  = hdr.ipv4.totalLen - 8;// increase in byte
+		 log_msg("flow id = {},lasthop-packets={}, currenthop-packets={}, lost packets = {}",{meta.flowid, hdr.ipv4_option.packet_count, meta.min_count, meta.num_lost_packets});
+			hdr.ipv4_option.setInvalid();
+		
+		}
 	}}
 }
 

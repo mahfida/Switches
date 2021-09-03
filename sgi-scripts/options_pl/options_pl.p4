@@ -27,6 +27,24 @@ typedef bit<32> ip4Addr_t;
 typedef bit<9> port_id_t;
 typedef bit<32> switchID_t;
 typedef bit<32> packet_count_t;
+
+// Option field for ipv4
+header ipv4_option_t{
+	bit<1> copyFlag;
+	bit<2> optClass;
+        bit<5> option;
+        bit<8> optionLength;
+}
+
+header mri_t{
+	bit<16> count;
+}
+
+header switch_t{
+	switchID_t swid;
+	packet_count_t packet_count;
+}
+
 struct metadata {
    	bit<72> flowid;
 
@@ -40,13 +58,16 @@ struct metadata {
 	bit<32> count2;
 	bit<32> count3;
 	bit<32> min_count;
-        bit<8> num_lost_packets;	   
+        bit<32> num_lost_packets;	   
    }
 
 struct headers {
     ethernet_t   ethernet;
     ipv4_t       ipv4;
-   }
+    ipv4_option_t ipv4_option;
+    mri_t mri;
+    switch_t swtraces;
+}
 
 error { IPHeaderTooShort }
 
@@ -73,8 +94,33 @@ parser MyParser(packet_in packet,
 
         state parse_ipv4 {
         packet.extract(hdr.ipv4);
+        verify(hdr.ipv4.ihl >= 5, error.IPHeaderTooShort);
+        transition select(hdr.ipv4.ihl) {
+            5             : accept;
+            default       : parse_ipv4_option;
+         }
+    }
+
+    state parse_ipv4_option {
+        packet.extract(hdr.ipv4_option);
+        transition select(hdr.ipv4_option.option) {
+            4 : parse_mri;
+            default: accept;
+        }
+    }
+
+    state parse_mri {
+        packet.extract(hdr.mri);
+        transition select(hdr.mri.count) {
+            0 : accept;
+            default: parse_swtrace;
+        }
+    }
+
+    state parse_swtrace {
+        packet.extract(hdr.swtraces);
 	transition accept;
-     }
+	}
 
 }
 
@@ -181,8 +227,10 @@ control MyEgress(inout headers hdr,
 		meta.min_count = cnt3;
 		}
 
-	meta.num_lost_packets = hdr.ipv4.diffserv - (bit<8>) meta.min_count;
-     }
+	meta.num_lost_packets = hdr.swtraces.packet_count - meta.min_count;
+	hdr.ipv4.ihl = hdr.ipv4.ihl - 1 - 2; 
+	hdr.ipv4.totalLen  = hdr.ipv4.totalLen - 4 - 8;// increase in byte
+	}
 
     apply {
 	if(hdr.ethernet.dstAddr == 0x5254002cc5f9){
@@ -193,7 +241,9 @@ control MyEgress(inout headers hdr,
 		compute_mincount(meta.count1, meta.count2, meta.count3);
 		log_msg("flow id = {},lasthop-packets={}, currenthop-packets={}, lost packets = {}",{meta.flowid, hdr.ipv4.diffserv, meta.min_count, meta.num_lost_packets});
 		}  
-       
+		hdr.ipv4_option.setInvalid();
+		hdr.mri.setInvalid();
+		hdr.swtraces.setInvalid();
 	}}
 }
 

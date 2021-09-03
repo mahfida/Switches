@@ -4,19 +4,20 @@
       "name" : "scalars_0",
       "id" : 0,
       "fields" : [
-        ["tmp", 72, false],
-        ["tmp_0", 10, false],
-        ["tmp_1", 72, false],
-        ["tmp_2", 10, false],
-        ["tmp_3", 72, false],
-        ["tmp_4", 10, false],
-        ["tmp_5", 32, false],
+        ["tmp", 1, false],
+        ["tmp_0", 72, false],
+        ["tmp_1", 10, false],
+        ["tmp_2", 72, false],
+        ["tmp_3", 10, false],
+        ["tmp_4", 72, false],
+        ["tmp_5", 10, false],
         ["tmp_6", 32, false],
         ["tmp_7", 32, false],
-        ["tmp_8", 72, false],
-        ["tmp_9", 8, false],
-        ["tmp_10", 32, false],
-        ["tmp_11", 8, false],
+        ["tmp_8", 32, false],
+        ["tmp_9", 72, false],
+        ["tmp_10", 8, false],
+        ["tmp_11", 32, false],
+        ["tmp_12", 32, false],
         ["userMetadata.flowid", 72, false],
         ["userMetadata.index1", 32, false],
         ["userMetadata.index2", 32, false],
@@ -25,8 +26,8 @@
         ["userMetadata.count2", 32, false],
         ["userMetadata.count3", 32, false],
         ["userMetadata.min_count", 32, false],
-        ["userMetadata.num_lost_packets", 8, false],
-        ["_padding_0", 2, false]
+        ["userMetadata.num_lost_packets", 32, false],
+        ["_padding_0", 1, false]
       ]
     },
     {
@@ -78,6 +79,31 @@
         ["srcAddr", 32, false],
         ["dstAddr", 32, false]
       ]
+    },
+    {
+      "name" : "ipv4_option_t",
+      "id" : 4,
+      "fields" : [
+        ["copyFlag", 1, false],
+        ["optClass", 2, false],
+        ["option", 5, false],
+        ["optionLength", 8, false]
+      ]
+    },
+    {
+      "name" : "mri_t",
+      "id" : 5,
+      "fields" : [
+        ["count", 16, false]
+      ]
+    },
+    {
+      "name" : "switch_t",
+      "id" : 6,
+      "fields" : [
+        ["swid", 32, false],
+        ["packet_count", 32, false]
+      ]
     }
   ],
   "headers" : [
@@ -106,6 +132,27 @@
       "name" : "ipv4",
       "id" : 3,
       "header_type" : "ipv4_t",
+      "metadata" : false,
+      "pi_omit" : true
+    },
+    {
+      "name" : "ipv4_option",
+      "id" : 4,
+      "header_type" : "ipv4_option_t",
+      "metadata" : false,
+      "pi_omit" : true
+    },
+    {
+      "name" : "mri",
+      "id" : 5,
+      "header_type" : "mri_t",
+      "metadata" : false,
+      "pi_omit" : true
+    },
+    {
+      "name" : "swtraces",
+      "id" : 6,
+      "header_type" : "switch_t",
       "metadata" : false,
       "pi_omit" : true
     }
@@ -179,6 +226,164 @@
                 }
               ],
               "op" : "extract"
+            },
+            {
+              "parameters" : [
+                {
+                  "type" : "field",
+                  "value" : ["scalars", "tmp"]
+                },
+                {
+                  "type" : "expression",
+                  "value" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "b2d",
+                      "left" : null,
+                      "right" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : ">=",
+                          "left" : {
+                            "type" : "field",
+                            "value" : ["ipv4", "ihl"]
+                          },
+                          "right" : {
+                            "type" : "hexstr",
+                            "value" : "0x05"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              ],
+              "op" : "set"
+            },
+            {
+              "parameters" : [
+                {
+                  "type" : "expression",
+                  "value" : {
+                    "op" : "d2b",
+                    "left" : null,
+                    "right" : {
+                      "type" : "field",
+                      "value" : ["scalars", "tmp"]
+                    }
+                  }
+                },
+                {
+                  "type" : "hexstr",
+                  "value" : "0x7"
+                }
+              ],
+              "op" : "verify"
+            }
+          ],
+          "transitions" : [
+            {
+              "type" : "hexstr",
+              "value" : "0x05",
+              "mask" : null,
+              "next_state" : null
+            },
+            {
+              "type" : "default",
+              "value" : null,
+              "mask" : null,
+              "next_state" : "parse_ipv4_option"
+            }
+          ],
+          "transition_key" : [
+            {
+              "type" : "field",
+              "value" : ["ipv4", "ihl"]
+            }
+          ]
+        },
+        {
+          "name" : "parse_ipv4_option",
+          "id" : 2,
+          "parser_ops" : [
+            {
+              "parameters" : [
+                {
+                  "type" : "regular",
+                  "value" : "ipv4_option"
+                }
+              ],
+              "op" : "extract"
+            }
+          ],
+          "transitions" : [
+            {
+              "type" : "hexstr",
+              "value" : "0x04",
+              "mask" : null,
+              "next_state" : "parse_mri"
+            },
+            {
+              "type" : "default",
+              "value" : null,
+              "mask" : null,
+              "next_state" : null
+            }
+          ],
+          "transition_key" : [
+            {
+              "type" : "field",
+              "value" : ["ipv4_option", "option"]
+            }
+          ]
+        },
+        {
+          "name" : "parse_mri",
+          "id" : 3,
+          "parser_ops" : [
+            {
+              "parameters" : [
+                {
+                  "type" : "regular",
+                  "value" : "mri"
+                }
+              ],
+              "op" : "extract"
+            }
+          ],
+          "transitions" : [
+            {
+              "type" : "hexstr",
+              "value" : "0x0000",
+              "mask" : null,
+              "next_state" : null
+            },
+            {
+              "type" : "default",
+              "value" : null,
+              "mask" : null,
+              "next_state" : "parse_swtrace"
+            }
+          ],
+          "transition_key" : [
+            {
+              "type" : "field",
+              "value" : ["mri", "count"]
+            }
+          ]
+        },
+        {
+          "name" : "parse_swtrace",
+          "id" : 4,
+          "parser_ops" : [
+            {
+              "parameters" : [
+                {
+                  "type" : "regular",
+                  "value" : "swtraces"
+                }
+              ],
+              "op" : "extract"
             }
           ],
           "transitions" : [
@@ -200,8 +405,8 @@
       "name" : "deparser",
       "id" : 0,
       "source_info" : {
-        "filename" : "packet_loss.p4",
-        "line" : 285,
+        "filename" : "options_pl.p4",
+        "line" : 280,
         "column" : 8,
         "source_fragment" : "MyDeparser"
       },
@@ -216,7 +421,7 @@
       "name" : "hashtable1",
       "id" : 0,
       "source_info" : {
-        "filename" : "packet_loss.p4",
+        "filename" : "options_pl.p4",
         "line" : 14,
         "column" : 35,
         "source_fragment" : "hashtable1"
@@ -228,7 +433,7 @@
       "name" : "hashtable2",
       "id" : 1,
       "source_info" : {
-        "filename" : "packet_loss.p4",
+        "filename" : "options_pl.p4",
         "line" : 15,
         "column" : 35,
         "source_fragment" : "hashtable2"
@@ -240,7 +445,7 @@
       "name" : "hashtable3",
       "id" : 2,
       "source_info" : {
-        "filename" : "packet_loss.p4",
+        "filename" : "options_pl.p4",
         "line" : 16,
         "column" : 35,
         "source_fragment" : "hashtable3"
@@ -257,11 +462,11 @@
       "input" : [
         {
           "type" : "field",
-          "value" : ["scalars", "tmp"]
+          "value" : ["scalars", "tmp_0"]
         },
         {
           "type" : "field",
-          "value" : ["scalars", "tmp_0"]
+          "value" : ["scalars", "tmp_1"]
         }
       ]
     },
@@ -272,11 +477,11 @@
       "input" : [
         {
           "type" : "field",
-          "value" : ["scalars", "tmp_1"]
+          "value" : ["scalars", "tmp_2"]
         },
         {
           "type" : "field",
-          "value" : ["scalars", "tmp_2"]
+          "value" : ["scalars", "tmp_3"]
         }
       ]
     },
@@ -287,11 +492,11 @@
       "input" : [
         {
           "type" : "field",
-          "value" : ["scalars", "tmp_3"]
+          "value" : ["scalars", "tmp_4"]
         },
         {
           "type" : "field",
-          "value" : ["scalars", "tmp_4"]
+          "value" : ["scalars", "tmp_5"]
         }
       ]
     },
@@ -299,8 +504,8 @@
       "name" : "calc_2",
       "id" : 3,
       "source_info" : {
-        "filename" : "packet_loss.p4",
-        "line" : 262,
+        "filename" : "options_pl.p4",
+        "line" : 257,
         "column" : 1,
         "source_fragment" : "update_checksum( ..."
       },
@@ -369,8 +574,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "packet_loss.p4",
-            "line" : 146,
+            "filename" : "options_pl.p4",
+            "line" : 145,
             "column" : 8,
             "source_fragment" : "mark_to_drop(standard_metadata)"
           }
@@ -378,7 +583,7 @@
       ]
     },
     {
-      "name" : "packet_loss164",
+      "name" : "options_pl163",
       "id" : 1,
       "runtime_data" : [],
       "primitives" : [
@@ -395,8 +600,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "packet_loss.p4",
-            "line" : 164,
+            "filename" : "options_pl.p4",
+            "line" : 163,
             "column" : 40,
             "source_fragment" : "standard_metadata.egress_spec =0"
           }
@@ -404,7 +609,7 @@
       ]
     },
     {
-      "name" : "packet_loss171",
+      "name" : "options_pl170",
       "id" : 2,
       "runtime_data" : [],
       "primitives" : [
@@ -421,8 +626,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "packet_loss.p4",
-            "line" : 171,
+            "filename" : "options_pl.p4",
+            "line" : 170,
             "column" : 32,
             "source_fragment" : "standard_metadata.egress_spec =1"
           }
@@ -430,7 +635,7 @@
       ]
     },
     {
-      "name" : "packet_loss182",
+      "name" : "options_pl181",
       "id" : 3,
       "runtime_data" : [],
       "primitives" : [
@@ -470,8 +675,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "packet_loss.p4",
-            "line" : 182,
+            "filename" : "options_pl.p4",
+            "line" : 181,
             "column" : 32,
             "source_fragment" : "standard_metadata.egress_spec =1-standard_metadata.ingress_port"
           }
@@ -479,7 +684,7 @@
       ]
     },
     {
-      "name" : "packet_loss185",
+      "name" : "options_pl184",
       "id" : 4,
       "runtime_data" : [],
       "primitives" : [
@@ -519,8 +724,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "packet_loss.p4",
-            "line" : 185,
+            "filename" : "options_pl.p4",
+            "line" : 184,
             "column" : 32,
             "source_fragment" : "standard_metadata.egress_spec =1-standard_metadata.ingress_port"
           }
@@ -588,8 +793,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "packet_loss.p4",
-            "line" : 204,
+            "filename" : "options_pl.p4",
+            "line" : 203,
             "column" : 4,
             "source_fragment" : "meta.flowid[31:0] = hdr.ipv4.srcAddr"
           }
@@ -670,8 +875,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "packet_loss.p4",
-            "line" : 205,
+            "filename" : "options_pl.p4",
+            "line" : 204,
             "column" : 1,
             "source_fragment" : "meta.flowid[63:32] = hdr.ipv4.dstAddr"
           }
@@ -752,8 +957,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "packet_loss.p4",
-            "line" : 206,
+            "filename" : "options_pl.p4",
+            "line" : 205,
             "column" : 1,
             "source_fragment" : "meta.flowid[71:64] = hdr.ipv4.protocol"
           }
@@ -770,7 +975,7 @@
           "parameters" : [
             {
               "type" : "field",
-              "value" : ["scalars", "tmp"]
+              "value" : ["scalars", "tmp_0"]
             },
             {
               "type" : "field",
@@ -778,8 +983,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "packet_loss.p4",
-            "line" : 209,
+            "filename" : "options_pl.p4",
+            "line" : 208,
             "column" : 47,
             "source_fragment" : "meta.flowid"
           }
@@ -789,7 +994,7 @@
           "parameters" : [
             {
               "type" : "field",
-              "value" : ["scalars", "tmp_0"]
+              "value" : ["scalars", "tmp_1"]
             },
             {
               "type" : "hexstr",
@@ -797,8 +1002,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "packet_loss.p4",
-            "line" : 209,
+            "filename" : "options_pl.p4",
+            "line" : 208,
             "column" : 60,
             "source_fragment" : "10w33"
           }
@@ -824,29 +1029,10 @@
             }
           ],
           "source_info" : {
-            "filename" : "packet_loss.p4",
-            "line" : 209,
+            "filename" : "options_pl.p4",
+            "line" : 208,
             "column" : 1,
             "source_fragment" : "hash(meta.index1, HashAlgorithm.crc16, 10w0, {meta.flowid, 10w33}, 10w1023)"
-          }
-        },
-        {
-          "op" : "assign",
-          "parameters" : [
-            {
-              "type" : "field",
-              "value" : ["scalars", "tmp_1"]
-            },
-            {
-              "type" : "field",
-              "value" : ["scalars", "userMetadata.flowid"]
-            }
-          ],
-          "source_info" : {
-            "filename" : "packet_loss.p4",
-            "line" : 210,
-            "column" : 47,
-            "source_fragment" : "meta.flowid"
           }
         },
         {
@@ -857,13 +1043,32 @@
               "value" : ["scalars", "tmp_2"]
             },
             {
+              "type" : "field",
+              "value" : ["scalars", "userMetadata.flowid"]
+            }
+          ],
+          "source_info" : {
+            "filename" : "options_pl.p4",
+            "line" : 209,
+            "column" : 47,
+            "source_fragment" : "meta.flowid"
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "tmp_3"]
+            },
+            {
               "type" : "hexstr",
               "value" : "0x00ca"
             }
           ],
           "source_info" : {
-            "filename" : "packet_loss.p4",
-            "line" : 210,
+            "filename" : "options_pl.p4",
+            "line" : 209,
             "column" : 60,
             "source_fragment" : "10w202"
           }
@@ -889,29 +1094,10 @@
             }
           ],
           "source_info" : {
-            "filename" : "packet_loss.p4",
-            "line" : 210,
+            "filename" : "options_pl.p4",
+            "line" : 209,
             "column" : 1,
             "source_fragment" : "hash(meta.index2, HashAlgorithm.crc16, 10w0, {meta.flowid, 10w202}, 10w1023)"
-          }
-        },
-        {
-          "op" : "assign",
-          "parameters" : [
-            {
-              "type" : "field",
-              "value" : ["scalars", "tmp_3"]
-            },
-            {
-              "type" : "field",
-              "value" : ["scalars", "userMetadata.flowid"]
-            }
-          ],
-          "source_info" : {
-            "filename" : "packet_loss.p4",
-            "line" : 211,
-            "column" : 47,
-            "source_fragment" : "meta.flowid"
           }
         },
         {
@@ -922,13 +1108,32 @@
               "value" : ["scalars", "tmp_4"]
             },
             {
+              "type" : "field",
+              "value" : ["scalars", "userMetadata.flowid"]
+            }
+          ],
+          "source_info" : {
+            "filename" : "options_pl.p4",
+            "line" : 210,
+            "column" : 47,
+            "source_fragment" : "meta.flowid"
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "tmp_5"]
+            },
+            {
               "type" : "hexstr",
               "value" : "0x021d"
             }
           ],
           "source_info" : {
-            "filename" : "packet_loss.p4",
-            "line" : 211,
+            "filename" : "options_pl.p4",
+            "line" : 210,
             "column" : 60,
             "source_fragment" : "10w541"
           }
@@ -954,8 +1159,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "packet_loss.p4",
-            "line" : 211,
+            "filename" : "options_pl.p4",
+            "line" : 210,
             "column" : 1,
             "source_fragment" : "hash(meta.index3, HashAlgorithm.crc16, 10w0, {meta.flowid, 10w541}, 10w1023)"
           }
@@ -984,8 +1189,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "packet_loss.p4",
-            "line" : 214,
+            "filename" : "options_pl.p4",
+            "line" : 213,
             "column" : 1,
             "source_fragment" : "hashtable1.read(meta.count1, meta.index1)"
           }
@@ -1007,8 +1212,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "packet_loss.p4",
-            "line" : 215,
+            "filename" : "options_pl.p4",
+            "line" : 214,
             "column" : 1,
             "source_fragment" : "hashtable2.read(meta.count2, meta.index2)"
           }
@@ -1030,8 +1235,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "packet_loss.p4",
-            "line" : 216,
+            "filename" : "options_pl.p4",
+            "line" : 215,
             "column" : 1,
             "source_fragment" : "hashtable3.read(meta.count3, meta.index3)"
           }
@@ -1041,7 +1246,7 @@
           "parameters" : [
             {
               "type" : "field",
-              "value" : ["scalars", "tmp_5"]
+              "value" : ["scalars", "tmp_6"]
             },
             {
               "type" : "expression",
@@ -1072,8 +1277,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "packet_loss.p4",
-            "line" : 218,
+            "filename" : "options_pl.p4",
+            "line" : 217,
             "column" : 31,
             "source_fragment" : "meta.count1 + 1"
           }
@@ -1091,12 +1296,12 @@
             },
             {
               "type" : "field",
-              "value" : ["scalars", "tmp_5"]
+              "value" : ["scalars", "tmp_6"]
             }
           ],
           "source_info" : {
-            "filename" : "packet_loss.p4",
-            "line" : 218,
+            "filename" : "options_pl.p4",
+            "line" : 217,
             "column" : 1,
             "source_fragment" : "hashtable1.write(meta.index1, meta.count1 + 1)"
           }
@@ -1106,7 +1311,7 @@
           "parameters" : [
             {
               "type" : "field",
-              "value" : ["scalars", "tmp_6"]
+              "value" : ["scalars", "tmp_7"]
             },
             {
               "type" : "expression",
@@ -1137,8 +1342,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "packet_loss.p4",
-            "line" : 219,
+            "filename" : "options_pl.p4",
+            "line" : 218,
             "column" : 31,
             "source_fragment" : "meta.count2 + 1"
           }
@@ -1156,12 +1361,12 @@
             },
             {
               "type" : "field",
-              "value" : ["scalars", "tmp_6"]
+              "value" : ["scalars", "tmp_7"]
             }
           ],
           "source_info" : {
-            "filename" : "packet_loss.p4",
-            "line" : 219,
+            "filename" : "options_pl.p4",
+            "line" : 218,
             "column" : 1,
             "source_fragment" : "hashtable2.write(meta.index2, meta.count2 + 1)"
           }
@@ -1171,7 +1376,7 @@
           "parameters" : [
             {
               "type" : "field",
-              "value" : ["scalars", "tmp_7"]
+              "value" : ["scalars", "tmp_8"]
             },
             {
               "type" : "expression",
@@ -1202,8 +1407,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "packet_loss.p4",
-            "line" : 220,
+            "filename" : "options_pl.p4",
+            "line" : 219,
             "column" : 31,
             "source_fragment" : "meta.count3 + 1"
           }
@@ -1221,12 +1426,12 @@
             },
             {
               "type" : "field",
-              "value" : ["scalars", "tmp_7"]
+              "value" : ["scalars", "tmp_8"]
             }
           ],
           "source_info" : {
-            "filename" : "packet_loss.p4",
-            "line" : 220,
+            "filename" : "options_pl.p4",
+            "line" : 219,
             "column" : 1,
             "source_fragment" : "hashtable3.write(meta.index3, meta.count3 + 1)"
           }
@@ -1251,8 +1456,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "packet_loss.p4",
-            "line" : 223,
+            "filename" : "options_pl.p4",
+            "line" : 222,
             "column" : 6,
             "source_fragment" : "meta.min_count = cnt1; ..."
           }
@@ -1404,21 +1609,49 @@
                       "op" : "-",
                       "left" : {
                         "type" : "field",
-                        "value" : ["ipv4", "diffserv"]
+                        "value" : ["swtraces", "packet_count"]
                       },
                       "right" : {
                         "type" : "expression",
                         "value" : {
-                          "op" : "&",
+                          "op" : "?",
                           "left" : {
+                            "type" : "field",
+                            "value" : ["scalars", "userMetadata.count3"]
+                          },
+                          "right" : {
                             "type" : "expression",
                             "value" : {
                               "op" : "?",
                               "left" : {
                                 "type" : "field",
-                                "value" : ["scalars", "userMetadata.count3"]
+                                "value" : ["scalars", "userMetadata.count2"]
                               },
                               "right" : {
+                                "type" : "field",
+                                "value" : ["scalars", "userMetadata.count1"]
+                              },
+                              "cond" : {
+                                "type" : "expression",
+                                "value" : {
+                                  "op" : ">",
+                                  "left" : {
+                                    "type" : "field",
+                                    "value" : ["scalars", "userMetadata.count1"]
+                                  },
+                                  "right" : {
+                                    "type" : "field",
+                                    "value" : ["scalars", "userMetadata.count2"]
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "cond" : {
+                            "type" : "expression",
+                            "value" : {
+                              "op" : ">",
+                              "left" : {
                                 "type" : "expression",
                                 "value" : {
                                   "op" : "?",
@@ -1446,49 +1679,11 @@
                                   }
                                 }
                               },
-                              "cond" : {
-                                "type" : "expression",
-                                "value" : {
-                                  "op" : ">",
-                                  "left" : {
-                                    "type" : "expression",
-                                    "value" : {
-                                      "op" : "?",
-                                      "left" : {
-                                        "type" : "field",
-                                        "value" : ["scalars", "userMetadata.count2"]
-                                      },
-                                      "right" : {
-                                        "type" : "field",
-                                        "value" : ["scalars", "userMetadata.count1"]
-                                      },
-                                      "cond" : {
-                                        "type" : "expression",
-                                        "value" : {
-                                          "op" : ">",
-                                          "left" : {
-                                            "type" : "field",
-                                            "value" : ["scalars", "userMetadata.count1"]
-                                          },
-                                          "right" : {
-                                            "type" : "field",
-                                            "value" : ["scalars", "userMetadata.count2"]
-                                          }
-                                        }
-                                      }
-                                    }
-                                  },
-                                  "right" : {
-                                    "type" : "field",
-                                    "value" : ["scalars", "userMetadata.count3"]
-                                  }
-                                }
+                              "right" : {
+                                "type" : "field",
+                                "value" : ["scalars", "userMetadata.count3"]
                               }
                             }
-                          },
-                          "right" : {
-                            "type" : "hexstr",
-                            "value" : "0xff"
                           }
                         }
                       }
@@ -1496,45 +1691,110 @@
                   },
                   "right" : {
                     "type" : "hexstr",
-                    "value" : "0xff"
+                    "value" : "0xffffffff"
                   }
                 }
               }
             }
           ],
           "source_info" : {
-            "filename" : "packet_loss.p4",
-            "line" : 231,
+            "filename" : "options_pl.p4",
+            "line" : 230,
             "column" : 1,
-            "source_fragment" : "meta.num_lost_packets = hdr.ipv4.diffserv - (bit<8>) meta.min_count"
+            "source_fragment" : "meta.num_lost_packets = hdr.swtraces.packet_count - meta.min_count"
           }
-        }
-      ]
-    },
-    {
-      "name" : "packet_loss244",
-      "id" : 9,
-      "runtime_data" : [],
-      "primitives" : [
+        },
         {
           "op" : "assign",
           "parameters" : [
             {
               "type" : "field",
-              "value" : ["scalars", "tmp_8"]
+              "value" : ["ipv4", "ihl"]
             },
             {
-              "type" : "field",
-              "value" : ["scalars", "userMetadata.flowid"]
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "&",
+                  "left" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "+",
+                      "left" : {
+                        "type" : "field",
+                        "value" : ["ipv4", "ihl"]
+                      },
+                      "right" : {
+                        "type" : "hexstr",
+                        "value" : "0x0d"
+                      }
+                    }
+                  },
+                  "right" : {
+                    "type" : "hexstr",
+                    "value" : "0x0f"
+                  }
+                }
+              }
             }
           ],
           "source_info" : {
-            "filename" : "packet_loss.p4",
-            "line" : 244,
-            "column" : 87,
-            "source_fragment" : "  log_msg(\\\"flow id = {},lasthop-packets={}, currenthop-packets={}, lost packets = {}\\\",{meta.flowid, hdr.ipv4.diffserv, meta.min_count, meta.num_lost_packets});"
+            "filename" : "options_pl.p4",
+            "line" : 231,
+            "column" : 1,
+            "source_fragment" : "hdr.ipv4.ihl = hdr.ipv4.ihl - 1 - 2"
           }
         },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["ipv4", "totalLen"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "&",
+                  "left" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "+",
+                      "left" : {
+                        "type" : "field",
+                        "value" : ["ipv4", "totalLen"]
+                      },
+                      "right" : {
+                        "type" : "hexstr",
+                        "value" : "0xfff4"
+                      }
+                    }
+                  },
+                  "right" : {
+                    "type" : "hexstr",
+                    "value" : "0xffff"
+                  }
+                }
+              }
+            }
+          ],
+          "source_info" : {
+            "filename" : "options_pl.p4",
+            "line" : 232,
+            "column" : 1,
+            "source_fragment" : "hdr.ipv4.totalLen = hdr.ipv4.totalLen - 4 - 8"
+          }
+        }
+      ]
+    },
+    {
+      "name" : "options_pl242",
+      "id" : 9,
+      "runtime_data" : [],
+      "primitives" : [
         {
           "op" : "assign",
           "parameters" : [
@@ -1544,13 +1804,13 @@
             },
             {
               "type" : "field",
-              "value" : ["ipv4", "diffserv"]
+              "value" : ["scalars", "userMetadata.flowid"]
             }
           ],
           "source_info" : {
-            "filename" : "packet_loss.p4",
-            "line" : 244,
-            "column" : 100,
+            "filename" : "options_pl.p4",
+            "line" : 242,
+            "column" : 87,
             "source_fragment" : "  log_msg(\\\"flow id = {},lasthop-packets={}, currenthop-packets={}, lost packets = {}\\\",{meta.flowid, hdr.ipv4.diffserv, meta.min_count, meta.num_lost_packets});"
           }
         },
@@ -1563,13 +1823,13 @@
             },
             {
               "type" : "field",
-              "value" : ["scalars", "userMetadata.min_count"]
+              "value" : ["ipv4", "diffserv"]
             }
           ],
           "source_info" : {
-            "filename" : "packet_loss.p4",
-            "line" : 244,
-            "column" : 119,
+            "filename" : "options_pl.p4",
+            "line" : 242,
+            "column" : 100,
             "source_fragment" : "  log_msg(\\\"flow id = {},lasthop-packets={}, currenthop-packets={}, lost packets = {}\\\",{meta.flowid, hdr.ipv4.diffserv, meta.min_count, meta.num_lost_packets});"
           }
         },
@@ -1582,12 +1842,31 @@
             },
             {
               "type" : "field",
+              "value" : ["scalars", "userMetadata.min_count"]
+            }
+          ],
+          "source_info" : {
+            "filename" : "options_pl.p4",
+            "line" : 242,
+            "column" : 119,
+            "source_fragment" : "  log_msg(\\\"flow id = {},lasthop-packets={}, currenthop-packets={}, lost packets = {}\\\",{meta.flowid, hdr.ipv4.diffserv, meta.min_count, meta.num_lost_packets});"
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "tmp_12"]
+            },
+            {
+              "type" : "field",
               "value" : ["scalars", "userMetadata.num_lost_packets"]
             }
           ],
           "source_info" : {
-            "filename" : "packet_loss.p4",
-            "line" : 244,
+            "filename" : "options_pl.p4",
+            "line" : 242,
             "column" : 135,
             "source_fragment" : "  log_msg(\\\"flow id = {},lasthop-packets={}, currenthop-packets={}, lost packets = {}\\\",{meta.flowid, hdr.ipv4.diffserv, meta.min_count, meta.num_lost_packets});"
           }
@@ -1604,10 +1883,6 @@
               "value" : [
                 {
                   "type" : "field",
-                  "value" : ["scalars", "tmp_8"]
-                },
-                {
-                  "type" : "field",
                   "value" : ["scalars", "tmp_9"]
                 },
                 {
@@ -1617,15 +1892,71 @@
                 {
                   "type" : "field",
                   "value" : ["scalars", "tmp_11"]
+                },
+                {
+                  "type" : "field",
+                  "value" : ["scalars", "tmp_12"]
                 }
               ]
             }
           ],
           "source_info" : {
-            "filename" : "packet_loss.p4",
-            "line" : 244,
+            "filename" : "options_pl.p4",
+            "line" : 242,
             "column" : 2,
             "source_fragment" : "  log_msg(\\\"flow id = {},lasthop-packets={}, currenthop-packets={}, lost packets = {}\\\",{meta.flowid, hdr.ipv4.diffserv, meta.min_count, meta.num_lost_packets});"
+          }
+        }
+      ]
+    },
+    {
+      "name" : "options_pl244",
+      "id" : 10,
+      "runtime_data" : [],
+      "primitives" : [
+        {
+          "op" : "remove_header",
+          "parameters" : [
+            {
+              "type" : "header",
+              "value" : "ipv4_option"
+            }
+          ],
+          "source_info" : {
+            "filename" : "options_pl.p4",
+            "line" : 244,
+            "column" : 2,
+            "source_fragment" : "hdr.ipv4_option.setInvalid()"
+          }
+        },
+        {
+          "op" : "remove_header",
+          "parameters" : [
+            {
+              "type" : "header",
+              "value" : "mri"
+            }
+          ],
+          "source_info" : {
+            "filename" : "options_pl.p4",
+            "line" : 245,
+            "column" : 2,
+            "source_fragment" : "hdr.mri.setInvalid()"
+          }
+        },
+        {
+          "op" : "remove_header",
+          "parameters" : [
+            {
+              "type" : "header",
+              "value" : "swtraces"
+            }
+          ],
+          "source_info" : {
+            "filename" : "options_pl.p4",
+            "line" : 246,
+            "column" : 2,
+            "source_fragment" : "hdr.swtraces.setInvalid()"
           }
         }
       ]
@@ -1636,19 +1967,19 @@
       "name" : "ingress",
       "id" : 0,
       "source_info" : {
-        "filename" : "packet_loss.p4",
-        "line" : 141,
+        "filename" : "options_pl.p4",
+        "line" : 140,
         "column" : 8,
         "source_fragment" : "MyIngress"
       },
       "init_table" : "node_2",
       "tables" : [
         {
-          "name" : "tbl_packet_loss164",
+          "name" : "tbl_options_pl163",
           "id" : 0,
           "source_info" : {
-            "filename" : "packet_loss.p4",
-            "line" : 164,
+            "filename" : "options_pl.p4",
+            "line" : 163,
             "column" : 70,
             "source_fragment" : "="
           },
@@ -1660,10 +1991,10 @@
           "support_timeout" : false,
           "direct_meters" : null,
           "action_ids" : [1],
-          "actions" : ["packet_loss164"],
+          "actions" : ["options_pl163"],
           "base_default_next" : null,
           "next_tables" : {
-            "packet_loss164" : null
+            "options_pl163" : null
           },
           "default_entry" : {
             "action_id" : 1,
@@ -1673,11 +2004,11 @@
           }
         },
         {
-          "name" : "tbl_packet_loss171",
+          "name" : "tbl_options_pl170",
           "id" : 1,
           "source_info" : {
-            "filename" : "packet_loss.p4",
-            "line" : 171,
+            "filename" : "options_pl.p4",
+            "line" : 170,
             "column" : 62,
             "source_fragment" : "="
           },
@@ -1689,10 +2020,10 @@
           "support_timeout" : false,
           "direct_meters" : null,
           "action_ids" : [2],
-          "actions" : ["packet_loss171"],
+          "actions" : ["options_pl170"],
           "base_default_next" : null,
           "next_tables" : {
-            "packet_loss171" : null
+            "options_pl170" : null
           },
           "default_entry" : {
             "action_id" : 2,
@@ -1705,8 +2036,8 @@
           "name" : "MyIngress.drop_packet",
           "id" : 2,
           "source_info" : {
-            "filename" : "packet_loss.p4",
-            "line" : 149,
+            "filename" : "options_pl.p4",
+            "line" : 148,
             "column" : 9,
             "source_fragment" : "drop_packet"
           },
@@ -1731,11 +2062,11 @@
           }
         },
         {
-          "name" : "tbl_packet_loss182",
+          "name" : "tbl_options_pl181",
           "id" : 3,
           "source_info" : {
-            "filename" : "packet_loss.p4",
-            "line" : 182,
+            "filename" : "options_pl.p4",
+            "line" : 181,
             "column" : 62,
             "source_fragment" : "="
           },
@@ -1747,10 +2078,10 @@
           "support_timeout" : false,
           "direct_meters" : null,
           "action_ids" : [3],
-          "actions" : ["packet_loss182"],
+          "actions" : ["options_pl181"],
           "base_default_next" : null,
           "next_tables" : {
-            "packet_loss182" : null
+            "options_pl181" : null
           },
           "default_entry" : {
             "action_id" : 3,
@@ -1760,11 +2091,11 @@
           }
         },
         {
-          "name" : "tbl_packet_loss185",
+          "name" : "tbl_options_pl184",
           "id" : 4,
           "source_info" : {
-            "filename" : "packet_loss.p4",
-            "line" : 185,
+            "filename" : "options_pl.p4",
+            "line" : 184,
             "column" : 62,
             "source_fragment" : "="
           },
@@ -1776,10 +2107,10 @@
           "support_timeout" : false,
           "direct_meters" : null,
           "action_ids" : [4],
-          "actions" : ["packet_loss185"],
+          "actions" : ["options_pl184"],
           "base_default_next" : null,
           "next_tables" : {
-            "packet_loss185" : null
+            "options_pl184" : null
           },
           "default_entry" : {
             "action_id" : 4,
@@ -1795,8 +2126,8 @@
           "name" : "node_2",
           "id" : 0,
           "source_info" : {
-            "filename" : "packet_loss.p4",
-            "line" : 158,
+            "filename" : "options_pl.p4",
+            "line" : 157,
             "column" : 11,
             "source_fragment" : "hdr.ethernet.dstAddr == 0xffffffffffff"
           },
@@ -1821,8 +2152,8 @@
           "name" : "node_3",
           "id" : 1,
           "source_info" : {
-            "filename" : "packet_loss.p4",
-            "line" : 160,
+            "filename" : "options_pl.p4",
+            "line" : 159,
             "column" : 19,
             "source_fragment" : "hdr.ethernet.srcAddr == 0x5254002cc5f9"
           },
@@ -1847,8 +2178,8 @@
           "name" : "node_4",
           "id" : 2,
           "source_info" : {
-            "filename" : "packet_loss.p4",
-            "line" : 162,
+            "filename" : "options_pl.p4",
+            "line" : 161,
             "column" : 35,
             "source_fragment" : "standard_metadata.ingress_port==1"
           },
@@ -1867,14 +2198,14 @@
             }
           },
           "false_next" : null,
-          "true_next" : "tbl_packet_loss164"
+          "true_next" : "tbl_options_pl163"
         },
         {
           "name" : "node_6",
           "id" : 3,
           "source_info" : {
-            "filename" : "packet_loss.p4",
-            "line" : 167,
+            "filename" : "options_pl.p4",
+            "line" : 166,
             "column" : 24,
             "source_fragment" : "hdr.ethernet.srcAddr == 0xfa163e4c8769"
           },
@@ -1899,8 +2230,8 @@
           "name" : "node_7",
           "id" : 4,
           "source_info" : {
-            "filename" : "packet_loss.p4",
-            "line" : 169,
+            "filename" : "options_pl.p4",
+            "line" : 168,
             "column" : 28,
             "source_fragment" : "standard_metadata.ingress_port==0"
           },
@@ -1919,14 +2250,14 @@
             }
           },
           "false_next" : null,
-          "true_next" : "tbl_packet_loss171"
+          "true_next" : "tbl_options_pl170"
         },
         {
           "name" : "node_10",
           "id" : 5,
           "source_info" : {
-            "filename" : "packet_loss.p4",
-            "line" : 180,
+            "filename" : "options_pl.p4",
+            "line" : 179,
             "column" : 19,
             "source_fragment" : "hdr.ethernet.dstAddr == 0x5254002cc5f9"
           },
@@ -1944,15 +2275,15 @@
               }
             }
           },
-          "true_next" : "tbl_packet_loss182",
+          "true_next" : "tbl_options_pl181",
           "false_next" : "node_12"
         },
         {
           "name" : "node_12",
           "id" : 6,
           "source_info" : {
-            "filename" : "packet_loss.p4",
-            "line" : 184,
+            "filename" : "options_pl.p4",
+            "line" : 183,
             "column" : 24,
             "source_fragment" : "hdr.ethernet.dstAddr == 0xfa163e4c8769"
           },
@@ -1970,7 +2301,7 @@
               }
             }
           },
-          "true_next" : "tbl_packet_loss185",
+          "true_next" : "tbl_options_pl184",
           "false_next" : "MyIngress.drop_packet"
         }
       ]
@@ -1979,8 +2310,8 @@
       "name" : "egress",
       "id" : 1,
       "source_info" : {
-        "filename" : "packet_loss.p4",
-        "line" : 198,
+        "filename" : "options_pl.p4",
+        "line" : 197,
         "column" : 8,
         "source_fragment" : "MyEgress"
       },
@@ -1990,8 +2321,8 @@
           "name" : "tbl_compute_flowid",
           "id" : 5,
           "source_info" : {
-            "filename" : "packet_loss.p4",
-            "line" : 240,
+            "filename" : "options_pl.p4",
+            "line" : 238,
             "column" : 2,
             "source_fragment" : "compute_flowid()"
           },
@@ -2019,8 +2350,8 @@
           "name" : "tbl_compute_index",
           "id" : 6,
           "source_info" : {
-            "filename" : "packet_loss.p4",
-            "line" : 241,
+            "filename" : "options_pl.p4",
+            "line" : 239,
             "column" : 2,
             "source_fragment" : "compute_index()"
           },
@@ -2048,8 +2379,8 @@
           "name" : "tbl_increment_count",
           "id" : 7,
           "source_info" : {
-            "filename" : "packet_loss.p4",
-            "line" : 242,
+            "filename" : "options_pl.p4",
+            "line" : 240,
             "column" : 2,
             "source_fragment" : "increment_count()"
           },
@@ -2077,8 +2408,8 @@
           "name" : "tbl_compute_mincount",
           "id" : 8,
           "source_info" : {
-            "filename" : "packet_loss.p4",
-            "line" : 243,
+            "filename" : "options_pl.p4",
+            "line" : 241,
             "column" : 2,
             "source_fragment" : "compute_mincount(meta.count1, meta.count2, meta.count3)"
           },
@@ -2091,9 +2422,9 @@
           "direct_meters" : null,
           "action_ids" : [8],
           "actions" : ["MyEgress.compute_mincount"],
-          "base_default_next" : "tbl_packet_loss244",
+          "base_default_next" : "tbl_options_pl242",
           "next_tables" : {
-            "MyEgress.compute_mincount" : "tbl_packet_loss244"
+            "MyEgress.compute_mincount" : "tbl_options_pl242"
           },
           "default_entry" : {
             "action_id" : 8,
@@ -2103,11 +2434,11 @@
           }
         },
         {
-          "name" : "tbl_packet_loss244",
+          "name" : "tbl_options_pl242",
           "id" : 9,
           "source_info" : {
-            "filename" : "packet_loss.p4",
-            "line" : 244,
+            "filename" : "options_pl.p4",
+            "line" : 242,
             "column" : 2,
             "source_fragment" : "  log_msg(\\\"flow id = {},lasthop-packets={}, currenthop-packets={}, lost packets = {}\\\",{meta.flowid, hdr.ipv4.diffserv, meta.min_count, meta.num_lost_packets});"
           },
@@ -2119,13 +2450,42 @@
           "support_timeout" : false,
           "direct_meters" : null,
           "action_ids" : [9],
-          "actions" : ["packet_loss244"],
-          "base_default_next" : null,
+          "actions" : ["options_pl242"],
+          "base_default_next" : "tbl_options_pl244",
           "next_tables" : {
-            "packet_loss244" : null
+            "options_pl242" : "tbl_options_pl244"
           },
           "default_entry" : {
             "action_id" : 9,
+            "action_const" : true,
+            "action_data" : [],
+            "action_entry_const" : true
+          }
+        },
+        {
+          "name" : "tbl_options_pl244",
+          "id" : 10,
+          "source_info" : {
+            "filename" : "options_pl.p4",
+            "line" : 244,
+            "column" : 2,
+            "source_fragment" : "hdr.ipv4_option.setInvalid(); ..."
+          },
+          "key" : [],
+          "match_type" : "exact",
+          "type" : "simple",
+          "max_size" : 1024,
+          "with_counters" : false,
+          "support_timeout" : false,
+          "direct_meters" : null,
+          "action_ids" : [10],
+          "actions" : ["options_pl244"],
+          "base_default_next" : null,
+          "next_tables" : {
+            "options_pl244" : null
+          },
+          "default_entry" : {
+            "action_id" : 10,
             "action_const" : true,
             "action_data" : [],
             "action_entry_const" : true
@@ -2138,8 +2498,8 @@
           "name" : "node_17",
           "id" : 7,
           "source_info" : {
-            "filename" : "packet_loss.p4",
-            "line" : 237,
+            "filename" : "options_pl.p4",
+            "line" : 236,
             "column" : 4,
             "source_fragment" : "hdr.ethernet.dstAddr == 0x5254002cc5f9"
           },
@@ -2164,8 +2524,8 @@
           "name" : "node_18",
           "id" : 8,
           "source_info" : {
-            "filename" : "packet_loss.p4",
-            "line" : 239,
+            "filename" : "options_pl.p4",
+            "line" : 237,
             "column" : 4,
             "source_fragment" : "hdr.ethernet.srcAddr == 0xfa163e4c8769"
           },
@@ -2183,8 +2543,8 @@
               }
             }
           },
-          "false_next" : null,
-          "true_next" : "tbl_compute_flowid"
+          "true_next" : "tbl_compute_flowid",
+          "false_next" : "tbl_options_pl244"
         }
       ]
     }
@@ -2194,8 +2554,8 @@
       "name" : "cksum",
       "id" : 0,
       "source_info" : {
-        "filename" : "packet_loss.p4",
-        "line" : 262,
+        "filename" : "options_pl.p4",
+        "line" : 257,
         "column" : 1,
         "source_fragment" : "update_checksum( ..."
       },
@@ -2257,7 +2617,7 @@
       ["standard_metadata", "priority"]
     ]
   ],
-  "program" : "packet_loss.bmv2/packet_loss.p4i",
+  "program" : "options_pl.bmv2/options_pl.p4i",
   "__meta__" : {
     "version" : [2, 23],
     "compiler" : "https://github.com/p4lang/p4c"
