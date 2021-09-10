@@ -21,12 +21,6 @@ register<bit<32>>(HASH_TABLE_SIZE) hashtable3;
 *********************** H E A D E R S  ***********************************
 *************************************************************************/
 
-typedef bit<9>  egressSpec_t;
-typedef bit<48> macAddr_t;
-typedef bit<48> mac_addr_t;
-typedef bit<32> ip4Addr_t;
-typedef bit<32> ipv4_addr_t;
-typedef bit<9> port_id_t;
 
 /* GPRS Tunnelling Protocol (GTP) common part for v1 and v2 */
 
@@ -232,8 +226,7 @@ control MyEgress(inout headers hdr,
 	}
     
     apply {
-	#log_msg("ip-dst= {}, ip-src={}",{hdr.ipv4_inner.dstAddr, hdr.ipv4_inner.srcAddr});
-        if(hdr.ethernet.srcAddr == 0x94c6911ef360){
+	if(hdr.ethernet.srcAddr == 0x94c6911ef360){
 	if(hdr.ipv4_inner.isValid()){
 		compute_flowid();
 		compute_index();
@@ -241,7 +234,6 @@ control MyEgress(inout headers hdr,
 		compute_mincount(meta.count1, meta.count2, meta.count3);
 		hdr.ipv4_inner.diffserv = (bit<8>) meta.min_count;
 		}}
-	#log_msg("ip-after = {}",{hdr.ipv4_inner_option.optionLength});  
 	}
 }
 
@@ -268,23 +260,6 @@ control MyComputeChecksum(inout headers  hdr, inout metadata meta) {
               hdr.ipv4_inner.dstAddr },
             hdr.ipv4_inner.hdrChecksum,
             HashAlgorithm.csum16);
-
-	update_checksum(
-        hdr.ipv4_outer.isValid(),
-            { hdr.ipv4_outer.version,
-              hdr.ipv4_outer.ihl,
-              hdr.ipv4_outer.diffserv,
-              hdr.ipv4_outer.totalLen,
-              hdr.ipv4_outer.identification,
-              hdr.ipv4_outer.flags,
-              hdr.ipv4_outer.fragOffset,
-              hdr.ipv4_outer.ttl,
-              hdr.ipv4_outer.protocol,
-              hdr.ipv4_outer.srcAddr,
-              hdr.ipv4_outer.dstAddr },
-            hdr.ipv4_outer.hdrChecksum,
-            HashAlgorithm.csum16);
-   
 	}
 }
 
@@ -300,9 +275,6 @@ control MyDeparser(packet_out packet, in headers hdr) {
         packet.emit(hdr.gtp_common);
         packet.emit(hdr.gtp_teid);
         packet.emit(hdr.ipv4_inner);
-#	packet.emit(hdr.ipv4_inner_option);
-#	packet.emit(hdr.mri);
-#	packet.emit(hdr.swtraces);
     	  }
 }
 

@@ -384,7 +384,7 @@
       "id" : 0,
       "source_info" : {
         "filename" : "gtp.p4",
-        "line" : 295,
+        "line" : 270,
         "column" : 8,
         "source_fragment" : "MyDeparser"
       },
@@ -483,7 +483,7 @@
       "id" : 3,
       "source_info" : {
         "filename" : "gtp.p4",
-        "line" : 256,
+        "line" : 248,
         "column" : 2,
         "source_fragment" : "update_checksum( ..."
       },
@@ -534,63 +534,6 @@
           "value" : ["ipv4_inner", "dstAddr"]
         }
       ]
-    },
-    {
-      "name" : "calc_3",
-      "id" : 4,
-      "source_info" : {
-        "filename" : "gtp.p4",
-        "line" : 272,
-        "column" : 1,
-        "source_fragment" : "update_checksum( ..."
-      },
-      "algo" : "csum16",
-      "input" : [
-        {
-          "type" : "field",
-          "value" : ["ipv4_outer", "version"]
-        },
-        {
-          "type" : "field",
-          "value" : ["ipv4_outer", "ihl"]
-        },
-        {
-          "type" : "field",
-          "value" : ["ipv4_outer", "diffserv"]
-        },
-        {
-          "type" : "field",
-          "value" : ["ipv4_outer", "totalLen"]
-        },
-        {
-          "type" : "field",
-          "value" : ["ipv4_outer", "identification"]
-        },
-        {
-          "type" : "field",
-          "value" : ["ipv4_outer", "flags"]
-        },
-        {
-          "type" : "field",
-          "value" : ["ipv4_outer", "fragOffset"]
-        },
-        {
-          "type" : "field",
-          "value" : ["ipv4_outer", "ttl"]
-        },
-        {
-          "type" : "field",
-          "value" : ["ipv4_outer", "protocol"]
-        },
-        {
-          "type" : "field",
-          "value" : ["ipv4_outer", "srcAddr"]
-        },
-        {
-          "type" : "field",
-          "value" : ["ipv4_outer", "dstAddr"]
-        }
-      ]
     }
   ],
   "learn_lists" : [],
@@ -610,7 +553,7 @@
           ],
           "source_info" : {
             "filename" : "gtp.p4",
-            "line" : 149,
+            "line" : 143,
             "column" : 8,
             "source_fragment" : "mark_to_drop(standard_metadata)"
           }
@@ -618,7 +561,7 @@
       ]
     },
     {
-      "name" : "gtp166",
+      "name" : "gtp160",
       "id" : 1,
       "runtime_data" : [],
       "primitives" : [
@@ -636,7 +579,7 @@
           ],
           "source_info" : {
             "filename" : "gtp.p4",
-            "line" : 166,
+            "line" : 160,
             "column" : 40,
             "source_fragment" : "standard_metadata.egress_spec =0"
           }
@@ -644,7 +587,7 @@
       ]
     },
     {
-      "name" : "gtp173",
+      "name" : "gtp167",
       "id" : 2,
       "runtime_data" : [],
       "primitives" : [
@@ -662,7 +605,7 @@
           ],
           "source_info" : {
             "filename" : "gtp.p4",
-            "line" : 173,
+            "line" : 167,
             "column" : 32,
             "source_fragment" : "standard_metadata.egress_spec =1"
           }
@@ -670,7 +613,7 @@
       ]
     },
     {
-      "name" : "gtp185",
+      "name" : "gtp179",
       "id" : 3,
       "runtime_data" : [],
       "primitives" : [
@@ -711,7 +654,7 @@
           ],
           "source_info" : {
             "filename" : "gtp.p4",
-            "line" : 185,
+            "line" : 179,
             "column" : 32,
             "source_fragment" : "standard_metadata.egress_spec =1-standard_metadata.ingress_port"
           }
@@ -719,7 +662,7 @@
       ]
     },
     {
-      "name" : "gtp188",
+      "name" : "gtp182",
       "id" : 4,
       "runtime_data" : [],
       "primitives" : [
@@ -760,7 +703,7 @@
           ],
           "source_info" : {
             "filename" : "gtp.p4",
-            "line" : 188,
+            "line" : 182,
             "column" : 32,
             "source_fragment" : "standard_metadata.egress_spec =1-standard_metadata.ingress_port"
           }
@@ -829,7 +772,7 @@
           ],
           "source_info" : {
             "filename" : "gtp.p4",
-            "line" : 207,
+            "line" : 201,
             "column" : 4,
             "source_fragment" : "meta.flowid[31:0] = hdr.ipv4_inner.srcAddr"
           }
@@ -911,7 +854,7 @@
           ],
           "source_info" : {
             "filename" : "gtp.p4",
-            "line" : 208,
+            "line" : 202,
             "column" : 1,
             "source_fragment" : "meta.flowid[63:32] = hdr.ipv4_inner.dstAddr"
           }
@@ -993,7 +936,7 @@
           ],
           "source_info" : {
             "filename" : "gtp.p4",
-            "line" : 209,
+            "line" : 203,
             "column" : 1,
             "source_fragment" : "meta.flowid[71:64] = hdr.ipv4_inner.protocol"
           }
@@ -1019,7 +962,7 @@
           ],
           "source_info" : {
             "filename" : "gtp.p4",
-            "line" : 212,
+            "line" : 206,
             "column" : 47,
             "source_fragment" : "meta.flowid"
           }
@@ -1038,7 +981,7 @@
           ],
           "source_info" : {
             "filename" : "gtp.p4",
-            "line" : 212,
+            "line" : 206,
             "column" : 60,
             "source_fragment" : "10w33"
           }
@@ -1065,7 +1008,7 @@
           ],
           "source_info" : {
             "filename" : "gtp.p4",
-            "line" : 212,
+            "line" : 206,
             "column" : 1,
             "source_fragment" : "hash(meta.index1, HashAlgorithm.crc16, 10w0, {meta.flowid, 10w33}, 10w1023)"
           }
@@ -1084,7 +1027,7 @@
           ],
           "source_info" : {
             "filename" : "gtp.p4",
-            "line" : 213,
+            "line" : 207,
             "column" : 47,
             "source_fragment" : "meta.flowid"
           }
@@ -1103,7 +1046,7 @@
           ],
           "source_info" : {
             "filename" : "gtp.p4",
-            "line" : 213,
+            "line" : 207,
             "column" : 60,
             "source_fragment" : "10w202"
           }
@@ -1130,7 +1073,7 @@
           ],
           "source_info" : {
             "filename" : "gtp.p4",
-            "line" : 213,
+            "line" : 207,
             "column" : 1,
             "source_fragment" : "hash(meta.index2, HashAlgorithm.crc16, 10w0, {meta.flowid, 10w202}, 10w1023)"
           }
@@ -1149,7 +1092,7 @@
           ],
           "source_info" : {
             "filename" : "gtp.p4",
-            "line" : 214,
+            "line" : 208,
             "column" : 47,
             "source_fragment" : "meta.flowid"
           }
@@ -1168,7 +1111,7 @@
           ],
           "source_info" : {
             "filename" : "gtp.p4",
-            "line" : 214,
+            "line" : 208,
             "column" : 60,
             "source_fragment" : "10w514"
           }
@@ -1195,7 +1138,7 @@
           ],
           "source_info" : {
             "filename" : "gtp.p4",
-            "line" : 214,
+            "line" : 208,
             "column" : 1,
             "source_fragment" : "hash(meta.index3, HashAlgorithm.crc16, 10w0, {meta.flowid, 10w514}, 10w1023)"
           }
@@ -1225,7 +1168,7 @@
           ],
           "source_info" : {
             "filename" : "gtp.p4",
-            "line" : 217,
+            "line" : 211,
             "column" : 1,
             "source_fragment" : "hashtable1.read(meta.count1, meta.index1)"
           }
@@ -1248,7 +1191,7 @@
           ],
           "source_info" : {
             "filename" : "gtp.p4",
-            "line" : 218,
+            "line" : 212,
             "column" : 1,
             "source_fragment" : "hashtable2.read(meta.count2, meta.index2)"
           }
@@ -1271,7 +1214,7 @@
           ],
           "source_info" : {
             "filename" : "gtp.p4",
-            "line" : 219,
+            "line" : 213,
             "column" : 1,
             "source_fragment" : "hashtable3.read(meta.count3, meta.index3)"
           }
@@ -1313,7 +1256,7 @@
           ],
           "source_info" : {
             "filename" : "gtp.p4",
-            "line" : 221,
+            "line" : 215,
             "column" : 31,
             "source_fragment" : "meta.count1 + 1"
           }
@@ -1336,7 +1279,7 @@
           ],
           "source_info" : {
             "filename" : "gtp.p4",
-            "line" : 221,
+            "line" : 215,
             "column" : 1,
             "source_fragment" : "hashtable1.write(meta.index1, meta.count1 + 1)"
           }
@@ -1378,7 +1321,7 @@
           ],
           "source_info" : {
             "filename" : "gtp.p4",
-            "line" : 222,
+            "line" : 216,
             "column" : 31,
             "source_fragment" : "meta.count2 + 1"
           }
@@ -1401,7 +1344,7 @@
           ],
           "source_info" : {
             "filename" : "gtp.p4",
-            "line" : 222,
+            "line" : 216,
             "column" : 1,
             "source_fragment" : "hashtable2.write(meta.index2, meta.count2 + 1)"
           }
@@ -1443,7 +1386,7 @@
           ],
           "source_info" : {
             "filename" : "gtp.p4",
-            "line" : 223,
+            "line" : 217,
             "column" : 31,
             "source_fragment" : "meta.count3 + 1"
           }
@@ -1466,7 +1409,7 @@
           ],
           "source_info" : {
             "filename" : "gtp.p4",
-            "line" : 223,
+            "line" : 217,
             "column" : 1,
             "source_fragment" : "hashtable3.write(meta.index3, meta.count3 + 1)"
           }
@@ -1492,7 +1435,7 @@
           ],
           "source_info" : {
             "filename" : "gtp.p4",
-            "line" : 226,
+            "line" : 220,
             "column" : 6,
             "source_fragment" : "meta.min_count = cnt1; ..."
           }
@@ -1628,7 +1571,7 @@
       ]
     },
     {
-      "name" : "gtp242",
+      "name" : "gtp235",
       "id" : 9,
       "runtime_data" : [],
       "primitives" : [
@@ -1659,7 +1602,7 @@
           ],
           "source_info" : {
             "filename" : "gtp.p4",
-            "line" : 242,
+            "line" : 235,
             "column" : 2,
             "source_fragment" : "hdr.ipv4_inner.diffserv = (bit<8>) meta.min_count"
           }
@@ -1673,18 +1616,18 @@
       "id" : 0,
       "source_info" : {
         "filename" : "gtp.p4",
-        "line" : 144,
+        "line" : 138,
         "column" : 8,
         "source_fragment" : "MyIngress"
       },
       "init_table" : "node_2",
       "tables" : [
         {
-          "name" : "tbl_gtp166",
+          "name" : "tbl_gtp160",
           "id" : 0,
           "source_info" : {
             "filename" : "gtp.p4",
-            "line" : 166,
+            "line" : 160,
             "column" : 70,
             "source_fragment" : "="
           },
@@ -1696,10 +1639,10 @@
           "support_timeout" : false,
           "direct_meters" : null,
           "action_ids" : [1],
-          "actions" : ["gtp166"],
+          "actions" : ["gtp160"],
           "base_default_next" : null,
           "next_tables" : {
-            "gtp166" : null
+            "gtp160" : null
           },
           "default_entry" : {
             "action_id" : 1,
@@ -1709,11 +1652,11 @@
           }
         },
         {
-          "name" : "tbl_gtp173",
+          "name" : "tbl_gtp167",
           "id" : 1,
           "source_info" : {
             "filename" : "gtp.p4",
-            "line" : 173,
+            "line" : 167,
             "column" : 62,
             "source_fragment" : "="
           },
@@ -1725,10 +1668,10 @@
           "support_timeout" : false,
           "direct_meters" : null,
           "action_ids" : [2],
-          "actions" : ["gtp173"],
+          "actions" : ["gtp167"],
           "base_default_next" : null,
           "next_tables" : {
-            "gtp173" : null
+            "gtp167" : null
           },
           "default_entry" : {
             "action_id" : 2,
@@ -1742,7 +1685,7 @@
           "id" : 2,
           "source_info" : {
             "filename" : "gtp.p4",
-            "line" : 152,
+            "line" : 146,
             "column" : 9,
             "source_fragment" : "drop_packet"
           },
@@ -1767,11 +1710,11 @@
           }
         },
         {
-          "name" : "tbl_gtp185",
+          "name" : "tbl_gtp179",
           "id" : 3,
           "source_info" : {
             "filename" : "gtp.p4",
-            "line" : 185,
+            "line" : 179,
             "column" : 62,
             "source_fragment" : "="
           },
@@ -1783,10 +1726,10 @@
           "support_timeout" : false,
           "direct_meters" : null,
           "action_ids" : [3],
-          "actions" : ["gtp185"],
+          "actions" : ["gtp179"],
           "base_default_next" : null,
           "next_tables" : {
-            "gtp185" : null
+            "gtp179" : null
           },
           "default_entry" : {
             "action_id" : 3,
@@ -1796,11 +1739,11 @@
           }
         },
         {
-          "name" : "tbl_gtp188",
+          "name" : "tbl_gtp182",
           "id" : 4,
           "source_info" : {
             "filename" : "gtp.p4",
-            "line" : 188,
+            "line" : 182,
             "column" : 62,
             "source_fragment" : "="
           },
@@ -1812,10 +1755,10 @@
           "support_timeout" : false,
           "direct_meters" : null,
           "action_ids" : [4],
-          "actions" : ["gtp188"],
+          "actions" : ["gtp182"],
           "base_default_next" : null,
           "next_tables" : {
-            "gtp188" : null
+            "gtp182" : null
           },
           "default_entry" : {
             "action_id" : 4,
@@ -1832,7 +1775,7 @@
           "id" : 0,
           "source_info" : {
             "filename" : "gtp.p4",
-            "line" : 160,
+            "line" : 154,
             "column" : 11,
             "source_fragment" : "hdr.ethernet.dstAddr == 0xffffffffffff"
           },
@@ -1858,7 +1801,7 @@
           "id" : 1,
           "source_info" : {
             "filename" : "gtp.p4",
-            "line" : 162,
+            "line" : 156,
             "column" : 19,
             "source_fragment" : "hdr.ethernet.srcAddr == 0xfa163e301ed4"
           },
@@ -1884,7 +1827,7 @@
           "id" : 2,
           "source_info" : {
             "filename" : "gtp.p4",
-            "line" : 164,
+            "line" : 158,
             "column" : 35,
             "source_fragment" : "standard_metadata.ingress_port==1"
           },
@@ -1903,14 +1846,14 @@
             }
           },
           "false_next" : null,
-          "true_next" : "tbl_gtp166"
+          "true_next" : "tbl_gtp160"
         },
         {
           "name" : "node_6",
           "id" : 3,
           "source_info" : {
             "filename" : "gtp.p4",
-            "line" : 169,
+            "line" : 163,
             "column" : 24,
             "source_fragment" : "hdr.ethernet.srcAddr == 0x94c6911ef360"
           },
@@ -1936,7 +1879,7 @@
           "id" : 4,
           "source_info" : {
             "filename" : "gtp.p4",
-            "line" : 171,
+            "line" : 165,
             "column" : 28,
             "source_fragment" : "standard_metadata.ingress_port==0"
           },
@@ -1955,14 +1898,14 @@
             }
           },
           "false_next" : null,
-          "true_next" : "tbl_gtp173"
+          "true_next" : "tbl_gtp167"
         },
         {
           "name" : "node_10",
           "id" : 5,
           "source_info" : {
             "filename" : "gtp.p4",
-            "line" : 183,
+            "line" : 177,
             "column" : 19,
             "source_fragment" : "hdr.ethernet.dstAddr == 0xfa163e301ed4"
           },
@@ -1980,7 +1923,7 @@
               }
             }
           },
-          "true_next" : "tbl_gtp185",
+          "true_next" : "tbl_gtp179",
           "false_next" : "node_12"
         },
         {
@@ -1988,7 +1931,7 @@
           "id" : 6,
           "source_info" : {
             "filename" : "gtp.p4",
-            "line" : 187,
+            "line" : 181,
             "column" : 24,
             "source_fragment" : "hdr.ethernet.dstAddr == 0x94c6911ef360"
           },
@@ -2006,7 +1949,7 @@
               }
             }
           },
-          "true_next" : "tbl_gtp188",
+          "true_next" : "tbl_gtp182",
           "false_next" : "MyIngress.drop_packet"
         }
       ]
@@ -2016,7 +1959,7 @@
       "id" : 1,
       "source_info" : {
         "filename" : "gtp.p4",
-        "line" : 201,
+        "line" : 195,
         "column" : 8,
         "source_fragment" : "MyEgress"
       },
@@ -2027,7 +1970,7 @@
           "id" : 5,
           "source_info" : {
             "filename" : "gtp.p4",
-            "line" : 238,
+            "line" : 231,
             "column" : 2,
             "source_fragment" : "compute_flowid()"
           },
@@ -2056,7 +1999,7 @@
           "id" : 6,
           "source_info" : {
             "filename" : "gtp.p4",
-            "line" : 239,
+            "line" : 232,
             "column" : 2,
             "source_fragment" : "compute_index()"
           },
@@ -2085,7 +2028,7 @@
           "id" : 7,
           "source_info" : {
             "filename" : "gtp.p4",
-            "line" : 240,
+            "line" : 233,
             "column" : 2,
             "source_fragment" : "increment_count()"
           },
@@ -2114,7 +2057,7 @@
           "id" : 8,
           "source_info" : {
             "filename" : "gtp.p4",
-            "line" : 241,
+            "line" : 234,
             "column" : 2,
             "source_fragment" : "compute_mincount(meta.count1, meta.count2, meta.count3)"
           },
@@ -2127,9 +2070,9 @@
           "direct_meters" : null,
           "action_ids" : [8],
           "actions" : ["MyEgress.compute_mincount"],
-          "base_default_next" : "tbl_gtp242",
+          "base_default_next" : "tbl_gtp235",
           "next_tables" : {
-            "MyEgress.compute_mincount" : "tbl_gtp242"
+            "MyEgress.compute_mincount" : "tbl_gtp235"
           },
           "default_entry" : {
             "action_id" : 8,
@@ -2139,11 +2082,11 @@
           }
         },
         {
-          "name" : "tbl_gtp242",
+          "name" : "tbl_gtp235",
           "id" : 9,
           "source_info" : {
             "filename" : "gtp.p4",
-            "line" : 242,
+            "line" : 235,
             "column" : 26,
             "source_fragment" : "="
           },
@@ -2155,10 +2098,10 @@
           "support_timeout" : false,
           "direct_meters" : null,
           "action_ids" : [9],
-          "actions" : ["gtp242"],
+          "actions" : ["gtp235"],
           "base_default_next" : null,
           "next_tables" : {
-            "gtp242" : null
+            "gtp235" : null
           },
           "default_entry" : {
             "action_id" : 9,
@@ -2175,8 +2118,8 @@
           "id" : 7,
           "source_info" : {
             "filename" : "gtp.p4",
-            "line" : 236,
-            "column" : 11,
+            "line" : 229,
+            "column" : 4,
             "source_fragment" : "hdr.ethernet.srcAddr == 0x94c6911ef360"
           },
           "expression" : {
@@ -2201,7 +2144,7 @@
           "id" : 8,
           "source_info" : {
             "filename" : "gtp.p4",
-            "line" : 237,
+            "line" : 230,
             "column" : 4,
             "source_fragment" : "hdr.ipv4_inner.isValid()"
           },
@@ -2228,7 +2171,7 @@
       "id" : 0,
       "source_info" : {
         "filename" : "gtp.p4",
-        "line" : 256,
+        "line" : 248,
         "column" : 2,
         "source_fragment" : "update_checksum( ..."
       },
@@ -2245,32 +2188,6 @@
           "right" : {
             "type" : "field",
             "value" : ["ipv4_inner", "$valid$"]
-          }
-        }
-      }
-    },
-    {
-      "name" : "cksum_0",
-      "id" : 1,
-      "source_info" : {
-        "filename" : "gtp.p4",
-        "line" : 272,
-        "column" : 1,
-        "source_fragment" : "update_checksum( ..."
-      },
-      "target" : ["ipv4_outer", "hdrChecksum"],
-      "type" : "generic",
-      "calculation" : "calc_3",
-      "verify" : false,
-      "update" : true,
-      "if_cond" : {
-        "type" : "expression",
-        "value" : {
-          "op" : "d2b",
-          "left" : null,
-          "right" : {
-            "type" : "field",
-            "value" : ["ipv4_outer", "$valid$"]
           }
         }
       }
