@@ -78,7 +78,7 @@ struct metadata {
 	bit<32> count2;
 	bit<32> count3;
 	bit<32> min_count;
-	   
+	bit<16> Len;	   
    }
 
 struct headers {
@@ -173,23 +173,49 @@ control MyIngress(inout headers hdr,
         mark_to_drop(standard_metadata);
     }
 
-    action forward(port_id_t port) {
-        standard_metadata.egress_port = port;
-    }
-
-
-   table packet_forward {
-        key = {
-            standard_metadata.ingress_port : exact;
+   table drop_packet{
+        actions = {
+            drop;
         }
-        actions = {forward; drop; }
-        size = 64;
-        default_action = drop;
+     default_action = drop();
     }
-
     apply {
-           packet_forward.apply();
-      }
+
+        if(hdr.ethernet.dstAddr == 0xffffffffffff)
+                {
+                if(hdr.ethernet.srcAddr == 0xfa163e301ed4)
+                        {
+                                if(standard_metadata.ingress_port==1)
+                                {
+                                        standard_metadata.egress_spec =0;
+                                }
+                        }
+                else if(hdr.ethernet.srcAddr == 0x94c6911ef360)
+                        {
+                         if(standard_metadata.ingress_port==0)
+                                {
+                                standard_metadata.egress_spec =1;
+                                }
+                        }
+                else{
+                        drop_packet.apply();
+                        }
+
+                }
+
+        else {
+                if(hdr.ethernet.dstAddr == 0xfa163e301ed4)
+                        {
+                                standard_metadata.egress_spec =1-standard_metadata.ingress_port;
+                        }
+                else if(hdr.ethernet.dstAddr == 0x94c6911ef360){
+                                standard_metadata.egress_spec =1-standard_metadata.ingress_port;
+                        }
+                else{
+                        drop_packet.apply();
+                        }
+            }
+        }
 }
 
 /*************************************************************************
@@ -235,43 +261,43 @@ control MyEgress(inout headers hdr,
 	hdr.ipv4_inner_option.setValid();
 	hdr.ipv4_inner_option.copyFlag=0; // do not copy options in fragments
 	hdr.ipv4_inner_option.optClass=2; // Measurement purpose
-	hdr.ipv4_inner_option.option= 31;
+	hdr.ipv4_inner_option.option= 4;
 	hdr.ipv4_inner_option.optionLength=4; // length of option fields in bytes
         
         hdr.mri.setValid();
 	hdr.mri.count = 1;
 	}
-    action add_swtrace(switchID_t  swid){
+    
+   action add_swtrace(){
 	hdr.swtraces.setValid();
-	hdr.swtraces.swid = swid;
+	hdr.swtraces.swid = 1;
 	hdr.swtraces.packet_count = meta.min_count;
 
-	hdr.ipv4_inner.ihl = hdr.ipv4_inner.ihl +1 + 2; //  option,mri and swtrace (in 32bits)
-	hdr.ipv4_inner_option.optionLength = hdr.ipv4_inner_option.optionLength + 8;
-	hdr.ipv4_inner.totalLen  = hdr.ipv4_inner.totalLen +4 + 8;// increase in bytes
+	hdr.ipv4_inner.ihl = hdr.ipv4_inner.ihl + 1+ 2; //  option,mri and swtrace (in 32bits)
+	hdr.ipv4_inner_option.optionLength =  4 + 8;
+	hdr.ipv4_inner.totalLen  = hdr.ipv4_inner.totalLen + 4 + 8;// increase in bytes
 
-	hdr.gtp_common.messageLength  = hdr.gtp_common.messageLength +4 +8;
-        hdr.udp_outer.plength = hdr.udp_outer.plength +4 + 8;
-	hdr.ipv4_outer.totalLen  = hdr.ipv4_outer.totalLen +4 + 8;// increase in bytes
+	hdr.gtp_common.messageLength  = hdr.gtp_common.messageLength  +8;
+        hdr.udp_outer.plength = hdr.udp_outer.plength + 4 + 8;
+	
+	hdr.ipv4_outer.ihl  = hdr.ipv4_outer.ihl  +1 + 2;
+	hdr.ipv4_outer.totalLen  = hdr.ipv4_outer.totalLen  + 4+ 8;// increase in bytes
+	meta.Len =hdr.ipv4_outer.totalLen - 16w32;
 	}
 
-      table swtrace{
-		actions={
-		add_swtrace;
-		NoAction;
-		}
-		default_action = NoAction();
-	}
 
     apply {
+	log_msg("ip-dst= {}, ip-src={}",{hdr.ipv4_inner.dstAddr, hdr.ipv4_inner.srcAddr});
+        if(hdr.ethernet.srcAddr == 0x94c6911ef360){
 	if(hdr.ipv4_inner.isValid()){
 		compute_flowid();
 		compute_index();
 		increment_count();
 		compute_mincount(meta.count1, meta.count2, meta.count3);
-		add_option_header();
-		swtrace.apply();
-		}  
+#		add_option_header();
+#		add_swtrace();
+		}}
+	#log_msg("ip-after = {}",{hdr.ipv4_inner_option.optionLength});  
 	}
 }
 
@@ -299,6 +325,19 @@ control MyComputeChecksum(inout headers  hdr, inout metadata meta) {
             hdr.ipv4_inner.hdrChecksum,
             HashAlgorithm.csum16);
 
+/*
+        update_checksum_with_payload(hdr.udp_outer.isValid(),
+            { hdr.ipv4_outer.srcAddr,
+                hdr.ipv4_outer.dstAddr,
+                8w0,
+                hdr.ipv4_outer.protocol,
+                meta.Len,
+                hdr.udp_outer.srcPort,
+                hdr.udp_outer.dstPort,
+                hdr.udp_outer.plength
+            },
+            hdr.udp_outer.checksum, HashAlgorithm.csum16);
+*/
 	update_checksum(
         hdr.ipv4_outer.isValid(),
             { hdr.ipv4_outer.version,

@@ -3,7 +3,28 @@
     {
       "name" : "scalars_0",
       "id" : 0,
-      "fields" : []
+      "fields" : [
+        ["tmp", 1, false],
+        ["tmp_0", 72, false],
+        ["tmp_1", 10, false],
+        ["tmp_2", 72, false],
+        ["tmp_3", 10, false],
+        ["tmp_4", 72, false],
+        ["tmp_5", 10, false],
+        ["tmp_6", 32, false],
+        ["tmp_7", 32, false],
+        ["tmp_8", 32, false],
+        ["userMetadata.flowid", 72, false],
+        ["userMetadata.index1", 32, false],
+        ["userMetadata.index2", 32, false],
+        ["userMetadata.index3", 32, false],
+        ["userMetadata.count1", 32, false],
+        ["userMetadata.count2", 32, false],
+        ["userMetadata.count3", 32, false],
+        ["userMetadata.min_count", 32, false],
+        ["userMetadata.Len", 16, false],
+        ["_padding_0", 1, false]
+      ]
     },
     {
       "name" : "standard_metadata",
@@ -85,6 +106,16 @@
       "fields" : [
         ["teid", 32, false]
       ]
+    },
+    {
+      "name" : "ipv4_inner_option_t",
+      "id" : 7,
+      "fields" : [
+        ["value", 8, false],
+        ["optionLength", 8, false],
+        ["swid", 16, false],
+        ["packet_count", 32, false]
+      ]
     }
   ],
   "headers" : [
@@ -145,9 +176,9 @@
       "pi_omit" : true
     },
     {
-      "name" : "udp_inner",
+      "name" : "ipv4_inner_option",
       "id" : 8,
-      "header_type" : "udp_t",
+      "header_type" : "ipv4_inner_option_t",
       "metadata" : false,
       "pi_omit" : true
     }
@@ -164,7 +195,8 @@
     ["StackOutOfBounds", 3],
     ["HeaderTooShort", 4],
     ["ParserTimeout", 5],
-    ["ParserInvalidArgument", 6]
+    ["ParserInvalidArgument", 6],
+    ["IPHeaderTooShort", 7]
   ],
   "enums" : [],
   "parsers" : [
@@ -350,6 +382,94 @@
                 }
               ],
               "op" : "extract"
+            },
+            {
+              "parameters" : [
+                {
+                  "type" : "field",
+                  "value" : ["scalars", "tmp"]
+                },
+                {
+                  "type" : "expression",
+                  "value" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "b2d",
+                      "left" : null,
+                      "right" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : ">=",
+                          "left" : {
+                            "type" : "field",
+                            "value" : ["ipv4_inner", "ihl"]
+                          },
+                          "right" : {
+                            "type" : "hexstr",
+                            "value" : "0x05"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              ],
+              "op" : "set"
+            },
+            {
+              "parameters" : [
+                {
+                  "type" : "expression",
+                  "value" : {
+                    "op" : "d2b",
+                    "left" : null,
+                    "right" : {
+                      "type" : "field",
+                      "value" : ["scalars", "tmp"]
+                    }
+                  }
+                },
+                {
+                  "type" : "hexstr",
+                  "value" : "0x7"
+                }
+              ],
+              "op" : "verify"
+            }
+          ],
+          "transitions" : [
+            {
+              "type" : "hexstr",
+              "value" : "0x05",
+              "mask" : null,
+              "next_state" : null
+            },
+            {
+              "type" : "default",
+              "value" : null,
+              "mask" : null,
+              "next_state" : "parse_ipv4_inner_option"
+            }
+          ],
+          "transition_key" : [
+            {
+              "type" : "field",
+              "value" : ["ipv4_inner", "ihl"]
+            }
+          ]
+        },
+        {
+          "name" : "parse_ipv4_inner_option",
+          "id" : 5,
+          "parser_ops" : [
+            {
+              "parameters" : [
+                {
+                  "type" : "regular",
+                  "value" : "ipv4_inner_option"
+                }
+              ],
+              "op" : "extract"
             }
           ],
           "transitions" : [
@@ -372,18 +492,215 @@
       "id" : 0,
       "source_info" : {
         "filename" : "gtp.p4",
-        "line" : 219,
+        "line" : 348,
         "column" : 8,
         "source_fragment" : "MyDeparser"
       },
-      "order" : ["ethernet", "ipv4_outer", "udp_outer", "gtp_common", "gtp_teid", "ipv4_inner", "udp_inner"],
+      "order" : ["ethernet", "ipv4_outer", "udp_outer", "gtp_common", "gtp_teid", "ipv4_inner", "ipv4_inner_option"],
       "primitives" : []
     }
   ],
   "meter_arrays" : [],
   "counter_arrays" : [],
-  "register_arrays" : [],
-  "calculations" : [],
+  "register_arrays" : [
+    {
+      "name" : "hashtable1",
+      "id" : 0,
+      "source_info" : {
+        "filename" : "gtp.p4",
+        "line" : 16,
+        "column" : 35,
+        "source_fragment" : "hashtable1"
+      },
+      "size" : 1024,
+      "bitwidth" : 32
+    },
+    {
+      "name" : "hashtable2",
+      "id" : 1,
+      "source_info" : {
+        "filename" : "gtp.p4",
+        "line" : 17,
+        "column" : 35,
+        "source_fragment" : "hashtable2"
+      },
+      "size" : 1024,
+      "bitwidth" : 32
+    },
+    {
+      "name" : "hashtable3",
+      "id" : 2,
+      "source_info" : {
+        "filename" : "gtp.p4",
+        "line" : 18,
+        "column" : 35,
+        "source_fragment" : "hashtable3"
+      },
+      "size" : 1024,
+      "bitwidth" : 32
+    }
+  ],
+  "calculations" : [
+    {
+      "name" : "calc",
+      "id" : 0,
+      "algo" : "crc16",
+      "input" : [
+        {
+          "type" : "field",
+          "value" : ["scalars", "tmp_0"]
+        },
+        {
+          "type" : "field",
+          "value" : ["scalars", "tmp_1"]
+        }
+      ]
+    },
+    {
+      "name" : "calc_0",
+      "id" : 1,
+      "algo" : "crc16",
+      "input" : [
+        {
+          "type" : "field",
+          "value" : ["scalars", "tmp_2"]
+        },
+        {
+          "type" : "field",
+          "value" : ["scalars", "tmp_3"]
+        }
+      ]
+    },
+    {
+      "name" : "calc_1",
+      "id" : 2,
+      "algo" : "crc16",
+      "input" : [
+        {
+          "type" : "field",
+          "value" : ["scalars", "tmp_4"]
+        },
+        {
+          "type" : "field",
+          "value" : ["scalars", "tmp_5"]
+        }
+      ]
+    },
+    {
+      "name" : "calc_2",
+      "id" : 3,
+      "source_info" : {
+        "filename" : "gtp.p4",
+        "line" : 308,
+        "column" : 2,
+        "source_fragment" : "update_checksum( ..."
+      },
+      "algo" : "csum16",
+      "input" : [
+        {
+          "type" : "field",
+          "value" : ["ipv4_inner", "version"]
+        },
+        {
+          "type" : "field",
+          "value" : ["ipv4_inner", "ihl"]
+        },
+        {
+          "type" : "field",
+          "value" : ["ipv4_inner", "diffserv"]
+        },
+        {
+          "type" : "field",
+          "value" : ["ipv4_inner", "totalLen"]
+        },
+        {
+          "type" : "field",
+          "value" : ["ipv4_inner", "identification"]
+        },
+        {
+          "type" : "field",
+          "value" : ["ipv4_inner", "flags"]
+        },
+        {
+          "type" : "field",
+          "value" : ["ipv4_inner", "fragOffset"]
+        },
+        {
+          "type" : "field",
+          "value" : ["ipv4_inner", "ttl"]
+        },
+        {
+          "type" : "field",
+          "value" : ["ipv4_inner", "protocol"]
+        },
+        {
+          "type" : "field",
+          "value" : ["ipv4_inner", "srcAddr"]
+        },
+        {
+          "type" : "field",
+          "value" : ["ipv4_inner", "dstAddr"]
+        }
+      ]
+    },
+    {
+      "name" : "calc_3",
+      "id" : 4,
+      "source_info" : {
+        "filename" : "gtp.p4",
+        "line" : 325,
+        "column" : 1,
+        "source_fragment" : "update_checksum( ..."
+      },
+      "algo" : "csum16",
+      "input" : [
+        {
+          "type" : "field",
+          "value" : ["ipv4_outer", "version"]
+        },
+        {
+          "type" : "field",
+          "value" : ["ipv4_outer", "ihl"]
+        },
+        {
+          "type" : "field",
+          "value" : ["ipv4_outer", "diffserv"]
+        },
+        {
+          "type" : "field",
+          "value" : ["ipv4_outer", "totalLen"]
+        },
+        {
+          "type" : "field",
+          "value" : ["ipv4_outer", "identification"]
+        },
+        {
+          "type" : "field",
+          "value" : ["ipv4_outer", "flags"]
+        },
+        {
+          "type" : "field",
+          "value" : ["ipv4_outer", "fragOffset"]
+        },
+        {
+          "type" : "field",
+          "value" : ["ipv4_outer", "ttl"]
+        },
+        {
+          "type" : "field",
+          "value" : ["ipv4_outer", "protocol"]
+        },
+        {
+          "type" : "field",
+          "value" : ["ipv4_outer", "srcAddr"]
+        },
+        {
+          "type" : "field",
+          "value" : ["ipv4_outer", "dstAddr"]
+        }
+      ]
+    }
+  ],
   "learn_lists" : [],
   "actions" : [
     {
@@ -401,7 +718,7 @@
           ],
           "source_info" : {
             "filename" : "gtp.p4",
-            "line" : 159,
+            "line" : 175,
             "column" : 8,
             "source_fragment" : "mark_to_drop(standard_metadata)"
           }
@@ -409,32 +726,1345 @@
       ]
     },
     {
-      "name" : "MyIngress.forward",
+      "name" : "gtp192",
       "id" : 1,
-      "runtime_data" : [
-        {
-          "name" : "port",
-          "bitwidth" : 9
-        }
-      ],
+      "runtime_data" : [],
       "primitives" : [
         {
           "op" : "assign",
           "parameters" : [
             {
               "type" : "field",
-              "value" : ["standard_metadata", "egress_port"]
+              "value" : ["standard_metadata", "egress_spec"]
             },
             {
-              "type" : "runtime_data",
-              "value" : 0
+              "type" : "hexstr",
+              "value" : "0x0000"
             }
           ],
           "source_info" : {
             "filename" : "gtp.p4",
-            "line" : 163,
+            "line" : 192,
+            "column" : 40,
+            "source_fragment" : "standard_metadata.egress_spec =0"
+          }
+        }
+      ]
+    },
+    {
+      "name" : "gtp199",
+      "id" : 2,
+      "runtime_data" : [],
+      "primitives" : [
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["standard_metadata", "egress_spec"]
+            },
+            {
+              "type" : "hexstr",
+              "value" : "0x0001"
+            }
+          ],
+          "source_info" : {
+            "filename" : "gtp.p4",
+            "line" : 199,
+            "column" : 32,
+            "source_fragment" : "standard_metadata.egress_spec =1"
+          }
+        }
+      ]
+    },
+    {
+      "name" : "gtp211",
+      "id" : 3,
+      "runtime_data" : [],
+      "primitives" : [
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["standard_metadata", "egress_spec"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "&",
+                  "left" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "-",
+                      "left" : {
+                        "type" : "hexstr",
+                        "value" : "0x0001"
+                      },
+                      "right" : {
+                        "type" : "field",
+                        "value" : ["standard_metadata", "ingress_port"]
+                      }
+                    }
+                  },
+                  "right" : {
+                    "type" : "hexstr",
+                    "value" : "0x01ff"
+                  }
+                }
+              }
+            }
+          ],
+          "source_info" : {
+            "filename" : "gtp.p4",
+            "line" : 211,
+            "column" : 32,
+            "source_fragment" : "standard_metadata.egress_spec =1-standard_metadata.ingress_port"
+          }
+        }
+      ]
+    },
+    {
+      "name" : "gtp214",
+      "id" : 4,
+      "runtime_data" : [],
+      "primitives" : [
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["standard_metadata", "egress_spec"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "&",
+                  "left" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "-",
+                      "left" : {
+                        "type" : "hexstr",
+                        "value" : "0x0001"
+                      },
+                      "right" : {
+                        "type" : "field",
+                        "value" : ["standard_metadata", "ingress_port"]
+                      }
+                    }
+                  },
+                  "right" : {
+                    "type" : "hexstr",
+                    "value" : "0x01ff"
+                  }
+                }
+              }
+            }
+          ],
+          "source_info" : {
+            "filename" : "gtp.p4",
+            "line" : 214,
+            "column" : 32,
+            "source_fragment" : "standard_metadata.egress_spec =1-standard_metadata.ingress_port"
+          }
+        }
+      ]
+    },
+    {
+      "name" : "MyEgress.compute_flowid",
+      "id" : 5,
+      "runtime_data" : [],
+      "primitives" : [
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "userMetadata.flowid"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "|",
+                  "left" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "&",
+                      "left" : {
+                        "type" : "field",
+                        "value" : ["scalars", "userMetadata.flowid"]
+                      },
+                      "right" : {
+                        "type" : "hexstr",
+                        "value" : "0xffffffffff00000000"
+                      }
+                    }
+                  },
+                  "right" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "&",
+                      "left" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : "&",
+                          "left" : {
+                            "type" : "field",
+                            "value" : ["ipv4_inner", "srcAddr"]
+                          },
+                          "right" : {
+                            "type" : "hexstr",
+                            "value" : "0xffffffffffffffffff"
+                          }
+                        }
+                      },
+                      "right" : {
+                        "type" : "hexstr",
+                        "value" : "0x0000000000ffffffff"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ],
+          "source_info" : {
+            "filename" : "gtp.p4",
+            "line" : 233,
+            "column" : 4,
+            "source_fragment" : "meta.flowid[31:0] = hdr.ipv4_inner.srcAddr"
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "userMetadata.flowid"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "|",
+                  "left" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "&",
+                      "left" : {
+                        "type" : "field",
+                        "value" : ["scalars", "userMetadata.flowid"]
+                      },
+                      "right" : {
+                        "type" : "hexstr",
+                        "value" : "0xff00000000ffffffff"
+                      }
+                    }
+                  },
+                  "right" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "&",
+                      "left" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : "&",
+                          "left" : {
+                            "type" : "expression",
+                            "value" : {
+                              "op" : "<<",
+                              "left" : {
+                                "type" : "expression",
+                                "value" : {
+                                  "op" : "&",
+                                  "left" : {
+                                    "type" : "field",
+                                    "value" : ["ipv4_inner", "dstAddr"]
+                                  },
+                                  "right" : {
+                                    "type" : "hexstr",
+                                    "value" : "0xffffffffffffffffff"
+                                  }
+                                }
+                              },
+                              "right" : {
+                                "type" : "hexstr",
+                                "value" : "0x20"
+                              }
+                            }
+                          },
+                          "right" : {
+                            "type" : "hexstr",
+                            "value" : "0xffffffffffffffffff"
+                          }
+                        }
+                      },
+                      "right" : {
+                        "type" : "hexstr",
+                        "value" : "0x00ffffffff00000000"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ],
+          "source_info" : {
+            "filename" : "gtp.p4",
+            "line" : 234,
+            "column" : 1,
+            "source_fragment" : "meta.flowid[63:32] = hdr.ipv4_inner.dstAddr"
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "userMetadata.flowid"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "|",
+                  "left" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "&",
+                      "left" : {
+                        "type" : "field",
+                        "value" : ["scalars", "userMetadata.flowid"]
+                      },
+                      "right" : {
+                        "type" : "hexstr",
+                        "value" : "0x00ffffffffffffffff"
+                      }
+                    }
+                  },
+                  "right" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "&",
+                      "left" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : "&",
+                          "left" : {
+                            "type" : "expression",
+                            "value" : {
+                              "op" : "<<",
+                              "left" : {
+                                "type" : "expression",
+                                "value" : {
+                                  "op" : "&",
+                                  "left" : {
+                                    "type" : "field",
+                                    "value" : ["ipv4_inner", "protocol"]
+                                  },
+                                  "right" : {
+                                    "type" : "hexstr",
+                                    "value" : "0xffffffffffffffffff"
+                                  }
+                                }
+                              },
+                              "right" : {
+                                "type" : "hexstr",
+                                "value" : "0x40"
+                              }
+                            }
+                          },
+                          "right" : {
+                            "type" : "hexstr",
+                            "value" : "0xffffffffffffffffff"
+                          }
+                        }
+                      },
+                      "right" : {
+                        "type" : "hexstr",
+                        "value" : "0xff0000000000000000"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ],
+          "source_info" : {
+            "filename" : "gtp.p4",
+            "line" : 235,
+            "column" : 1,
+            "source_fragment" : "meta.flowid[71:64] = hdr.ipv4_inner.protocol"
+          }
+        }
+      ]
+    },
+    {
+      "name" : "MyEgress.compute_index",
+      "id" : 6,
+      "runtime_data" : [],
+      "primitives" : [
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "tmp_0"]
+            },
+            {
+              "type" : "field",
+              "value" : ["scalars", "userMetadata.flowid"]
+            }
+          ],
+          "source_info" : {
+            "filename" : "gtp.p4",
+            "line" : 238,
+            "column" : 47,
+            "source_fragment" : "meta.flowid"
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "tmp_1"]
+            },
+            {
+              "type" : "hexstr",
+              "value" : "0x0021"
+            }
+          ],
+          "source_info" : {
+            "filename" : "gtp.p4",
+            "line" : 238,
+            "column" : 60,
+            "source_fragment" : "10w33"
+          }
+        },
+        {
+          "op" : "modify_field_with_hash_based_offset",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "userMetadata.index1"]
+            },
+            {
+              "type" : "hexstr",
+              "value" : "0x0000"
+            },
+            {
+              "type" : "calculation",
+              "value" : "calc"
+            },
+            {
+              "type" : "hexstr",
+              "value" : "0x03ff"
+            }
+          ],
+          "source_info" : {
+            "filename" : "gtp.p4",
+            "line" : 238,
+            "column" : 1,
+            "source_fragment" : "hash(meta.index1, HashAlgorithm.crc16, 10w0, {meta.flowid, 10w33}, 10w1023)"
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "tmp_2"]
+            },
+            {
+              "type" : "field",
+              "value" : ["scalars", "userMetadata.flowid"]
+            }
+          ],
+          "source_info" : {
+            "filename" : "gtp.p4",
+            "line" : 239,
+            "column" : 47,
+            "source_fragment" : "meta.flowid"
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "tmp_3"]
+            },
+            {
+              "type" : "hexstr",
+              "value" : "0x00ca"
+            }
+          ],
+          "source_info" : {
+            "filename" : "gtp.p4",
+            "line" : 239,
+            "column" : 60,
+            "source_fragment" : "10w202"
+          }
+        },
+        {
+          "op" : "modify_field_with_hash_based_offset",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "userMetadata.index2"]
+            },
+            {
+              "type" : "hexstr",
+              "value" : "0x0000"
+            },
+            {
+              "type" : "calculation",
+              "value" : "calc_0"
+            },
+            {
+              "type" : "hexstr",
+              "value" : "0x03ff"
+            }
+          ],
+          "source_info" : {
+            "filename" : "gtp.p4",
+            "line" : 239,
+            "column" : 1,
+            "source_fragment" : "hash(meta.index2, HashAlgorithm.crc16, 10w0, {meta.flowid, 10w202}, 10w1023)"
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "tmp_4"]
+            },
+            {
+              "type" : "field",
+              "value" : ["scalars", "userMetadata.flowid"]
+            }
+          ],
+          "source_info" : {
+            "filename" : "gtp.p4",
+            "line" : 240,
+            "column" : 47,
+            "source_fragment" : "meta.flowid"
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "tmp_5"]
+            },
+            {
+              "type" : "hexstr",
+              "value" : "0x021d"
+            }
+          ],
+          "source_info" : {
+            "filename" : "gtp.p4",
+            "line" : 240,
+            "column" : 60,
+            "source_fragment" : "10w541"
+          }
+        },
+        {
+          "op" : "modify_field_with_hash_based_offset",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "userMetadata.index3"]
+            },
+            {
+              "type" : "hexstr",
+              "value" : "0x0000"
+            },
+            {
+              "type" : "calculation",
+              "value" : "calc_1"
+            },
+            {
+              "type" : "hexstr",
+              "value" : "0x03ff"
+            }
+          ],
+          "source_info" : {
+            "filename" : "gtp.p4",
+            "line" : 240,
+            "column" : 1,
+            "source_fragment" : "hash(meta.index3, HashAlgorithm.crc16, 10w0, {meta.flowid, 10w541}, 10w1023)"
+          }
+        }
+      ]
+    },
+    {
+      "name" : "MyEgress.increment_count",
+      "id" : 7,
+      "runtime_data" : [],
+      "primitives" : [
+        {
+          "op" : "register_read",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "userMetadata.count1"]
+            },
+            {
+              "type" : "register_array",
+              "value" : "hashtable1"
+            },
+            {
+              "type" : "field",
+              "value" : ["scalars", "userMetadata.index1"]
+            }
+          ],
+          "source_info" : {
+            "filename" : "gtp.p4",
+            "line" : 243,
+            "column" : 1,
+            "source_fragment" : "hashtable1.read(meta.count1, meta.index1)"
+          }
+        },
+        {
+          "op" : "register_read",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "userMetadata.count2"]
+            },
+            {
+              "type" : "register_array",
+              "value" : "hashtable2"
+            },
+            {
+              "type" : "field",
+              "value" : ["scalars", "userMetadata.index2"]
+            }
+          ],
+          "source_info" : {
+            "filename" : "gtp.p4",
+            "line" : 244,
+            "column" : 1,
+            "source_fragment" : "hashtable2.read(meta.count2, meta.index2)"
+          }
+        },
+        {
+          "op" : "register_read",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "userMetadata.count3"]
+            },
+            {
+              "type" : "register_array",
+              "value" : "hashtable3"
+            },
+            {
+              "type" : "field",
+              "value" : ["scalars", "userMetadata.index3"]
+            }
+          ],
+          "source_info" : {
+            "filename" : "gtp.p4",
+            "line" : 245,
+            "column" : 1,
+            "source_fragment" : "hashtable3.read(meta.count3, meta.index3)"
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "tmp_6"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "&",
+                  "left" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "+",
+                      "left" : {
+                        "type" : "field",
+                        "value" : ["scalars", "userMetadata.count1"]
+                      },
+                      "right" : {
+                        "type" : "hexstr",
+                        "value" : "0x00000001"
+                      }
+                    }
+                  },
+                  "right" : {
+                    "type" : "hexstr",
+                    "value" : "0xffffffff"
+                  }
+                }
+              }
+            }
+          ],
+          "source_info" : {
+            "filename" : "gtp.p4",
+            "line" : 247,
+            "column" : 31,
+            "source_fragment" : "meta.count1 + 1"
+          }
+        },
+        {
+          "op" : "register_write",
+          "parameters" : [
+            {
+              "type" : "register_array",
+              "value" : "hashtable1"
+            },
+            {
+              "type" : "field",
+              "value" : ["scalars", "userMetadata.index1"]
+            },
+            {
+              "type" : "field",
+              "value" : ["scalars", "tmp_6"]
+            }
+          ],
+          "source_info" : {
+            "filename" : "gtp.p4",
+            "line" : 247,
+            "column" : 1,
+            "source_fragment" : "hashtable1.write(meta.index1, meta.count1 + 1)"
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "tmp_7"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "&",
+                  "left" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "+",
+                      "left" : {
+                        "type" : "field",
+                        "value" : ["scalars", "userMetadata.count2"]
+                      },
+                      "right" : {
+                        "type" : "hexstr",
+                        "value" : "0x00000001"
+                      }
+                    }
+                  },
+                  "right" : {
+                    "type" : "hexstr",
+                    "value" : "0xffffffff"
+                  }
+                }
+              }
+            }
+          ],
+          "source_info" : {
+            "filename" : "gtp.p4",
+            "line" : 248,
+            "column" : 31,
+            "source_fragment" : "meta.count2 + 1"
+          }
+        },
+        {
+          "op" : "register_write",
+          "parameters" : [
+            {
+              "type" : "register_array",
+              "value" : "hashtable2"
+            },
+            {
+              "type" : "field",
+              "value" : ["scalars", "userMetadata.index2"]
+            },
+            {
+              "type" : "field",
+              "value" : ["scalars", "tmp_7"]
+            }
+          ],
+          "source_info" : {
+            "filename" : "gtp.p4",
+            "line" : 248,
+            "column" : 1,
+            "source_fragment" : "hashtable2.write(meta.index2, meta.count2 + 1)"
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "tmp_8"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "&",
+                  "left" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "+",
+                      "left" : {
+                        "type" : "field",
+                        "value" : ["scalars", "userMetadata.count3"]
+                      },
+                      "right" : {
+                        "type" : "hexstr",
+                        "value" : "0x00000001"
+                      }
+                    }
+                  },
+                  "right" : {
+                    "type" : "hexstr",
+                    "value" : "0xffffffff"
+                  }
+                }
+              }
+            }
+          ],
+          "source_info" : {
+            "filename" : "gtp.p4",
+            "line" : 249,
+            "column" : 31,
+            "source_fragment" : "meta.count3 + 1"
+          }
+        },
+        {
+          "op" : "register_write",
+          "parameters" : [
+            {
+              "type" : "register_array",
+              "value" : "hashtable3"
+            },
+            {
+              "type" : "field",
+              "value" : ["scalars", "userMetadata.index3"]
+            },
+            {
+              "type" : "field",
+              "value" : ["scalars", "tmp_8"]
+            }
+          ],
+          "source_info" : {
+            "filename" : "gtp.p4",
+            "line" : 249,
+            "column" : 1,
+            "source_fragment" : "hashtable3.write(meta.index3, meta.count3 + 1)"
+          }
+        }
+      ]
+    },
+    {
+      "name" : "MyEgress.compute_mincount",
+      "id" : 8,
+      "runtime_data" : [],
+      "primitives" : [
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "userMetadata.min_count"]
+            },
+            {
+              "type" : "field",
+              "value" : ["scalars", "userMetadata.count1"]
+            }
+          ],
+          "source_info" : {
+            "filename" : "gtp.p4",
+            "line" : 252,
+            "column" : 6,
+            "source_fragment" : "meta.min_count = cnt1; ..."
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "userMetadata.min_count"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "?",
+                  "left" : {
+                    "type" : "field",
+                    "value" : ["scalars", "userMetadata.count2"]
+                  },
+                  "right" : {
+                    "type" : "field",
+                    "value" : ["scalars", "userMetadata.count1"]
+                  },
+                  "cond" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : ">",
+                      "left" : {
+                        "type" : "field",
+                        "value" : ["scalars", "userMetadata.count1"]
+                      },
+                      "right" : {
+                        "type" : "field",
+                        "value" : ["scalars", "userMetadata.count2"]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "userMetadata.min_count"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "?",
+                  "left" : {
+                    "type" : "field",
+                    "value" : ["scalars", "userMetadata.count3"]
+                  },
+                  "right" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "?",
+                      "left" : {
+                        "type" : "field",
+                        "value" : ["scalars", "userMetadata.count2"]
+                      },
+                      "right" : {
+                        "type" : "field",
+                        "value" : ["scalars", "userMetadata.count1"]
+                      },
+                      "cond" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : ">",
+                          "left" : {
+                            "type" : "field",
+                            "value" : ["scalars", "userMetadata.count1"]
+                          },
+                          "right" : {
+                            "type" : "field",
+                            "value" : ["scalars", "userMetadata.count2"]
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "cond" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : ">",
+                      "left" : {
+                        "type" : "expression",
+                        "value" : {
+                          "op" : "?",
+                          "left" : {
+                            "type" : "field",
+                            "value" : ["scalars", "userMetadata.count2"]
+                          },
+                          "right" : {
+                            "type" : "field",
+                            "value" : ["scalars", "userMetadata.count1"]
+                          },
+                          "cond" : {
+                            "type" : "expression",
+                            "value" : {
+                              "op" : ">",
+                              "left" : {
+                                "type" : "field",
+                                "value" : ["scalars", "userMetadata.count1"]
+                              },
+                              "right" : {
+                                "type" : "field",
+                                "value" : ["scalars", "userMetadata.count2"]
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "right" : {
+                        "type" : "field",
+                        "value" : ["scalars", "userMetadata.count3"]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name" : "MyEgress.add_option_header",
+      "id" : 9,
+      "runtime_data" : [],
+      "primitives" : [
+        {
+          "op" : "add_header",
+          "parameters" : [
+            {
+              "type" : "header",
+              "value" : "ipv4_inner_option"
+            }
+          ],
+          "source_info" : {
+            "filename" : "gtp.p4",
+            "line" : 263,
+            "column" : 1,
+            "source_fragment" : "hdr.ipv4_inner_option.setValid()"
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["ipv4_inner_option", "value"]
+            },
+            {
+              "type" : "hexstr",
+              "value" : "0x44"
+            }
+          ],
+          "source_info" : {
+            "filename" : "gtp.p4",
+            "line" : 264,
+            "column" : 1,
+            "source_fragment" : "hdr.ipv4_inner_option.value=68"
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["ipv4_inner_option", "swid"]
+            },
+            {
+              "type" : "hexstr",
+              "value" : "0x0001"
+            }
+          ],
+          "source_info" : {
+            "filename" : "gtp.p4",
+            "line" : 265,
+            "column" : 1,
+            "source_fragment" : "hdr.ipv4_inner_option.swid = 1"
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["ipv4_inner_option", "packet_count"]
+            },
+            {
+              "type" : "field",
+              "value" : ["scalars", "userMetadata.min_count"]
+            }
+          ],
+          "source_info" : {
+            "filename" : "gtp.p4",
+            "line" : 266,
+            "column" : 1,
+            "source_fragment" : "hdr.ipv4_inner_option.packet_count = meta.min_count"
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["ipv4_inner_option", "optionLength"]
+            },
+            {
+              "type" : "hexstr",
+              "value" : "0x08"
+            }
+          ],
+          "source_info" : {
+            "filename" : "gtp.p4",
+            "line" : 269,
+            "column" : 1,
+            "source_fragment" : "hdr.ipv4_inner_option.optionLength = 8"
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["ipv4_inner", "ihl"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "&",
+                  "left" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "+",
+                      "left" : {
+                        "type" : "field",
+                        "value" : ["ipv4_inner", "ihl"]
+                      },
+                      "right" : {
+                        "type" : "hexstr",
+                        "value" : "0x02"
+                      }
+                    }
+                  },
+                  "right" : {
+                    "type" : "hexstr",
+                    "value" : "0x0f"
+                  }
+                }
+              }
+            }
+          ],
+          "source_info" : {
+            "filename" : "gtp.p4",
+            "line" : 272,
+            "column" : 1,
+            "source_fragment" : "hdr.ipv4_inner.ihl = hdr.ipv4_inner.ihl + 2"
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["ipv4_inner", "totalLen"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "&",
+                  "left" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "+",
+                      "left" : {
+                        "type" : "field",
+                        "value" : ["ipv4_inner", "totalLen"]
+                      },
+                      "right" : {
+                        "type" : "hexstr",
+                        "value" : "0x0008"
+                      }
+                    }
+                  },
+                  "right" : {
+                    "type" : "hexstr",
+                    "value" : "0xffff"
+                  }
+                }
+              }
+            }
+          ],
+          "source_info" : {
+            "filename" : "gtp.p4",
+            "line" : 273,
+            "column" : 1,
+            "source_fragment" : "hdr.ipv4_inner.totalLen = hdr.ipv4_inner.totalLen + 8"
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["gtp_common", "messageLength"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "&",
+                  "left" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "+",
+                      "left" : {
+                        "type" : "field",
+                        "value" : ["gtp_common", "messageLength"]
+                      },
+                      "right" : {
+                        "type" : "hexstr",
+                        "value" : "0x0008"
+                      }
+                    }
+                  },
+                  "right" : {
+                    "type" : "hexstr",
+                    "value" : "0xffff"
+                  }
+                }
+              }
+            }
+          ],
+          "source_info" : {
+            "filename" : "gtp.p4",
+            "line" : 275,
+            "column" : 1,
+            "source_fragment" : "hdr.gtp_common.messageLength = hdr.gtp_common.messageLength +8"
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["udp_outer", "plength"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "&",
+                  "left" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "+",
+                      "left" : {
+                        "type" : "field",
+                        "value" : ["udp_outer", "plength"]
+                      },
+                      "right" : {
+                        "type" : "hexstr",
+                        "value" : "0x0008"
+                      }
+                    }
+                  },
+                  "right" : {
+                    "type" : "hexstr",
+                    "value" : "0xffff"
+                  }
+                }
+              }
+            }
+          ],
+          "source_info" : {
+            "filename" : "gtp.p4",
+            "line" : 276,
             "column" : 8,
-            "source_fragment" : "standard_metadata.egress_port = port"
+            "source_fragment" : "hdr.udp_outer.plength = hdr.udp_outer.plength + 8"
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["ipv4_outer", "totalLen"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "&",
+                  "left" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "+",
+                      "left" : {
+                        "type" : "field",
+                        "value" : ["ipv4_outer", "totalLen"]
+                      },
+                      "right" : {
+                        "type" : "hexstr",
+                        "value" : "0x0008"
+                      }
+                    }
+                  },
+                  "right" : {
+                    "type" : "hexstr",
+                    "value" : "0xffff"
+                  }
+                }
+              }
+            }
+          ],
+          "source_info" : {
+            "filename" : "gtp.p4",
+            "line" : 280,
+            "column" : 1,
+            "source_fragment" : "hdr.ipv4_outer.totalLen = hdr.ipv4_outer.totalLen + 8"
+          }
+        }
+      ]
+    },
+    {
+      "name" : "gtp293",
+      "id" : 10,
+      "runtime_data" : [],
+      "primitives" : [
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["udp_outer", "checksum"]
+            },
+            {
+              "type" : "hexstr",
+              "value" : "0x0000"
+            }
+          ],
+          "source_info" : {
+            "filename" : "gtp.p4",
+            "line" : 293,
+            "column" : 2,
+            "source_fragment" : "hdr.udp_outer.checksum = 0"
           }
         }
       ]
@@ -446,40 +2076,90 @@
       "id" : 0,
       "source_info" : {
         "filename" : "gtp.p4",
-        "line" : 154,
+        "line" : 170,
         "column" : 8,
         "source_fragment" : "MyIngress"
       },
-      "init_table" : "MyIngress.packet_forward",
+      "init_table" : "node_2",
       "tables" : [
         {
-          "name" : "MyIngress.packet_forward",
+          "name" : "tbl_gtp192",
           "id" : 0,
           "source_info" : {
             "filename" : "gtp.p4",
-            "line" : 167,
-            "column" : 9,
-            "source_fragment" : "packet_forward"
+            "line" : 192,
+            "column" : 70,
+            "source_fragment" : "="
           },
-          "key" : [
-            {
-              "match_type" : "exact",
-              "name" : "standard_metadata.ingress_port",
-              "target" : ["standard_metadata", "ingress_port"],
-              "mask" : null
-            }
-          ],
+          "key" : [],
           "match_type" : "exact",
           "type" : "simple",
-          "max_size" : 64,
+          "max_size" : 1024,
           "with_counters" : false,
           "support_timeout" : false,
           "direct_meters" : null,
-          "action_ids" : [1, 0],
-          "actions" : ["MyIngress.forward", "MyIngress.drop"],
+          "action_ids" : [1],
+          "actions" : ["gtp192"],
           "base_default_next" : null,
           "next_tables" : {
-            "MyIngress.forward" : null,
+            "gtp192" : null
+          },
+          "default_entry" : {
+            "action_id" : 1,
+            "action_const" : true,
+            "action_data" : [],
+            "action_entry_const" : true
+          }
+        },
+        {
+          "name" : "tbl_gtp199",
+          "id" : 1,
+          "source_info" : {
+            "filename" : "gtp.p4",
+            "line" : 199,
+            "column" : 62,
+            "source_fragment" : "="
+          },
+          "key" : [],
+          "match_type" : "exact",
+          "type" : "simple",
+          "max_size" : 1024,
+          "with_counters" : false,
+          "support_timeout" : false,
+          "direct_meters" : null,
+          "action_ids" : [2],
+          "actions" : ["gtp199"],
+          "base_default_next" : null,
+          "next_tables" : {
+            "gtp199" : null
+          },
+          "default_entry" : {
+            "action_id" : 2,
+            "action_const" : true,
+            "action_data" : [],
+            "action_entry_const" : true
+          }
+        },
+        {
+          "name" : "MyIngress.drop_packet",
+          "id" : 2,
+          "source_info" : {
+            "filename" : "gtp.p4",
+            "line" : 178,
+            "column" : 9,
+            "source_fragment" : "drop_packet"
+          },
+          "key" : [],
+          "match_type" : "exact",
+          "type" : "simple",
+          "max_size" : 1024,
+          "with_counters" : false,
+          "support_timeout" : false,
+          "direct_meters" : null,
+          "action_ids" : [0],
+          "actions" : ["MyIngress.drop"],
+          "base_default_next" : null,
+          "next_tables" : {
             "MyIngress.drop" : null
           },
           "default_entry" : {
@@ -488,27 +2168,546 @@
             "action_data" : [],
             "action_entry_const" : false
           }
+        },
+        {
+          "name" : "tbl_gtp211",
+          "id" : 3,
+          "source_info" : {
+            "filename" : "gtp.p4",
+            "line" : 211,
+            "column" : 62,
+            "source_fragment" : "="
+          },
+          "key" : [],
+          "match_type" : "exact",
+          "type" : "simple",
+          "max_size" : 1024,
+          "with_counters" : false,
+          "support_timeout" : false,
+          "direct_meters" : null,
+          "action_ids" : [3],
+          "actions" : ["gtp211"],
+          "base_default_next" : null,
+          "next_tables" : {
+            "gtp211" : null
+          },
+          "default_entry" : {
+            "action_id" : 3,
+            "action_const" : true,
+            "action_data" : [],
+            "action_entry_const" : true
+          }
+        },
+        {
+          "name" : "tbl_gtp214",
+          "id" : 4,
+          "source_info" : {
+            "filename" : "gtp.p4",
+            "line" : 214,
+            "column" : 62,
+            "source_fragment" : "="
+          },
+          "key" : [],
+          "match_type" : "exact",
+          "type" : "simple",
+          "max_size" : 1024,
+          "with_counters" : false,
+          "support_timeout" : false,
+          "direct_meters" : null,
+          "action_ids" : [4],
+          "actions" : ["gtp214"],
+          "base_default_next" : null,
+          "next_tables" : {
+            "gtp214" : null
+          },
+          "default_entry" : {
+            "action_id" : 4,
+            "action_const" : true,
+            "action_data" : [],
+            "action_entry_const" : true
+          }
         }
       ],
       "action_profiles" : [],
-      "conditionals" : []
+      "conditionals" : [
+        {
+          "name" : "node_2",
+          "id" : 0,
+          "source_info" : {
+            "filename" : "gtp.p4",
+            "line" : 186,
+            "column" : 11,
+            "source_fragment" : "hdr.ethernet.dstAddr == 0xffffffffffff"
+          },
+          "expression" : {
+            "type" : "expression",
+            "value" : {
+              "op" : "==",
+              "left" : {
+                "type" : "field",
+                "value" : ["ethernet", "dstAddr"]
+              },
+              "right" : {
+                "type" : "hexstr",
+                "value" : "0xffffffffffff"
+              }
+            }
+          },
+          "true_next" : "node_3",
+          "false_next" : "node_10"
+        },
+        {
+          "name" : "node_3",
+          "id" : 1,
+          "source_info" : {
+            "filename" : "gtp.p4",
+            "line" : 188,
+            "column" : 19,
+            "source_fragment" : "hdr.ethernet.srcAddr == 0xfa163e301ed4"
+          },
+          "expression" : {
+            "type" : "expression",
+            "value" : {
+              "op" : "==",
+              "left" : {
+                "type" : "field",
+                "value" : ["ethernet", "srcAddr"]
+              },
+              "right" : {
+                "type" : "hexstr",
+                "value" : "0xfa163e301ed4"
+              }
+            }
+          },
+          "true_next" : "node_4",
+          "false_next" : "node_6"
+        },
+        {
+          "name" : "node_4",
+          "id" : 2,
+          "source_info" : {
+            "filename" : "gtp.p4",
+            "line" : 190,
+            "column" : 35,
+            "source_fragment" : "standard_metadata.ingress_port==1"
+          },
+          "expression" : {
+            "type" : "expression",
+            "value" : {
+              "op" : "==",
+              "left" : {
+                "type" : "field",
+                "value" : ["standard_metadata", "ingress_port"]
+              },
+              "right" : {
+                "type" : "hexstr",
+                "value" : "0x0001"
+              }
+            }
+          },
+          "false_next" : null,
+          "true_next" : "tbl_gtp192"
+        },
+        {
+          "name" : "node_6",
+          "id" : 3,
+          "source_info" : {
+            "filename" : "gtp.p4",
+            "line" : 195,
+            "column" : 24,
+            "source_fragment" : "hdr.ethernet.srcAddr == 0x94c6911ef360"
+          },
+          "expression" : {
+            "type" : "expression",
+            "value" : {
+              "op" : "==",
+              "left" : {
+                "type" : "field",
+                "value" : ["ethernet", "srcAddr"]
+              },
+              "right" : {
+                "type" : "hexstr",
+                "value" : "0x94c6911ef360"
+              }
+            }
+          },
+          "true_next" : "node_7",
+          "false_next" : "MyIngress.drop_packet"
+        },
+        {
+          "name" : "node_7",
+          "id" : 4,
+          "source_info" : {
+            "filename" : "gtp.p4",
+            "line" : 197,
+            "column" : 28,
+            "source_fragment" : "standard_metadata.ingress_port==0"
+          },
+          "expression" : {
+            "type" : "expression",
+            "value" : {
+              "op" : "==",
+              "left" : {
+                "type" : "field",
+                "value" : ["standard_metadata", "ingress_port"]
+              },
+              "right" : {
+                "type" : "hexstr",
+                "value" : "0x0000"
+              }
+            }
+          },
+          "false_next" : null,
+          "true_next" : "tbl_gtp199"
+        },
+        {
+          "name" : "node_10",
+          "id" : 5,
+          "source_info" : {
+            "filename" : "gtp.p4",
+            "line" : 209,
+            "column" : 19,
+            "source_fragment" : "hdr.ethernet.dstAddr == 0xfa163e301ed4"
+          },
+          "expression" : {
+            "type" : "expression",
+            "value" : {
+              "op" : "==",
+              "left" : {
+                "type" : "field",
+                "value" : ["ethernet", "dstAddr"]
+              },
+              "right" : {
+                "type" : "hexstr",
+                "value" : "0xfa163e301ed4"
+              }
+            }
+          },
+          "true_next" : "tbl_gtp211",
+          "false_next" : "node_12"
+        },
+        {
+          "name" : "node_12",
+          "id" : 6,
+          "source_info" : {
+            "filename" : "gtp.p4",
+            "line" : 213,
+            "column" : 24,
+            "source_fragment" : "hdr.ethernet.dstAddr == 0x94c6911ef360"
+          },
+          "expression" : {
+            "type" : "expression",
+            "value" : {
+              "op" : "==",
+              "left" : {
+                "type" : "field",
+                "value" : ["ethernet", "dstAddr"]
+              },
+              "right" : {
+                "type" : "hexstr",
+                "value" : "0x94c6911ef360"
+              }
+            }
+          },
+          "true_next" : "tbl_gtp214",
+          "false_next" : "MyIngress.drop_packet"
+        }
+      ]
     },
     {
       "name" : "egress",
       "id" : 1,
       "source_info" : {
         "filename" : "gtp.p4",
-        "line" : 185,
+        "line" : 227,
         "column" : 8,
         "source_fragment" : "MyEgress"
       },
-      "init_table" : null,
-      "tables" : [],
+      "init_table" : "node_17",
+      "tables" : [
+        {
+          "name" : "tbl_compute_flowid",
+          "id" : 5,
+          "source_info" : {
+            "filename" : "gtp.p4",
+            "line" : 287,
+            "column" : 2,
+            "source_fragment" : "compute_flowid()"
+          },
+          "key" : [],
+          "match_type" : "exact",
+          "type" : "simple",
+          "max_size" : 1024,
+          "with_counters" : false,
+          "support_timeout" : false,
+          "direct_meters" : null,
+          "action_ids" : [5],
+          "actions" : ["MyEgress.compute_flowid"],
+          "base_default_next" : "tbl_compute_index",
+          "next_tables" : {
+            "MyEgress.compute_flowid" : "tbl_compute_index"
+          },
+          "default_entry" : {
+            "action_id" : 5,
+            "action_const" : true,
+            "action_data" : [],
+            "action_entry_const" : true
+          }
+        },
+        {
+          "name" : "tbl_compute_index",
+          "id" : 6,
+          "source_info" : {
+            "filename" : "gtp.p4",
+            "line" : 288,
+            "column" : 2,
+            "source_fragment" : "compute_index()"
+          },
+          "key" : [],
+          "match_type" : "exact",
+          "type" : "simple",
+          "max_size" : 1024,
+          "with_counters" : false,
+          "support_timeout" : false,
+          "direct_meters" : null,
+          "action_ids" : [6],
+          "actions" : ["MyEgress.compute_index"],
+          "base_default_next" : "tbl_increment_count",
+          "next_tables" : {
+            "MyEgress.compute_index" : "tbl_increment_count"
+          },
+          "default_entry" : {
+            "action_id" : 6,
+            "action_const" : true,
+            "action_data" : [],
+            "action_entry_const" : true
+          }
+        },
+        {
+          "name" : "tbl_increment_count",
+          "id" : 7,
+          "source_info" : {
+            "filename" : "gtp.p4",
+            "line" : 289,
+            "column" : 2,
+            "source_fragment" : "increment_count()"
+          },
+          "key" : [],
+          "match_type" : "exact",
+          "type" : "simple",
+          "max_size" : 1024,
+          "with_counters" : false,
+          "support_timeout" : false,
+          "direct_meters" : null,
+          "action_ids" : [7],
+          "actions" : ["MyEgress.increment_count"],
+          "base_default_next" : "tbl_compute_mincount",
+          "next_tables" : {
+            "MyEgress.increment_count" : "tbl_compute_mincount"
+          },
+          "default_entry" : {
+            "action_id" : 7,
+            "action_const" : true,
+            "action_data" : [],
+            "action_entry_const" : true
+          }
+        },
+        {
+          "name" : "tbl_compute_mincount",
+          "id" : 8,
+          "source_info" : {
+            "filename" : "gtp.p4",
+            "line" : 290,
+            "column" : 2,
+            "source_fragment" : "compute_mincount(meta.count1, meta.count2, meta.count3)"
+          },
+          "key" : [],
+          "match_type" : "exact",
+          "type" : "simple",
+          "max_size" : 1024,
+          "with_counters" : false,
+          "support_timeout" : false,
+          "direct_meters" : null,
+          "action_ids" : [8],
+          "actions" : ["MyEgress.compute_mincount"],
+          "base_default_next" : "tbl_gtp293",
+          "next_tables" : {
+            "MyEgress.compute_mincount" : "tbl_gtp293"
+          },
+          "default_entry" : {
+            "action_id" : 8,
+            "action_const" : true,
+            "action_data" : [],
+            "action_entry_const" : true
+          }
+        },
+        {
+          "name" : "tbl_gtp293",
+          "id" : 9,
+          "source_info" : {
+            "filename" : "gtp.p4",
+            "line" : 293,
+            "column" : 25,
+            "source_fragment" : "="
+          },
+          "key" : [],
+          "match_type" : "exact",
+          "type" : "simple",
+          "max_size" : 1024,
+          "with_counters" : false,
+          "support_timeout" : false,
+          "direct_meters" : null,
+          "action_ids" : [10],
+          "actions" : ["gtp293"],
+          "base_default_next" : "tbl_add_option_header",
+          "next_tables" : {
+            "gtp293" : "tbl_add_option_header"
+          },
+          "default_entry" : {
+            "action_id" : 10,
+            "action_const" : true,
+            "action_data" : [],
+            "action_entry_const" : true
+          }
+        },
+        {
+          "name" : "tbl_add_option_header",
+          "id" : 10,
+          "source_info" : {
+            "filename" : "gtp.p4",
+            "line" : 294,
+            "column" : 2,
+            "source_fragment" : "add_option_header()"
+          },
+          "key" : [],
+          "match_type" : "exact",
+          "type" : "simple",
+          "max_size" : 1024,
+          "with_counters" : false,
+          "support_timeout" : false,
+          "direct_meters" : null,
+          "action_ids" : [9],
+          "actions" : ["MyEgress.add_option_header"],
+          "base_default_next" : null,
+          "next_tables" : {
+            "MyEgress.add_option_header" : null
+          },
+          "default_entry" : {
+            "action_id" : 9,
+            "action_const" : true,
+            "action_data" : [],
+            "action_entry_const" : true
+          }
+        }
+      ],
       "action_profiles" : [],
-      "conditionals" : []
+      "conditionals" : [
+        {
+          "name" : "node_17",
+          "id" : 7,
+          "source_info" : {
+            "filename" : "gtp.p4",
+            "line" : 285,
+            "column" : 4,
+            "source_fragment" : "hdr.ethernet.srcAddr == 0x94c6911ef360"
+          },
+          "expression" : {
+            "type" : "expression",
+            "value" : {
+              "op" : "==",
+              "left" : {
+                "type" : "field",
+                "value" : ["ethernet", "srcAddr"]
+              },
+              "right" : {
+                "type" : "hexstr",
+                "value" : "0x94c6911ef360"
+              }
+            }
+          },
+          "false_next" : null,
+          "true_next" : "node_18"
+        },
+        {
+          "name" : "node_18",
+          "id" : 8,
+          "source_info" : {
+            "filename" : "gtp.p4",
+            "line" : 286,
+            "column" : 4,
+            "source_fragment" : "hdr.ipv4_inner.isValid()"
+          },
+          "expression" : {
+            "type" : "expression",
+            "value" : {
+              "op" : "d2b",
+              "left" : null,
+              "right" : {
+                "type" : "field",
+                "value" : ["ipv4_inner", "$valid$"]
+              }
+            }
+          },
+          "false_next" : null,
+          "true_next" : "tbl_compute_flowid"
+        }
+      ]
     }
   ],
-  "checksums" : [],
+  "checksums" : [
+    {
+      "name" : "cksum",
+      "id" : 0,
+      "source_info" : {
+        "filename" : "gtp.p4",
+        "line" : 308,
+        "column" : 2,
+        "source_fragment" : "update_checksum( ..."
+      },
+      "target" : ["ipv4_inner", "hdrChecksum"],
+      "type" : "generic",
+      "calculation" : "calc_2",
+      "verify" : false,
+      "update" : true,
+      "if_cond" : {
+        "type" : "expression",
+        "value" : {
+          "op" : "d2b",
+          "left" : null,
+          "right" : {
+            "type" : "field",
+            "value" : ["ipv4_inner", "$valid$"]
+          }
+        }
+      }
+    },
+    {
+      "name" : "cksum_0",
+      "id" : 1,
+      "source_info" : {
+        "filename" : "gtp.p4",
+        "line" : 325,
+        "column" : 1,
+        "source_fragment" : "update_checksum( ..."
+      },
+      "target" : ["ipv4_outer", "hdrChecksum"],
+      "type" : "generic",
+      "calculation" : "calc_3",
+      "verify" : false,
+      "update" : true,
+      "if_cond" : {
+        "type" : "expression",
+        "value" : {
+          "op" : "d2b",
+          "left" : null,
+          "right" : {
+            "type" : "field",
+            "value" : ["ipv4_outer", "$valid$"]
+          }
+        }
+      }
+    }
+  ],
   "force_arith" : [],
   "extern_instances" : [],
   "field_aliases" : [

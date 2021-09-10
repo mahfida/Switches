@@ -27,9 +27,6 @@ typedef bit<48> mac_addr_t;
 typedef bit<32> ip4Addr_t;
 typedef bit<32> ipv4_addr_t;
 typedef bit<9> port_id_t;
-typedef bit<16> switchID_t;
-typedef bit<32> packet_count_t;
-
 
 /* GPRS Tunnelling Protocol (GTP) common part for v1 and v2 */
 
@@ -48,15 +45,6 @@ header gtp_teid_t {
     bit<32> teid;
 }
 
-// Option field for inner ipv4
-header ipv4_inner_option_t{
-	bit<8> value;
-        bit<8> optionLength;
-	//option data
-	switchID_t swid; //16 bits
-	packet_count_t packet_count;//32 bits
-}
-
 struct metadata {
    	bit<72> flowid;
 
@@ -70,7 +58,7 @@ struct metadata {
 	bit<32> count2;
 	bit<32> count3;
 	bit<32> min_count;
-	bit<16> Len;	   
+	   
    }
 
 struct headers {
@@ -79,11 +67,8 @@ struct headers {
     udp_t        udp_outer;
     gtp_common_t gtp_common;
     gtp_teid_t   gtp_teid;
-    ipv4_t 	 ipv4_inner;
-    ipv4_inner_option_t ipv4_inner_option;
-  }
+    ipv4_t 	 ipv4_inner;}
 
-error { IPHeaderTooShort }
 /*************************************************************************
 ************************* P A R S E R  ***********************************
 *************************************************************************/
@@ -136,21 +121,10 @@ parser MyParser(packet_in packet,
         transition parse_ipv4_inner;
     }
 
-    
-        state parse_ipv4_inner {
+    state parse_ipv4_inner {
         packet.extract(hdr.ipv4_inner);
-        verify(hdr.ipv4_inner.ihl >= 5, error.IPHeaderTooShort);
-        transition select(hdr.ipv4_inner.ihl) {
-            5             : accept;
-            default       : parse_ipv4_inner_option;
-         }
-    }
-
-    state parse_ipv4_inner_option {
-        packet.extract(hdr.ipv4_inner_option);
         transition accept;
     }
-
 
 }
 
@@ -237,7 +211,7 @@ control MyEgress(inout headers hdr,
    action compute_index(){
 	hash(meta.index1, HashAlgorithm.crc16, 10w0, {meta.flowid, 10w33}, 10w1023);
 	hash(meta.index2, HashAlgorithm.crc16, 10w0, {meta.flowid, 10w202}, 10w1023);
-	hash(meta.index3, HashAlgorithm.crc16, 10w0, {meta.flowid, 10w541}, 10w1023);
+	hash(meta.index3, HashAlgorithm.crc16, 10w0, {meta.flowid, 10w514}, 10w1023);
 	}
    action increment_count(){
 	hashtable1.read(meta.count1, meta.index1);
@@ -254,46 +228,20 @@ control MyEgress(inout headers hdr,
 		meta.min_count = cnt2;
 		}
 	if(meta.min_count > cnt3){
-		meta.min_count = cnt3;
-		}
+		meta.min_count = cnt3;}
 	}
     
-    //MATCH-ACTION TABLE FOR  SWITCH HEADER
-    action add_option_header(){
-	hdr.ipv4_inner_option.setValid();
-	hdr.ipv4_inner_option.value=68; //1 byte
-	hdr.ipv4_inner_option.swid = 1; //2 bytes
-	hdr.ipv4_inner_option.packet_count = meta.min_count;//4 bytes
-
-
-	hdr.ipv4_inner_option.optionLength =  8;
-
-	
-	hdr.ipv4_inner.ihl = hdr.ipv4_inner.ihl + 2;
-	hdr.ipv4_inner.totalLen  = hdr.ipv4_inner.totalLen + 8;// increase in bytes
-
-	hdr.gtp_common.messageLength  = hdr.gtp_common.messageLength +8;
-        hdr.udp_outer.plength = hdr.udp_outer.plength +  8;
-	
-
-	//hdr.ipv4_outer.ihl  = hdr.ipv4_outer.ihl  + 2;
-	hdr.ipv4_outer.totalLen  = hdr.ipv4_outer.totalLen  + 8;// increase in bytes
-	}
-
-
     apply {
-	if(hdr.ethernet.srcAddr == 0x94c6911ef360){
+	#log_msg("ip-dst= {}, ip-src={}",{hdr.ipv4_inner.dstAddr, hdr.ipv4_inner.srcAddr});
+        if(hdr.ethernet.srcAddr == 0x94c6911ef360){
 	if(hdr.ipv4_inner.isValid()){
 		compute_flowid();
 		compute_index();
 		increment_count();
 		compute_mincount(meta.count1, meta.count2, meta.count3);
-
-		
-		hdr.udp_outer.checksum = 0;
-		add_option_header();
+		hdr.ipv4_inner.diffserv = (bit<8>) meta.min_count;
 		}}
- 
+	#log_msg("ip-after = {}",{hdr.ipv4_inner_option.optionLength});  
 	}
 }
 
@@ -317,8 +265,7 @@ control MyComputeChecksum(inout headers  hdr, inout metadata meta) {
               hdr.ipv4_inner.ttl,
               hdr.ipv4_inner.protocol,
               hdr.ipv4_inner.srcAddr,
-              hdr.ipv4_inner.dstAddr
-		},
+              hdr.ipv4_inner.dstAddr },
             hdr.ipv4_inner.hdrChecksum,
             HashAlgorithm.csum16);
 
@@ -353,7 +300,9 @@ control MyDeparser(packet_out packet, in headers hdr) {
         packet.emit(hdr.gtp_common);
         packet.emit(hdr.gtp_teid);
         packet.emit(hdr.ipv4_inner);
-	packet.emit(hdr.ipv4_inner_option);
+#	packet.emit(hdr.ipv4_inner_option);
+#	packet.emit(hdr.mri);
+#	packet.emit(hdr.swtraces);
     	  }
 }
 
