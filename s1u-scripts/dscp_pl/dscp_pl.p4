@@ -1,15 +1,8 @@
-
 /* -*- P4_16 -*- */
 #include <core.p4>
 #include <v1model.p4>
 #include "../include/otherheaders.p4"
-
-const bit<16> ETHERTYPE_IPV4 = 0x0800;
-const bit<8>  IPPROTO_IPv4   = 0x04;
-const bit<8>  IPPROTO_TCP   = 0x06;
-const bit<8>  IPPROTO_UDP   = 0x11;
-const bit<16> GTP_UDP_PORT     = 2152;
-const bit<32> GW_IP = 0x0A000001; // 10.0.0.1
+#include "../include/const_types.p4"
 
 //HASH COUNT RELATED FIELDS
 const bit<32> HASH_TABLE_SIZE = 1024;
@@ -21,23 +14,6 @@ register<bit<32>>(HASH_TABLE_SIZE) hashtable3;
 *********************** H E A D E R S  ***********************************
 *************************************************************************/
 
-
-/* GPRS Tunnelling Protocol (GTP) common part for v1 and v2 */
-
-header gtp_common_t {
-    bit<3> version; /* this should be 1 for GTPv1 and 2 for GTPv2 */
-    bit<1> pFlag;   /* protocolType for GTPv1 and pFlag for GTPv2 */
-    bit<1> tFlag;   /* only used by GTPv2 - teid flag */
-    bit<1> eFlag;   /* only used by GTPv1 - E flag */
-    bit<1> sFlag;   /* only used by GTPv1 - S flag */
-    bit<1> pnFlag;  /* only used by GTPv1 - PN flag */
-    bit<8> messageType;
-    bit<16> messageLength;
-}
-
-header gtp_teid_t {
-    bit<32> teid;
-}
 
 struct metadata {
    	bit<72> flowid;
@@ -59,8 +35,7 @@ struct headers {
     ethernet_t   ethernet;
     ipv4_t       ipv4_outer;
     udp_t        udp_outer;
-    gtp_common_t gtp_common;
-    gtp_teid_t   gtp_teid;
+    gtp_t 	 gtp;
     ipv4_t 	 ipv4_inner;}
 
 /*************************************************************************
@@ -101,17 +76,7 @@ parser MyParser(packet_in packet,
     }
 
     state parse_gtp {
-        packet.extract(hdr.gtp_common);
-        transition select(hdr.gtp_common.version, hdr.gtp_common.tFlag) {
-            (1,0)   : parse_teid;
-            (1,1) : parse_teid;
-            (2,1) : parse_teid;
-            default : accept;
-         }
-    }
-
-    state parse_teid {
-        packet.extract(hdr.gtp_teid);
+        packet.extract(hdr.gtp);
         transition parse_ipv4_inner;
     }
 
@@ -272,8 +237,7 @@ control MyDeparser(packet_out packet, in headers hdr) {
         packet.emit(hdr.ethernet);
         packet.emit(hdr.ipv4_outer);
         packet.emit(hdr.udp_outer);
-        packet.emit(hdr.gtp_common);
-        packet.emit(hdr.gtp_teid);
+        packet.emit(hdr.gtp);
         packet.emit(hdr.ipv4_inner);
     	  }
 }

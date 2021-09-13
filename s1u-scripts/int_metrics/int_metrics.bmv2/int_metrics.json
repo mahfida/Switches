@@ -107,8 +107,9 @@
       "fields" : [
         ["value", 8, false],
         ["optionLength", 8, false],
-        ["swid", 16, false],
-        ["packet_count", 32, false]
+        ["qdepth", 16, false],
+        ["qtime", 16, false],
+        ["packet_count", 16, false]
       ]
     }
   ],
@@ -427,8 +428,8 @@
       "name" : "deparser",
       "id" : 0,
       "source_info" : {
-        "filename" : "options_pl.p4",
-        "line" : 311,
+        "filename" : "int_metrics.p4",
+        "line" : 310,
         "column" : 8,
         "source_fragment" : "MyDeparser"
       },
@@ -443,7 +444,7 @@
       "name" : "hashtable1",
       "id" : 0,
       "source_info" : {
-        "filename" : "options_pl.p4",
+        "filename" : "int_metrics.p4",
         "line" : 10,
         "column" : 35,
         "source_fragment" : "hashtable1"
@@ -455,7 +456,7 @@
       "name" : "hashtable2",
       "id" : 1,
       "source_info" : {
-        "filename" : "options_pl.p4",
+        "filename" : "int_metrics.p4",
         "line" : 11,
         "column" : 35,
         "source_fragment" : "hashtable2"
@@ -467,7 +468,7 @@
       "name" : "hashtable3",
       "id" : 2,
       "source_info" : {
-        "filename" : "options_pl.p4",
+        "filename" : "int_metrics.p4",
         "line" : 12,
         "column" : 35,
         "source_fragment" : "hashtable3"
@@ -526,8 +527,8 @@
       "name" : "calc_2",
       "id" : 3,
       "source_info" : {
-        "filename" : "options_pl.p4",
-        "line" : 271,
+        "filename" : "int_metrics.p4",
+        "line" : 270,
         "column" : 2,
         "source_fragment" : "update_checksum( ..."
       },
@@ -583,8 +584,8 @@
       "name" : "calc_3",
       "id" : 4,
       "source_info" : {
-        "filename" : "options_pl.p4",
-        "line" : 288,
+        "filename" : "int_metrics.p4",
+        "line" : 287,
         "column" : 1,
         "source_fragment" : "update_checksum( ..."
       },
@@ -653,8 +654,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "options_pl.p4",
-            "line" : 138,
+            "filename" : "int_metrics.p4",
+            "line" : 136,
             "column" : 8,
             "source_fragment" : "mark_to_drop(standard_metadata)"
           }
@@ -662,7 +663,7 @@
       ]
     },
     {
-      "name" : "options_pl155",
+      "name" : "int_metrics153",
       "id" : 1,
       "runtime_data" : [],
       "primitives" : [
@@ -679,8 +680,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "options_pl.p4",
-            "line" : 155,
+            "filename" : "int_metrics.p4",
+            "line" : 153,
             "column" : 40,
             "source_fragment" : "standard_metadata.egress_spec =0"
           }
@@ -688,7 +689,7 @@
       ]
     },
     {
-      "name" : "options_pl162",
+      "name" : "int_metrics160",
       "id" : 2,
       "runtime_data" : [],
       "primitives" : [
@@ -705,8 +706,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "options_pl.p4",
-            "line" : 162,
+            "filename" : "int_metrics.p4",
+            "line" : 160,
             "column" : 32,
             "source_fragment" : "standard_metadata.egress_spec =1"
           }
@@ -714,7 +715,7 @@
       ]
     },
     {
-      "name" : "options_pl174",
+      "name" : "int_metrics172",
       "id" : 3,
       "runtime_data" : [],
       "primitives" : [
@@ -754,8 +755,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "options_pl.p4",
-            "line" : 174,
+            "filename" : "int_metrics.p4",
+            "line" : 172,
             "column" : 32,
             "source_fragment" : "standard_metadata.egress_spec =1-standard_metadata.ingress_port"
           }
@@ -763,7 +764,7 @@
       ]
     },
     {
-      "name" : "options_pl177",
+      "name" : "int_metrics175",
       "id" : 4,
       "runtime_data" : [],
       "primitives" : [
@@ -803,8 +804,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "options_pl.p4",
-            "line" : 177,
+            "filename" : "int_metrics.p4",
+            "line" : 175,
             "column" : 32,
             "source_fragment" : "standard_metadata.egress_spec =1-standard_metadata.ingress_port"
           }
@@ -872,8 +873,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "options_pl.p4",
-            "line" : 196,
+            "filename" : "int_metrics.p4",
+            "line" : 194,
             "column" : 4,
             "source_fragment" : "meta.flowid[31:0] = hdr.ipv4_inner.srcAddr"
           }
@@ -954,8 +955,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "options_pl.p4",
-            "line" : 197,
+            "filename" : "int_metrics.p4",
+            "line" : 195,
             "column" : 1,
             "source_fragment" : "meta.flowid[63:32] = hdr.ipv4_inner.dstAddr"
           }
@@ -1036,8 +1037,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "options_pl.p4",
-            "line" : 198,
+            "filename" : "int_metrics.p4",
+            "line" : 196,
             "column" : 1,
             "source_fragment" : "meta.flowid[71:64] = hdr.ipv4_inner.protocol"
           }
@@ -1062,8 +1063,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "options_pl.p4",
-            "line" : 201,
+            "filename" : "int_metrics.p4",
+            "line" : 199,
             "column" : 47,
             "source_fragment" : "meta.flowid"
           }
@@ -1081,8 +1082,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "options_pl.p4",
-            "line" : 201,
+            "filename" : "int_metrics.p4",
+            "line" : 199,
             "column" : 60,
             "source_fragment" : "10w33"
           }
@@ -1108,8 +1109,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "options_pl.p4",
-            "line" : 201,
+            "filename" : "int_metrics.p4",
+            "line" : 199,
             "column" : 1,
             "source_fragment" : "hash(meta.index1, HashAlgorithm.crc16, 10w0, {meta.flowid, 10w33}, 10w1023)"
           }
@@ -1127,8 +1128,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "options_pl.p4",
-            "line" : 202,
+            "filename" : "int_metrics.p4",
+            "line" : 200,
             "column" : 47,
             "source_fragment" : "meta.flowid"
           }
@@ -1146,8 +1147,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "options_pl.p4",
-            "line" : 202,
+            "filename" : "int_metrics.p4",
+            "line" : 200,
             "column" : 60,
             "source_fragment" : "10w202"
           }
@@ -1173,8 +1174,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "options_pl.p4",
-            "line" : 202,
+            "filename" : "int_metrics.p4",
+            "line" : 200,
             "column" : 1,
             "source_fragment" : "hash(meta.index2, HashAlgorithm.crc16, 10w0, {meta.flowid, 10w202}, 10w1023)"
           }
@@ -1192,8 +1193,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "options_pl.p4",
-            "line" : 203,
+            "filename" : "int_metrics.p4",
+            "line" : 201,
             "column" : 47,
             "source_fragment" : "meta.flowid"
           }
@@ -1211,8 +1212,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "options_pl.p4",
-            "line" : 203,
+            "filename" : "int_metrics.p4",
+            "line" : 201,
             "column" : 60,
             "source_fragment" : "10w541"
           }
@@ -1238,8 +1239,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "options_pl.p4",
-            "line" : 203,
+            "filename" : "int_metrics.p4",
+            "line" : 201,
             "column" : 1,
             "source_fragment" : "hash(meta.index3, HashAlgorithm.crc16, 10w0, {meta.flowid, 10w541}, 10w1023)"
           }
@@ -1268,8 +1269,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "options_pl.p4",
-            "line" : 206,
+            "filename" : "int_metrics.p4",
+            "line" : 204,
             "column" : 1,
             "source_fragment" : "hashtable1.read(meta.count1, meta.index1)"
           }
@@ -1291,8 +1292,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "options_pl.p4",
-            "line" : 207,
+            "filename" : "int_metrics.p4",
+            "line" : 205,
             "column" : 1,
             "source_fragment" : "hashtable2.read(meta.count2, meta.index2)"
           }
@@ -1314,8 +1315,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "options_pl.p4",
-            "line" : 208,
+            "filename" : "int_metrics.p4",
+            "line" : 206,
             "column" : 1,
             "source_fragment" : "hashtable3.read(meta.count3, meta.index3)"
           }
@@ -1356,8 +1357,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "options_pl.p4",
-            "line" : 210,
+            "filename" : "int_metrics.p4",
+            "line" : 208,
             "column" : 31,
             "source_fragment" : "meta.count1 + 1"
           }
@@ -1379,8 +1380,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "options_pl.p4",
-            "line" : 210,
+            "filename" : "int_metrics.p4",
+            "line" : 208,
             "column" : 1,
             "source_fragment" : "hashtable1.write(meta.index1, meta.count1 + 1)"
           }
@@ -1421,8 +1422,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "options_pl.p4",
-            "line" : 211,
+            "filename" : "int_metrics.p4",
+            "line" : 209,
             "column" : 31,
             "source_fragment" : "meta.count2 + 1"
           }
@@ -1444,8 +1445,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "options_pl.p4",
-            "line" : 211,
+            "filename" : "int_metrics.p4",
+            "line" : 209,
             "column" : 1,
             "source_fragment" : "hashtable2.write(meta.index2, meta.count2 + 1)"
           }
@@ -1486,8 +1487,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "options_pl.p4",
-            "line" : 212,
+            "filename" : "int_metrics.p4",
+            "line" : 210,
             "column" : 31,
             "source_fragment" : "meta.count3 + 1"
           }
@@ -1509,8 +1510,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "options_pl.p4",
-            "line" : 212,
+            "filename" : "int_metrics.p4",
+            "line" : 210,
             "column" : 1,
             "source_fragment" : "hashtable3.write(meta.index3, meta.count3 + 1)"
           }
@@ -1535,8 +1536,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "options_pl.p4",
-            "line" : 215,
+            "filename" : "int_metrics.p4",
+            "line" : 213,
             "column" : 6,
             "source_fragment" : "meta.min_count = cnt1; ..."
           }
@@ -1685,8 +1686,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "options_pl.p4",
-            "line" : 226,
+            "filename" : "int_metrics.p4",
+            "line" : 224,
             "column" : 1,
             "source_fragment" : "hdr.ipv4_inner_option.setValid()"
           }
@@ -1704,8 +1705,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "options_pl.p4",
-            "line" : 227,
+            "filename" : "int_metrics.p4",
+            "line" : 225,
             "column" : 1,
             "source_fragment" : "hdr.ipv4_inner_option.value=68"
           }
@@ -1715,18 +1716,63 @@
           "parameters" : [
             {
               "type" : "field",
-              "value" : ["ipv4_inner_option", "swid"]
+              "value" : ["ipv4_inner_option", "qdepth"]
             },
             {
-              "type" : "hexstr",
-              "value" : "0x0001"
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "&",
+                  "left" : {
+                    "type" : "field",
+                    "value" : ["standard_metadata", "deq_qdepth"]
+                  },
+                  "right" : {
+                    "type" : "hexstr",
+                    "value" : "0xffff"
+                  }
+                }
+              }
             }
           ],
           "source_info" : {
-            "filename" : "options_pl.p4",
-            "line" : 228,
+            "filename" : "int_metrics.p4",
+            "line" : 226,
             "column" : 1,
-            "source_fragment" : "hdr.ipv4_inner_option.swid = 1"
+            "source_fragment" : "hdr.ipv4_inner_option.qdepth = (bit <16>) standard_metadata.deq_qdepth"
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["ipv4_inner_option", "qtime"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "&",
+                  "left" : {
+                    "type" : "field",
+                    "value" : ["standard_metadata", "deq_timedelta"]
+                  },
+                  "right" : {
+                    "type" : "hexstr",
+                    "value" : "0xffff"
+                  }
+                }
+              }
+            }
+          ],
+          "source_info" : {
+            "filename" : "int_metrics.p4",
+            "line" : 227,
+            "column" : 1,
+            "source_fragment" : "hdr.ipv4_inner_option.qtime = (bit <16>) standard_metadata.deq_timedelta"
           }
         },
         {
@@ -1737,15 +1783,28 @@
               "value" : ["ipv4_inner_option", "packet_count"]
             },
             {
-              "type" : "field",
-              "value" : ["scalars", "userMetadata.min_count"]
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "&",
+                  "left" : {
+                    "type" : "field",
+                    "value" : ["scalars", "userMetadata.min_count"]
+                  },
+                  "right" : {
+                    "type" : "hexstr",
+                    "value" : "0xffff"
+                  }
+                }
+              }
             }
           ],
           "source_info" : {
-            "filename" : "options_pl.p4",
-            "line" : 229,
+            "filename" : "int_metrics.p4",
+            "line" : 228,
             "column" : 1,
-            "source_fragment" : "hdr.ipv4_inner_option.packet_count = meta.min_count"
+            "source_fragment" : "hdr.ipv4_inner_option.packet_count = (bit <16>) meta.min_count"
           }
         },
         {
@@ -1761,8 +1820,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "options_pl.p4",
-            "line" : 232,
+            "filename" : "int_metrics.p4",
+            "line" : 231,
             "column" : 1,
             "source_fragment" : "hdr.ipv4_inner_option.optionLength = 8"
           }
@@ -1803,8 +1862,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "options_pl.p4",
-            "line" : 235,
+            "filename" : "int_metrics.p4",
+            "line" : 234,
             "column" : 1,
             "source_fragment" : "hdr.ipv4_inner.ihl = hdr.ipv4_inner.ihl + 2"
           }
@@ -1845,8 +1904,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "options_pl.p4",
-            "line" : 236,
+            "filename" : "int_metrics.p4",
+            "line" : 235,
             "column" : 1,
             "source_fragment" : "hdr.ipv4_inner.totalLen = hdr.ipv4_inner.totalLen + 8"
           }
@@ -1887,8 +1946,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "options_pl.p4",
-            "line" : 238,
+            "filename" : "int_metrics.p4",
+            "line" : 237,
             "column" : 1,
             "source_fragment" : "hdr.gtp.messageLength = hdr.gtp.messageLength +8"
           }
@@ -1929,8 +1988,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "options_pl.p4",
-            "line" : 239,
+            "filename" : "int_metrics.p4",
+            "line" : 238,
             "column" : 8,
             "source_fragment" : "hdr.udp_outer.plength = hdr.udp_outer.plength + 8"
           }
@@ -1971,8 +2030,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "options_pl.p4",
-            "line" : 243,
+            "filename" : "int_metrics.p4",
+            "line" : 242,
             "column" : 1,
             "source_fragment" : "hdr.ipv4_outer.totalLen = hdr.ipv4_outer.totalLen + 8"
           }
@@ -1980,7 +2039,7 @@
       ]
     },
     {
-      "name" : "options_pl256",
+      "name" : "int_metrics255",
       "id" : 10,
       "runtime_data" : [],
       "primitives" : [
@@ -1997,8 +2056,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "options_pl.p4",
-            "line" : 256,
+            "filename" : "int_metrics.p4",
+            "line" : 255,
             "column" : 2,
             "source_fragment" : "hdr.udp_outer.checksum = 0"
           }
@@ -2011,19 +2070,19 @@
       "name" : "ingress",
       "id" : 0,
       "source_info" : {
-        "filename" : "options_pl.p4",
-        "line" : 133,
+        "filename" : "int_metrics.p4",
+        "line" : 131,
         "column" : 8,
         "source_fragment" : "MyIngress"
       },
       "init_table" : "node_2",
       "tables" : [
         {
-          "name" : "tbl_options_pl155",
+          "name" : "tbl_int_metrics153",
           "id" : 0,
           "source_info" : {
-            "filename" : "options_pl.p4",
-            "line" : 155,
+            "filename" : "int_metrics.p4",
+            "line" : 153,
             "column" : 70,
             "source_fragment" : "="
           },
@@ -2035,10 +2094,10 @@
           "support_timeout" : false,
           "direct_meters" : null,
           "action_ids" : [1],
-          "actions" : ["options_pl155"],
+          "actions" : ["int_metrics153"],
           "base_default_next" : null,
           "next_tables" : {
-            "options_pl155" : null
+            "int_metrics153" : null
           },
           "default_entry" : {
             "action_id" : 1,
@@ -2048,11 +2107,11 @@
           }
         },
         {
-          "name" : "tbl_options_pl162",
+          "name" : "tbl_int_metrics160",
           "id" : 1,
           "source_info" : {
-            "filename" : "options_pl.p4",
-            "line" : 162,
+            "filename" : "int_metrics.p4",
+            "line" : 160,
             "column" : 62,
             "source_fragment" : "="
           },
@@ -2064,10 +2123,10 @@
           "support_timeout" : false,
           "direct_meters" : null,
           "action_ids" : [2],
-          "actions" : ["options_pl162"],
+          "actions" : ["int_metrics160"],
           "base_default_next" : null,
           "next_tables" : {
-            "options_pl162" : null
+            "int_metrics160" : null
           },
           "default_entry" : {
             "action_id" : 2,
@@ -2080,8 +2139,8 @@
           "name" : "MyIngress.drop_packet",
           "id" : 2,
           "source_info" : {
-            "filename" : "options_pl.p4",
-            "line" : 141,
+            "filename" : "int_metrics.p4",
+            "line" : 139,
             "column" : 9,
             "source_fragment" : "drop_packet"
           },
@@ -2106,11 +2165,11 @@
           }
         },
         {
-          "name" : "tbl_options_pl174",
+          "name" : "tbl_int_metrics172",
           "id" : 3,
           "source_info" : {
-            "filename" : "options_pl.p4",
-            "line" : 174,
+            "filename" : "int_metrics.p4",
+            "line" : 172,
             "column" : 62,
             "source_fragment" : "="
           },
@@ -2122,10 +2181,10 @@
           "support_timeout" : false,
           "direct_meters" : null,
           "action_ids" : [3],
-          "actions" : ["options_pl174"],
+          "actions" : ["int_metrics172"],
           "base_default_next" : null,
           "next_tables" : {
-            "options_pl174" : null
+            "int_metrics172" : null
           },
           "default_entry" : {
             "action_id" : 3,
@@ -2135,11 +2194,11 @@
           }
         },
         {
-          "name" : "tbl_options_pl177",
+          "name" : "tbl_int_metrics175",
           "id" : 4,
           "source_info" : {
-            "filename" : "options_pl.p4",
-            "line" : 177,
+            "filename" : "int_metrics.p4",
+            "line" : 175,
             "column" : 62,
             "source_fragment" : "="
           },
@@ -2151,10 +2210,10 @@
           "support_timeout" : false,
           "direct_meters" : null,
           "action_ids" : [4],
-          "actions" : ["options_pl177"],
+          "actions" : ["int_metrics175"],
           "base_default_next" : null,
           "next_tables" : {
-            "options_pl177" : null
+            "int_metrics175" : null
           },
           "default_entry" : {
             "action_id" : 4,
@@ -2170,8 +2229,8 @@
           "name" : "node_2",
           "id" : 0,
           "source_info" : {
-            "filename" : "options_pl.p4",
-            "line" : 149,
+            "filename" : "int_metrics.p4",
+            "line" : 147,
             "column" : 11,
             "source_fragment" : "hdr.ethernet.dstAddr == 0xffffffffffff"
           },
@@ -2196,8 +2255,8 @@
           "name" : "node_3",
           "id" : 1,
           "source_info" : {
-            "filename" : "options_pl.p4",
-            "line" : 151,
+            "filename" : "int_metrics.p4",
+            "line" : 149,
             "column" : 19,
             "source_fragment" : "hdr.ethernet.srcAddr == 0xfa163e301ed4"
           },
@@ -2222,8 +2281,8 @@
           "name" : "node_4",
           "id" : 2,
           "source_info" : {
-            "filename" : "options_pl.p4",
-            "line" : 153,
+            "filename" : "int_metrics.p4",
+            "line" : 151,
             "column" : 35,
             "source_fragment" : "standard_metadata.ingress_port==1"
           },
@@ -2242,14 +2301,14 @@
             }
           },
           "false_next" : null,
-          "true_next" : "tbl_options_pl155"
+          "true_next" : "tbl_int_metrics153"
         },
         {
           "name" : "node_6",
           "id" : 3,
           "source_info" : {
-            "filename" : "options_pl.p4",
-            "line" : 158,
+            "filename" : "int_metrics.p4",
+            "line" : 156,
             "column" : 24,
             "source_fragment" : "hdr.ethernet.srcAddr == 0x94c6911ef360"
           },
@@ -2274,8 +2333,8 @@
           "name" : "node_7",
           "id" : 4,
           "source_info" : {
-            "filename" : "options_pl.p4",
-            "line" : 160,
+            "filename" : "int_metrics.p4",
+            "line" : 158,
             "column" : 28,
             "source_fragment" : "standard_metadata.ingress_port==0"
           },
@@ -2294,14 +2353,14 @@
             }
           },
           "false_next" : null,
-          "true_next" : "tbl_options_pl162"
+          "true_next" : "tbl_int_metrics160"
         },
         {
           "name" : "node_10",
           "id" : 5,
           "source_info" : {
-            "filename" : "options_pl.p4",
-            "line" : 172,
+            "filename" : "int_metrics.p4",
+            "line" : 170,
             "column" : 19,
             "source_fragment" : "hdr.ethernet.dstAddr == 0xfa163e301ed4"
           },
@@ -2319,15 +2378,15 @@
               }
             }
           },
-          "true_next" : "tbl_options_pl174",
+          "true_next" : "tbl_int_metrics172",
           "false_next" : "node_12"
         },
         {
           "name" : "node_12",
           "id" : 6,
           "source_info" : {
-            "filename" : "options_pl.p4",
-            "line" : 176,
+            "filename" : "int_metrics.p4",
+            "line" : 174,
             "column" : 24,
             "source_fragment" : "hdr.ethernet.dstAddr == 0x94c6911ef360"
           },
@@ -2345,7 +2404,7 @@
               }
             }
           },
-          "true_next" : "tbl_options_pl177",
+          "true_next" : "tbl_int_metrics175",
           "false_next" : "MyIngress.drop_packet"
         }
       ]
@@ -2354,8 +2413,8 @@
       "name" : "egress",
       "id" : 1,
       "source_info" : {
-        "filename" : "options_pl.p4",
-        "line" : 190,
+        "filename" : "int_metrics.p4",
+        "line" : 188,
         "column" : 8,
         "source_fragment" : "MyEgress"
       },
@@ -2365,8 +2424,8 @@
           "name" : "tbl_compute_flowid",
           "id" : 5,
           "source_info" : {
-            "filename" : "options_pl.p4",
-            "line" : 250,
+            "filename" : "int_metrics.p4",
+            "line" : 249,
             "column" : 2,
             "source_fragment" : "compute_flowid()"
           },
@@ -2394,8 +2453,8 @@
           "name" : "tbl_compute_index",
           "id" : 6,
           "source_info" : {
-            "filename" : "options_pl.p4",
-            "line" : 251,
+            "filename" : "int_metrics.p4",
+            "line" : 250,
             "column" : 2,
             "source_fragment" : "compute_index()"
           },
@@ -2423,8 +2482,8 @@
           "name" : "tbl_increment_count",
           "id" : 7,
           "source_info" : {
-            "filename" : "options_pl.p4",
-            "line" : 252,
+            "filename" : "int_metrics.p4",
+            "line" : 251,
             "column" : 2,
             "source_fragment" : "increment_count()"
           },
@@ -2452,8 +2511,8 @@
           "name" : "tbl_compute_mincount",
           "id" : 8,
           "source_info" : {
-            "filename" : "options_pl.p4",
-            "line" : 253,
+            "filename" : "int_metrics.p4",
+            "line" : 252,
             "column" : 2,
             "source_fragment" : "compute_mincount(meta.count1, meta.count2, meta.count3)"
           },
@@ -2466,9 +2525,9 @@
           "direct_meters" : null,
           "action_ids" : [8],
           "actions" : ["MyEgress.compute_mincount"],
-          "base_default_next" : "tbl_options_pl256",
+          "base_default_next" : "tbl_int_metrics255",
           "next_tables" : {
-            "MyEgress.compute_mincount" : "tbl_options_pl256"
+            "MyEgress.compute_mincount" : "tbl_int_metrics255"
           },
           "default_entry" : {
             "action_id" : 8,
@@ -2478,11 +2537,11 @@
           }
         },
         {
-          "name" : "tbl_options_pl256",
+          "name" : "tbl_int_metrics255",
           "id" : 9,
           "source_info" : {
-            "filename" : "options_pl.p4",
-            "line" : 256,
+            "filename" : "int_metrics.p4",
+            "line" : 255,
             "column" : 25,
             "source_fragment" : "="
           },
@@ -2494,10 +2553,10 @@
           "support_timeout" : false,
           "direct_meters" : null,
           "action_ids" : [10],
-          "actions" : ["options_pl256"],
+          "actions" : ["int_metrics255"],
           "base_default_next" : "tbl_add_option_header",
           "next_tables" : {
-            "options_pl256" : "tbl_add_option_header"
+            "int_metrics255" : "tbl_add_option_header"
           },
           "default_entry" : {
             "action_id" : 10,
@@ -2510,8 +2569,8 @@
           "name" : "tbl_add_option_header",
           "id" : 10,
           "source_info" : {
-            "filename" : "options_pl.p4",
-            "line" : 257,
+            "filename" : "int_metrics.p4",
+            "line" : 256,
             "column" : 2,
             "source_fragment" : "add_option_header()"
           },
@@ -2542,8 +2601,8 @@
           "name" : "node_17",
           "id" : 7,
           "source_info" : {
-            "filename" : "options_pl.p4",
-            "line" : 248,
+            "filename" : "int_metrics.p4",
+            "line" : 247,
             "column" : 4,
             "source_fragment" : "hdr.ethernet.srcAddr == 0x94c6911ef360"
           },
@@ -2568,8 +2627,8 @@
           "name" : "node_18",
           "id" : 8,
           "source_info" : {
-            "filename" : "options_pl.p4",
-            "line" : 249,
+            "filename" : "int_metrics.p4",
+            "line" : 248,
             "column" : 4,
             "source_fragment" : "hdr.ipv4_inner.isValid()"
           },
@@ -2595,8 +2654,8 @@
       "name" : "cksum",
       "id" : 0,
       "source_info" : {
-        "filename" : "options_pl.p4",
-        "line" : 271,
+        "filename" : "int_metrics.p4",
+        "line" : 270,
         "column" : 2,
         "source_fragment" : "update_checksum( ..."
       },
@@ -2621,8 +2680,8 @@
       "name" : "cksum_0",
       "id" : 1,
       "source_info" : {
-        "filename" : "options_pl.p4",
-        "line" : 288,
+        "filename" : "int_metrics.p4",
+        "line" : 287,
         "column" : 1,
         "source_fragment" : "update_checksum( ..."
       },
@@ -2684,7 +2743,7 @@
       ["standard_metadata", "priority"]
     ]
   ],
-  "program" : "options_pl.bmv2/options_pl.p4i",
+  "program" : "int_metrics.bmv2/int_metrics.p4i",
   "__meta__" : {
     "version" : [2, 23],
     "compiler" : "https://github.com/p4lang/p4c"

@@ -14,12 +14,9 @@ register<bit<32>>(HASH_TABLE_SIZE) hashtable3;
 /*************************************************************************
 *********************** H E A D E R S  ***********************************
 *************************************************************************/
-
-typedef bit<16> switchID_t;
-typedef bit<32> packet_count_t;
-
-
-/* GPRS Tunnelling Protocol (GTP) common part for v1 and v2 */
+typedef bit<16> qdepth_t;
+typedef bit<16> qtime_t;
+typedef bit<16> packet_count_t;
 
 
 // Option field for inner ipv4
@@ -27,8 +24,9 @@ header ipv4_inner_option_t{
 	bit<8> value;
         bit<8> optionLength;
 	//option data
-	switchID_t swid; //16 bits
-	packet_count_t packet_count;//32 bits
+	qdepth_t qdepth;
+	qtime_t qtime;
+	packet_count_t packet_count;
 }
 
 struct metadata {
@@ -51,7 +49,7 @@ struct headers {
     ethernet_t   ethernet;
     ipv4_t       ipv4_outer;
     udp_t        udp_outer;
-    gtp_t 	 gtp;
+    gtp_t	 gtp;
     ipv4_t 	 ipv4_inner;
     ipv4_inner_option_t ipv4_inner_option;
   }
@@ -225,8 +223,9 @@ control MyEgress(inout headers hdr,
     action add_option_header(){
 	hdr.ipv4_inner_option.setValid();
 	hdr.ipv4_inner_option.value=68; //1 byte
-	hdr.ipv4_inner_option.swid = 1; //2 bytes
-	hdr.ipv4_inner_option.packet_count = meta.min_count;//4 bytes
+	hdr.ipv4_inner_option.qdepth = (bit <16>) standard_metadata.deq_qdepth ; //2 bytes
+	hdr.ipv4_inner_option.qtime = (bit <16>) standard_metadata.deq_timedelta;
+	hdr.ipv4_inner_option.packet_count = (bit <16>) meta.min_count;//2 bytes
 
 
 	hdr.ipv4_inner_option.optionLength =  8;

@@ -1,7 +1,7 @@
-# 1 "options_pl.p4"
+# 1 "int_metrics.p4"
 # 1 "<built-in>"
 # 1 "<command-line>"
-# 1 "options_pl.p4"
+# 1 "int_metrics.p4"
 
 /* -*- P4_16 -*- */
 # 1 "/usr/local/share/p4c/p4include/core.p4" 1
@@ -87,7 +87,7 @@ match_kind {
     /// Longest-prefix match.
     lpm
 }
-# 4 "options_pl.p4" 2
+# 4 "int_metrics.p4" 2
 # 1 "/usr/local/share/p4c/p4include/v1model.p4" 1
 /*
 Copyright 2013-present Barefoot Networks, Inc.
@@ -866,7 +866,7 @@ package V1Switch<H, M>(Parser<H, M> p,
                        ComputeChecksum<H, M> ck,
                        Deparser<H> dep
                        );
-# 5 "options_pl.p4" 2
+# 5 "int_metrics.p4" 2
 # 1 "../include/otherheaders.p4" 1
 header cpu_header_t {
     bit<64> preamble;
@@ -970,14 +970,14 @@ header udp_t {
     bit<16> plength;
     bit<16> checksum;
 }
-# 6 "options_pl.p4" 2
+# 6 "int_metrics.p4" 2
 # 1 "../include/const_types.p4" 1
 const bit<16> ETHERTYPE_IPV4 = 0x0800;
 const bit<8> IPPROTO_IPv4 = 0x04;
 const bit<8> IPPROTO_TCP = 0x06;
 const bit<8> IPPROTO_UDP = 0x11;
 const bit<16> GTP_UDP_PORT = 2152;
-# 7 "options_pl.p4" 2
+# 7 "int_metrics.p4" 2
 
 //HASH COUNT RELATED FIELDS
 const bit<32> HASH_TABLE_SIZE = 1024;
@@ -988,12 +988,9 @@ register<bit<32>>(HASH_TABLE_SIZE) hashtable3;
 /*************************************************************************
 *********************** H E A D E R S  ***********************************
 *************************************************************************/
-
-typedef bit<16> switchID_t;
-typedef bit<32> packet_count_t;
-
-
-/* GPRS Tunnelling Protocol (GTP) common part for v1 and v2 */
+typedef bit<16> qdepth_t;
+typedef bit<16> qtime_t;
+typedef bit<16> packet_count_t;
 
 
 // Option field for inner ipv4
@@ -1001,8 +998,9 @@ header ipv4_inner_option_t{
  bit<8> value;
         bit<8> optionLength;
  //option data
- switchID_t swid; //16 bits
- packet_count_t packet_count;//32 bits
+ qdepth_t qdepth;
+ qtime_t qtime;
+ packet_count_t packet_count;
 }
 
 struct metadata {
@@ -1199,8 +1197,9 @@ control MyEgress(inout headers hdr,
     action add_option_header(){
  hdr.ipv4_inner_option.setValid();
  hdr.ipv4_inner_option.value=68; //1 byte
- hdr.ipv4_inner_option.swid = 1; //2 bytes
- hdr.ipv4_inner_option.packet_count = meta.min_count;//4 bytes
+ hdr.ipv4_inner_option.qdepth = (bit <16>) standard_metadata.deq_qdepth ; //2 bytes
+ hdr.ipv4_inner_option.qtime = (bit <16>) standard_metadata.deq_timedelta;
+ hdr.ipv4_inner_option.packet_count = (bit <16>) meta.min_count;//2 bytes
 
 
  hdr.ipv4_inner_option.optionLength = 8;
