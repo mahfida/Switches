@@ -383,7 +383,7 @@
       "name" : "deparser",
       "id" : 0,
       "source_info" : {
-        "filename" : "gtp.p4",
+        "filename" : "dscp_pl.p4",
         "line" : 270,
         "column" : 8,
         "source_fragment" : "MyDeparser"
@@ -399,7 +399,7 @@
       "name" : "hashtable1",
       "id" : 0,
       "source_info" : {
-        "filename" : "gtp.p4",
+        "filename" : "dscp_pl.p4",
         "line" : 16,
         "column" : 35,
         "source_fragment" : "hashtable1"
@@ -411,7 +411,7 @@
       "name" : "hashtable2",
       "id" : 1,
       "source_info" : {
-        "filename" : "gtp.p4",
+        "filename" : "dscp_pl.p4",
         "line" : 17,
         "column" : 35,
         "source_fragment" : "hashtable2"
@@ -423,7 +423,7 @@
       "name" : "hashtable3",
       "id" : 2,
       "source_info" : {
-        "filename" : "gtp.p4",
+        "filename" : "dscp_pl.p4",
         "line" : 18,
         "column" : 35,
         "source_fragment" : "hashtable3"
@@ -482,7 +482,7 @@
       "name" : "calc_2",
       "id" : 3,
       "source_info" : {
-        "filename" : "gtp.p4",
+        "filename" : "dscp_pl.p4",
         "line" : 248,
         "column" : 2,
         "source_fragment" : "update_checksum( ..."
@@ -552,7 +552,7 @@
             }
           ],
           "source_info" : {
-            "filename" : "gtp.p4",
+            "filename" : "dscp_pl.p4",
             "line" : 143,
             "column" : 8,
             "source_fragment" : "mark_to_drop(standard_metadata)"
@@ -561,7 +561,7 @@
       ]
     },
     {
-      "name" : "gtp160",
+      "name" : "dscp_pl160",
       "id" : 1,
       "runtime_data" : [],
       "primitives" : [
@@ -578,7 +578,7 @@
             }
           ],
           "source_info" : {
-            "filename" : "gtp.p4",
+            "filename" : "dscp_pl.p4",
             "line" : 160,
             "column" : 40,
             "source_fragment" : "standard_metadata.egress_spec =0"
@@ -587,7 +587,7 @@
       ]
     },
     {
-      "name" : "gtp167",
+      "name" : "dscp_pl167",
       "id" : 2,
       "runtime_data" : [],
       "primitives" : [
@@ -604,7 +604,7 @@
             }
           ],
           "source_info" : {
-            "filename" : "gtp.p4",
+            "filename" : "dscp_pl.p4",
             "line" : 167,
             "column" : 32,
             "source_fragment" : "standard_metadata.egress_spec =1"
@@ -613,7 +613,7 @@
       ]
     },
     {
-      "name" : "gtp179",
+      "name" : "dscp_pl179",
       "id" : 3,
       "runtime_data" : [],
       "primitives" : [
@@ -653,7 +653,7 @@
             }
           ],
           "source_info" : {
-            "filename" : "gtp.p4",
+            "filename" : "dscp_pl.p4",
             "line" : 179,
             "column" : 32,
             "source_fragment" : "standard_metadata.egress_spec =1-standard_metadata.ingress_port"
@@ -662,7 +662,7 @@
       ]
     },
     {
-      "name" : "gtp182",
+      "name" : "dscp_pl182",
       "id" : 4,
       "runtime_data" : [],
       "primitives" : [
@@ -702,7 +702,7 @@
             }
           ],
           "source_info" : {
-            "filename" : "gtp.p4",
+            "filename" : "dscp_pl.p4",
             "line" : 182,
             "column" : 32,
             "source_fragment" : "standard_metadata.egress_spec =1-standard_metadata.ingress_port"
@@ -771,7 +771,7 @@
             }
           ],
           "source_info" : {
-            "filename" : "gtp.p4",
+            "filename" : "dscp_pl.p4",
             "line" : 201,
             "column" : 4,
             "source_fragment" : "meta.flowid[31:0] = hdr.ipv4_inner.srcAddr"
@@ -853,7 +853,7 @@
             }
           ],
           "source_info" : {
-            "filename" : "gtp.p4",
+            "filename" : "dscp_pl.p4",
             "line" : 202,
             "column" : 1,
             "source_fragment" : "meta.flowid[63:32] = hdr.ipv4_inner.dstAddr"
@@ -935,7 +935,7 @@
             }
           ],
           "source_info" : {
-            "filename" : "gtp.p4",
+            "filename" : "dscp_pl.p4",
             "line" : 203,
             "column" : 1,
             "source_fragment" : "meta.flowid[71:64] = hdr.ipv4_inner.protocol"
@@ -961,7 +961,7 @@
             }
           ],
           "source_info" : {
-            "filename" : "gtp.p4",
+            "filename" : "dscp_pl.p4",
             "line" : 206,
             "column" : 47,
             "source_fragment" : "meta.flowid"
@@ -980,7 +980,7 @@
             }
           ],
           "source_info" : {
-            "filename" : "gtp.p4",
+            "filename" : "dscp_pl.p4",
             "line" : 206,
             "column" : 60,
             "source_fragment" : "10w33"
@@ -1007,7 +1007,7 @@
             }
           ],
           "source_info" : {
-            "filename" : "gtp.p4",
+            "filename" : "dscp_pl.p4",
             "line" : 206,
             "column" : 1,
             "source_fragment" : "hash(meta.index1, HashAlgorithm.crc16, 10w0, {meta.flowid, 10w33}, 10w1023)"
@@ -1026,7 +1026,7 @@
             }
           ],
           "source_info" : {
-            "filename" : "gtp.p4",
+            "filename" : "dscp_pl.p4",
             "line" : 207,
             "column" : 47,
             "source_fragment" : "meta.flowid"
@@ -1045,7 +1045,7 @@
             }
           ],
           "source_info" : {
-            "filename" : "gtp.p4",
+            "filename" : "dscp_pl.p4",
             "line" : 207,
             "column" : 60,
             "source_fragment" : "10w202"
@@ -1072,7 +1072,7 @@
             }
           ],
           "source_info" : {
-            "filename" : "gtp.p4",
+            "filename" : "dscp_pl.p4",
             "line" : 207,
             "column" : 1,
             "source_fragment" : "hash(meta.index2, HashAlgorithm.crc16, 10w0, {meta.flowid, 10w202}, 10w1023)"
@@ -1091,7 +1091,7 @@
             }
           ],
           "source_info" : {
-            "filename" : "gtp.p4",
+            "filename" : "dscp_pl.p4",
             "line" : 208,
             "column" : 47,
             "source_fragment" : "meta.flowid"
@@ -1110,7 +1110,7 @@
             }
           ],
           "source_info" : {
-            "filename" : "gtp.p4",
+            "filename" : "dscp_pl.p4",
             "line" : 208,
             "column" : 60,
             "source_fragment" : "10w514"
@@ -1137,7 +1137,7 @@
             }
           ],
           "source_info" : {
-            "filename" : "gtp.p4",
+            "filename" : "dscp_pl.p4",
             "line" : 208,
             "column" : 1,
             "source_fragment" : "hash(meta.index3, HashAlgorithm.crc16, 10w0, {meta.flowid, 10w514}, 10w1023)"
@@ -1167,7 +1167,7 @@
             }
           ],
           "source_info" : {
-            "filename" : "gtp.p4",
+            "filename" : "dscp_pl.p4",
             "line" : 211,
             "column" : 1,
             "source_fragment" : "hashtable1.read(meta.count1, meta.index1)"
@@ -1190,7 +1190,7 @@
             }
           ],
           "source_info" : {
-            "filename" : "gtp.p4",
+            "filename" : "dscp_pl.p4",
             "line" : 212,
             "column" : 1,
             "source_fragment" : "hashtable2.read(meta.count2, meta.index2)"
@@ -1213,7 +1213,7 @@
             }
           ],
           "source_info" : {
-            "filename" : "gtp.p4",
+            "filename" : "dscp_pl.p4",
             "line" : 213,
             "column" : 1,
             "source_fragment" : "hashtable3.read(meta.count3, meta.index3)"
@@ -1255,7 +1255,7 @@
             }
           ],
           "source_info" : {
-            "filename" : "gtp.p4",
+            "filename" : "dscp_pl.p4",
             "line" : 215,
             "column" : 31,
             "source_fragment" : "meta.count1 + 1"
@@ -1278,7 +1278,7 @@
             }
           ],
           "source_info" : {
-            "filename" : "gtp.p4",
+            "filename" : "dscp_pl.p4",
             "line" : 215,
             "column" : 1,
             "source_fragment" : "hashtable1.write(meta.index1, meta.count1 + 1)"
@@ -1320,7 +1320,7 @@
             }
           ],
           "source_info" : {
-            "filename" : "gtp.p4",
+            "filename" : "dscp_pl.p4",
             "line" : 216,
             "column" : 31,
             "source_fragment" : "meta.count2 + 1"
@@ -1343,7 +1343,7 @@
             }
           ],
           "source_info" : {
-            "filename" : "gtp.p4",
+            "filename" : "dscp_pl.p4",
             "line" : 216,
             "column" : 1,
             "source_fragment" : "hashtable2.write(meta.index2, meta.count2 + 1)"
@@ -1385,7 +1385,7 @@
             }
           ],
           "source_info" : {
-            "filename" : "gtp.p4",
+            "filename" : "dscp_pl.p4",
             "line" : 217,
             "column" : 31,
             "source_fragment" : "meta.count3 + 1"
@@ -1408,7 +1408,7 @@
             }
           ],
           "source_info" : {
-            "filename" : "gtp.p4",
+            "filename" : "dscp_pl.p4",
             "line" : 217,
             "column" : 1,
             "source_fragment" : "hashtable3.write(meta.index3, meta.count3 + 1)"
@@ -1434,7 +1434,7 @@
             }
           ],
           "source_info" : {
-            "filename" : "gtp.p4",
+            "filename" : "dscp_pl.p4",
             "line" : 220,
             "column" : 6,
             "source_fragment" : "meta.min_count = cnt1; ..."
@@ -1571,7 +1571,7 @@
       ]
     },
     {
-      "name" : "gtp235",
+      "name" : "dscp_pl235",
       "id" : 9,
       "runtime_data" : [],
       "primitives" : [
@@ -1601,7 +1601,7 @@
             }
           ],
           "source_info" : {
-            "filename" : "gtp.p4",
+            "filename" : "dscp_pl.p4",
             "line" : 235,
             "column" : 2,
             "source_fragment" : "hdr.ipv4_inner.diffserv = (bit<8>) meta.min_count"
@@ -1615,7 +1615,7 @@
       "name" : "ingress",
       "id" : 0,
       "source_info" : {
-        "filename" : "gtp.p4",
+        "filename" : "dscp_pl.p4",
         "line" : 138,
         "column" : 8,
         "source_fragment" : "MyIngress"
@@ -1623,10 +1623,10 @@
       "init_table" : "node_2",
       "tables" : [
         {
-          "name" : "tbl_gtp160",
+          "name" : "tbl_dscp_pl160",
           "id" : 0,
           "source_info" : {
-            "filename" : "gtp.p4",
+            "filename" : "dscp_pl.p4",
             "line" : 160,
             "column" : 70,
             "source_fragment" : "="
@@ -1639,10 +1639,10 @@
           "support_timeout" : false,
           "direct_meters" : null,
           "action_ids" : [1],
-          "actions" : ["gtp160"],
+          "actions" : ["dscp_pl160"],
           "base_default_next" : null,
           "next_tables" : {
-            "gtp160" : null
+            "dscp_pl160" : null
           },
           "default_entry" : {
             "action_id" : 1,
@@ -1652,10 +1652,10 @@
           }
         },
         {
-          "name" : "tbl_gtp167",
+          "name" : "tbl_dscp_pl167",
           "id" : 1,
           "source_info" : {
-            "filename" : "gtp.p4",
+            "filename" : "dscp_pl.p4",
             "line" : 167,
             "column" : 62,
             "source_fragment" : "="
@@ -1668,10 +1668,10 @@
           "support_timeout" : false,
           "direct_meters" : null,
           "action_ids" : [2],
-          "actions" : ["gtp167"],
+          "actions" : ["dscp_pl167"],
           "base_default_next" : null,
           "next_tables" : {
-            "gtp167" : null
+            "dscp_pl167" : null
           },
           "default_entry" : {
             "action_id" : 2,
@@ -1684,7 +1684,7 @@
           "name" : "MyIngress.drop_packet",
           "id" : 2,
           "source_info" : {
-            "filename" : "gtp.p4",
+            "filename" : "dscp_pl.p4",
             "line" : 146,
             "column" : 9,
             "source_fragment" : "drop_packet"
@@ -1710,10 +1710,10 @@
           }
         },
         {
-          "name" : "tbl_gtp179",
+          "name" : "tbl_dscp_pl179",
           "id" : 3,
           "source_info" : {
-            "filename" : "gtp.p4",
+            "filename" : "dscp_pl.p4",
             "line" : 179,
             "column" : 62,
             "source_fragment" : "="
@@ -1726,10 +1726,10 @@
           "support_timeout" : false,
           "direct_meters" : null,
           "action_ids" : [3],
-          "actions" : ["gtp179"],
+          "actions" : ["dscp_pl179"],
           "base_default_next" : null,
           "next_tables" : {
-            "gtp179" : null
+            "dscp_pl179" : null
           },
           "default_entry" : {
             "action_id" : 3,
@@ -1739,10 +1739,10 @@
           }
         },
         {
-          "name" : "tbl_gtp182",
+          "name" : "tbl_dscp_pl182",
           "id" : 4,
           "source_info" : {
-            "filename" : "gtp.p4",
+            "filename" : "dscp_pl.p4",
             "line" : 182,
             "column" : 62,
             "source_fragment" : "="
@@ -1755,10 +1755,10 @@
           "support_timeout" : false,
           "direct_meters" : null,
           "action_ids" : [4],
-          "actions" : ["gtp182"],
+          "actions" : ["dscp_pl182"],
           "base_default_next" : null,
           "next_tables" : {
-            "gtp182" : null
+            "dscp_pl182" : null
           },
           "default_entry" : {
             "action_id" : 4,
@@ -1774,7 +1774,7 @@
           "name" : "node_2",
           "id" : 0,
           "source_info" : {
-            "filename" : "gtp.p4",
+            "filename" : "dscp_pl.p4",
             "line" : 154,
             "column" : 11,
             "source_fragment" : "hdr.ethernet.dstAddr == 0xffffffffffff"
@@ -1800,7 +1800,7 @@
           "name" : "node_3",
           "id" : 1,
           "source_info" : {
-            "filename" : "gtp.p4",
+            "filename" : "dscp_pl.p4",
             "line" : 156,
             "column" : 19,
             "source_fragment" : "hdr.ethernet.srcAddr == 0xfa163e301ed4"
@@ -1826,7 +1826,7 @@
           "name" : "node_4",
           "id" : 2,
           "source_info" : {
-            "filename" : "gtp.p4",
+            "filename" : "dscp_pl.p4",
             "line" : 158,
             "column" : 35,
             "source_fragment" : "standard_metadata.ingress_port==1"
@@ -1846,13 +1846,13 @@
             }
           },
           "false_next" : null,
-          "true_next" : "tbl_gtp160"
+          "true_next" : "tbl_dscp_pl160"
         },
         {
           "name" : "node_6",
           "id" : 3,
           "source_info" : {
-            "filename" : "gtp.p4",
+            "filename" : "dscp_pl.p4",
             "line" : 163,
             "column" : 24,
             "source_fragment" : "hdr.ethernet.srcAddr == 0x94c6911ef360"
@@ -1878,7 +1878,7 @@
           "name" : "node_7",
           "id" : 4,
           "source_info" : {
-            "filename" : "gtp.p4",
+            "filename" : "dscp_pl.p4",
             "line" : 165,
             "column" : 28,
             "source_fragment" : "standard_metadata.ingress_port==0"
@@ -1898,13 +1898,13 @@
             }
           },
           "false_next" : null,
-          "true_next" : "tbl_gtp167"
+          "true_next" : "tbl_dscp_pl167"
         },
         {
           "name" : "node_10",
           "id" : 5,
           "source_info" : {
-            "filename" : "gtp.p4",
+            "filename" : "dscp_pl.p4",
             "line" : 177,
             "column" : 19,
             "source_fragment" : "hdr.ethernet.dstAddr == 0xfa163e301ed4"
@@ -1923,14 +1923,14 @@
               }
             }
           },
-          "true_next" : "tbl_gtp179",
+          "true_next" : "tbl_dscp_pl179",
           "false_next" : "node_12"
         },
         {
           "name" : "node_12",
           "id" : 6,
           "source_info" : {
-            "filename" : "gtp.p4",
+            "filename" : "dscp_pl.p4",
             "line" : 181,
             "column" : 24,
             "source_fragment" : "hdr.ethernet.dstAddr == 0x94c6911ef360"
@@ -1949,7 +1949,7 @@
               }
             }
           },
-          "true_next" : "tbl_gtp182",
+          "true_next" : "tbl_dscp_pl182",
           "false_next" : "MyIngress.drop_packet"
         }
       ]
@@ -1958,7 +1958,7 @@
       "name" : "egress",
       "id" : 1,
       "source_info" : {
-        "filename" : "gtp.p4",
+        "filename" : "dscp_pl.p4",
         "line" : 195,
         "column" : 8,
         "source_fragment" : "MyEgress"
@@ -1969,7 +1969,7 @@
           "name" : "tbl_compute_flowid",
           "id" : 5,
           "source_info" : {
-            "filename" : "gtp.p4",
+            "filename" : "dscp_pl.p4",
             "line" : 231,
             "column" : 2,
             "source_fragment" : "compute_flowid()"
@@ -1998,7 +1998,7 @@
           "name" : "tbl_compute_index",
           "id" : 6,
           "source_info" : {
-            "filename" : "gtp.p4",
+            "filename" : "dscp_pl.p4",
             "line" : 232,
             "column" : 2,
             "source_fragment" : "compute_index()"
@@ -2027,7 +2027,7 @@
           "name" : "tbl_increment_count",
           "id" : 7,
           "source_info" : {
-            "filename" : "gtp.p4",
+            "filename" : "dscp_pl.p4",
             "line" : 233,
             "column" : 2,
             "source_fragment" : "increment_count()"
@@ -2056,7 +2056,7 @@
           "name" : "tbl_compute_mincount",
           "id" : 8,
           "source_info" : {
-            "filename" : "gtp.p4",
+            "filename" : "dscp_pl.p4",
             "line" : 234,
             "column" : 2,
             "source_fragment" : "compute_mincount(meta.count1, meta.count2, meta.count3)"
@@ -2070,9 +2070,9 @@
           "direct_meters" : null,
           "action_ids" : [8],
           "actions" : ["MyEgress.compute_mincount"],
-          "base_default_next" : "tbl_gtp235",
+          "base_default_next" : "tbl_dscp_pl235",
           "next_tables" : {
-            "MyEgress.compute_mincount" : "tbl_gtp235"
+            "MyEgress.compute_mincount" : "tbl_dscp_pl235"
           },
           "default_entry" : {
             "action_id" : 8,
@@ -2082,10 +2082,10 @@
           }
         },
         {
-          "name" : "tbl_gtp235",
+          "name" : "tbl_dscp_pl235",
           "id" : 9,
           "source_info" : {
-            "filename" : "gtp.p4",
+            "filename" : "dscp_pl.p4",
             "line" : 235,
             "column" : 26,
             "source_fragment" : "="
@@ -2098,10 +2098,10 @@
           "support_timeout" : false,
           "direct_meters" : null,
           "action_ids" : [9],
-          "actions" : ["gtp235"],
+          "actions" : ["dscp_pl235"],
           "base_default_next" : null,
           "next_tables" : {
-            "gtp235" : null
+            "dscp_pl235" : null
           },
           "default_entry" : {
             "action_id" : 9,
@@ -2117,7 +2117,7 @@
           "name" : "node_17",
           "id" : 7,
           "source_info" : {
-            "filename" : "gtp.p4",
+            "filename" : "dscp_pl.p4",
             "line" : 229,
             "column" : 4,
             "source_fragment" : "hdr.ethernet.srcAddr == 0x94c6911ef360"
@@ -2143,7 +2143,7 @@
           "name" : "node_18",
           "id" : 8,
           "source_info" : {
-            "filename" : "gtp.p4",
+            "filename" : "dscp_pl.p4",
             "line" : 230,
             "column" : 4,
             "source_fragment" : "hdr.ipv4_inner.isValid()"
@@ -2170,7 +2170,7 @@
       "name" : "cksum",
       "id" : 0,
       "source_info" : {
-        "filename" : "gtp.p4",
+        "filename" : "dscp_pl.p4",
         "line" : 248,
         "column" : 2,
         "source_fragment" : "update_checksum( ..."
@@ -2233,7 +2233,7 @@
       ["standard_metadata", "priority"]
     ]
   ],
-  "program" : "gtp.bmv2/gtp.p4i",
+  "program" : "dscp_pl.bmv2/dscp_pl.p4i",
   "__meta__" : {
     "version" : [2, 23],
     "compiler" : "https://github.com/p4lang/p4c"

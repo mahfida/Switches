@@ -1,2 +1,0 @@
-table_add switch_port_srcIP port_forward 192.168.248.50  => 1
-table_add switch_port_dstIP port_forward 192.168.248.50	 => 0

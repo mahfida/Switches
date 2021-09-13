@@ -1,7 +1,8 @@
-# 1 "inout-ports.p4"
+# 1 "dscp_pl.p4"
 # 1 "<built-in>"
 # 1 "<command-line>"
-# 1 "inout-ports.p4"
+# 1 "dscp_pl.p4"
+
 /* -*- P4_16 -*- */
 # 1 "/usr/local/share/p4c/p4include/core.p4" 1
 /*
@@ -86,7 +87,7 @@ match_kind {
     /// Longest-prefix match.
     lpm
 }
-# 3 "inout-ports.p4" 2
+# 4 "dscp_pl.p4" 2
 # 1 "/usr/local/share/p4c/p4include/v1model.p4" 1
 /*
 Copyright 2013-present Barefoot Networks, Inc.
@@ -865,22 +866,173 @@ package V1Switch<H, M>(Parser<H, M> p,
                        ComputeChecksum<H, M> ck,
                        Deparser<H> dep
                        );
-# 4 "inout-ports.p4" 2
+# 5 "dscp_pl.p4" 2
+# 1 "../include/otherheaders.p4" 1
+header cpu_header_t {
+    bit<64> preamble;
+    bit<8> device;
+    bit<8> reason;
+    bit<8> if_index;
+}
+
+header ethernet_t {
+    bit<48> dstAddr;
+    bit<48> srcAddr;
+    bit<16> etherType;
+}
+
+header ipv4_t {
+    bit<4> version;
+    bit<4> ihl;
+    bit<8> diffserv;
+    bit<16> totalLen;
+    bit<16> identification;
+    bit<3> flags;
+    bit<13> fragOffset;
+    bit<8> ttl;
+    bit<8> protocol;
+    bit<16> hdrChecksum;
+    bit<32> srcAddr;
+    bit<32> dstAddr;
+}
+
+header ipv4_options_t {
+    bit<4> version;
+    bit<4> ihl;
+    bit<8> diffserv;
+    bit<16> totalLen;
+    bit<16> identification;
+    bit<3> flags;
+    bit<13> fragOffset;
+    bit<8> ttl;
+    bit<8> protocol;
+    bit<16> hdrChecksum;
+    bit<32> srcAddr;
+    bit<32> dstAddr;
+    varbit<320> options;
+}
+
+header vxlan_t {
+    bit<8> flags;
+    bit<24> reserved1;
+    bit<24> vni;
+    bit<8> reserved2;
+}
+
+header icmp_t {
+    bit<8> type;
+    bit<8> code;
+    bit<16> checksum;
+}
+
+header gtp_t {
+    bit<3> version; /* this should be 1 for GTPv1 and 2 for GTPv2 */
+    bit<1> pFlag; /* protocolType for GTPv1 and pFlag for GTPv2 */
+    bit<1> reserved;
+    bit<1> eFlag; /* only used by GTPv1 - E flag */
+    bit<1> sFlag; /* only used by GTPv1 - S flag */
+    bit<1> pnFlag; /* only used by GTPv1 - PN flag */
+    bit<8> messageType;
+    bit<16> messageLength;
+    bit<32> teid;
+}
+
+header tcp_t {
+    bit<16> srcPort;
+    bit<16> dstPort;
+    bit<32> seqNo;
+    bit<32> ackNo;
+    bit<4> dataOffset;
+    bit<4> res;
+    bit<8> flags;
+    bit<16> window;
+    bit<16> checksum;
+    bit<16> urgentPtr;
+}
+
+header tcp_options_t {
+    bit<16> srcPort;
+    bit<16> dstPort;
+    bit<32> seqNo;
+    bit<32> ackNo;
+    bit<4> dataOffset;
+    bit<4> res;
+    bit<8> flags;
+    bit<16> window;
+    bit<16> checksum;
+    bit<16> urgentPtr;
+    varbit<320> options;
+}
+
+header udp_t {
+    bit<16> srcPort;
+    bit<16> dstPort;
+    bit<16> plength;
+    bit<16> checksum;
+}
+# 6 "dscp_pl.p4" 2
+
+const bit<16> ETHERTYPE_IPV4 = 0x0800;
+const bit<8> IPPROTO_IPv4 = 0x04;
+const bit<8> IPPROTO_TCP = 0x06;
+const bit<8> IPPROTO_UDP = 0x11;
+const bit<16> GTP_UDP_PORT = 2152;
+const bit<32> GW_IP = 0x0A000001; // 10.0.0.1
+
+//HASH COUNT RELATED FIELDS
+const bit<32> HASH_TABLE_SIZE = 1024;
+register<bit<32>>(HASH_TABLE_SIZE) hashtable1;
+register<bit<32>>(HASH_TABLE_SIZE) hashtable2;
+register<bit<32>>(HASH_TABLE_SIZE) hashtable3;
 
 /*************************************************************************
 *********************** H E A D E R S  ***********************************
 *************************************************************************/
 
-struct metadata {
-    /* empty */
+
+/* GPRS Tunnelling Protocol (GTP) common part for v1 and v2 */
+
+header gtp_common_t {
+    bit<3> version; /* this should be 1 for GTPv1 and 2 for GTPv2 */
+    bit<1> pFlag; /* protocolType for GTPv1 and pFlag for GTPv2 */
+    bit<1> tFlag; /* only used by GTPv2 - teid flag */
+    bit<1> eFlag; /* only used by GTPv1 - E flag */
+    bit<1> sFlag; /* only used by GTPv1 - S flag */
+    bit<1> pnFlag; /* only used by GTPv1 - PN flag */
+    bit<8> messageType;
+    bit<16> messageLength;
 }
 
-struct headers{
-   /* empty */
+header gtp_teid_t {
+    bit<32> teid;
 }
+
+struct metadata {
+    bit<72> flowid;
+
+ //hash indices;
+ bit<32> index1;
+ bit<32> index2;
+ bit<32> index3;
+
+ //count at each index
+ bit<32> count1;
+ bit<32> count2;
+ bit<32> count3;
+ bit<32> min_count;
+
+   }
+
+struct headers {
+    ethernet_t ethernet;
+    ipv4_t ipv4_outer;
+    udp_t udp_outer;
+    gtp_common_t gtp_common;
+    gtp_teid_t gtp_teid;
+    ipv4_t ipv4_inner;}
 
 /*************************************************************************
-*********************** P A R S E R  ***********************************
+************************* P A R S E R  ***********************************
 *************************************************************************/
 
 parser MyParser(packet_in packet,
@@ -889,8 +1041,53 @@ parser MyParser(packet_in packet,
                 inout standard_metadata_t standard_metadata) {
 
     state start {
+        transition parse_ethernet;
+    }
+
+    state parse_ethernet {
+        packet.extract(hdr.ethernet);
+        transition select(hdr.ethernet.etherType) {
+            ETHERTYPE_IPV4: parse_ipv4_outer;
+            default: accept;
+        }
+    }
+
+    state parse_ipv4_outer {
+        packet.extract(hdr.ipv4_outer);
+        transition select(hdr.ipv4_outer.protocol){
+            IPPROTO_UDP : parse_udp_outer;
+            default : accept;
+        }
+    }
+
+    state parse_udp_outer {
+        packet.extract(hdr.udp_outer);
+        transition select(hdr.udp_outer.dstPort) {
+            GTP_UDP_PORT : parse_gtp;
+            default : accept;
+        }
+    }
+
+    state parse_gtp {
+        packet.extract(hdr.gtp_common);
+        transition select(hdr.gtp_common.version, hdr.gtp_common.tFlag) {
+            (1,0) : parse_teid;
+            (1,1) : parse_teid;
+            (2,1) : parse_teid;
+            default : accept;
+         }
+    }
+
+    state parse_teid {
+        packet.extract(hdr.gtp_teid);
+        transition parse_ipv4_inner;
+    }
+
+    state parse_ipv4_inner {
+        packet.extract(hdr.ipv4_inner);
         transition accept;
     }
+
 }
 
 /*************************************************************************
@@ -909,30 +1106,53 @@ control MyVerifyChecksum(inout headers hdr, inout metadata meta) {
 control MyIngress(inout headers hdr,
                   inout metadata meta,
                   inout standard_metadata_t standard_metadata) {
+
     action drop() {
         mark_to_drop(standard_metadata);
     }
 
-    action port_forward(bit<9> port) {
-        standard_metadata.egress_spec = port;
-    }
-
-    table switch_port {
-        key = {
-            standard_metadata.ingress_port: exact;
-        }
+   table drop_packet{
         actions = {
-            port_forward;
             drop;
-            NoAction;
         }
-        size = 1024;
-        default_action = drop();
+     default_action = drop();
     }
-
     apply {
 
-            switch_port.apply();
+        if(hdr.ethernet.dstAddr == 0xffffffffffff)
+                {
+                if(hdr.ethernet.srcAddr == 0xfa163e301ed4)
+                        {
+                                if(standard_metadata.ingress_port==1)
+                                {
+                                        standard_metadata.egress_spec =0;
+                                }
+                        }
+                else if(hdr.ethernet.srcAddr == 0x94c6911ef360)
+                        {
+                         if(standard_metadata.ingress_port==0)
+                                {
+                                standard_metadata.egress_spec =1;
+                                }
+                        }
+                else{
+                        drop_packet.apply();
+                        }
+
+                }
+
+        else {
+                if(hdr.ethernet.dstAddr == 0xfa163e301ed4)
+                        {
+                                standard_metadata.egress_spec =1-standard_metadata.ingress_port;
+                        }
+                else if(hdr.ethernet.dstAddr == 0x94c6911ef360){
+                                standard_metadata.egress_spec =1-standard_metadata.ingress_port;
+                        }
+                else{
+                        drop_packet.apply();
+                        }
+            }
         }
 }
 
@@ -943,7 +1163,46 @@ control MyIngress(inout headers hdr,
 control MyEgress(inout headers hdr,
                  inout metadata meta,
                  inout standard_metadata_t standard_metadata) {
-    apply { }
+
+  // MATCH-ACTIOON TBLE FOR THE PACKET COUNT
+   action compute_flowid(){
+    meta.flowid[31:0] = hdr.ipv4_inner.srcAddr;
+ meta.flowid[63:32] = hdr.ipv4_inner.dstAddr;
+ meta.flowid[71:64] = hdr.ipv4_inner.protocol;
+ }
+   action compute_index(){
+ hash(meta.index1, HashAlgorithm.crc16, 10w0, {meta.flowid, 10w33}, 10w1023);
+ hash(meta.index2, HashAlgorithm.crc16, 10w0, {meta.flowid, 10w202}, 10w1023);
+ hash(meta.index3, HashAlgorithm.crc16, 10w0, {meta.flowid, 10w514}, 10w1023);
+ }
+   action increment_count(){
+ hashtable1.read(meta.count1, meta.index1);
+ hashtable2.read(meta.count2, meta.index2);
+ hashtable3.read(meta.count3, meta.index3);
+
+ hashtable1.write(meta.index1, meta.count1 + 1);
+ hashtable2.write(meta.index2, meta.count2 + 1);
+ hashtable3.write(meta.index3, meta.count3 + 1);
+ }
+    action compute_mincount(in bit<32> cnt1, in bit<32> cnt2, in bit<32> cnt3){
+      meta.min_count = cnt1;
+ if(meta.min_count > cnt2){
+  meta.min_count = cnt2;
+  }
+ if(meta.min_count > cnt3){
+  meta.min_count = cnt3;}
+ }
+
+    apply {
+ if(hdr.ethernet.srcAddr == 0x94c6911ef360){
+ if(hdr.ipv4_inner.isValid()){
+  compute_flowid();
+  compute_index();
+  increment_count();
+  compute_mincount(meta.count1, meta.count2, meta.count3);
+  hdr.ipv4_inner.diffserv = (bit<8>) meta.min_count;
+  }}
+ }
 }
 
 /*************************************************************************
@@ -951,8 +1210,24 @@ control MyEgress(inout headers hdr,
 *************************************************************************/
 
 control MyComputeChecksum(inout headers hdr, inout metadata meta) {
-     apply {
- /* empty */
+
+ apply {
+
+  update_checksum(
+            hdr.ipv4_inner.isValid(),
+            { hdr.ipv4_inner.version,
+              hdr.ipv4_inner.ihl,
+              hdr.ipv4_inner.diffserv,
+              hdr.ipv4_inner.totalLen,
+              hdr.ipv4_inner.identification,
+              hdr.ipv4_inner.flags,
+              hdr.ipv4_inner.fragOffset,
+              hdr.ipv4_inner.ttl,
+              hdr.ipv4_inner.protocol,
+              hdr.ipv4_inner.srcAddr,
+              hdr.ipv4_inner.dstAddr },
+            hdr.ipv4_inner.hdrChecksum,
+            HashAlgorithm.csum16);
  }
 }
 
@@ -962,8 +1237,13 @@ control MyComputeChecksum(inout headers hdr, inout metadata meta) {
 
 control MyDeparser(packet_out packet, in headers hdr) {
     apply {
- /* empty */
-    }
+        packet.emit(hdr.ethernet);
+        packet.emit(hdr.ipv4_outer);
+        packet.emit(hdr.udp_outer);
+        packet.emit(hdr.gtp_common);
+        packet.emit(hdr.gtp_teid);
+        packet.emit(hdr.ipv4_inner);
+       }
 }
 
 /*************************************************************************
@@ -971,10 +1251,10 @@ control MyDeparser(packet_out packet, in headers hdr) {
 *************************************************************************/
 
 V1Switch(
-MyParser(),
-MyVerifyChecksum(),
-MyIngress(),
-MyEgress(),
-MyComputeChecksum(),
-MyDeparser()
+    MyParser(),
+    MyVerifyChecksum(),
+    MyIngress(),
+    MyEgress(),
+    MyComputeChecksum(),
+    MyDeparser()
 ) main;
