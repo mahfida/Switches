@@ -1,2 +1,0 @@
-table_add port_match out_port 1 => 0
-table_add port_match out_port 0 => 1

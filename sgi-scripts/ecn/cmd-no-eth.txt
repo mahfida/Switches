@@ -1,2 +1,0 @@
-table_add ipv4_lpm ipv4_forward 128.39.37.171/24 =>  1
-table_add ipv4_lpm ipv4_forward 77.88.71.143/24 => 1
