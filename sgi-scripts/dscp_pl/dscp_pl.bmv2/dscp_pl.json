@@ -4,20 +4,19 @@
       "name" : "scalars_0",
       "id" : 0,
       "fields" : [
-        ["tmp", 1, false],
-        ["tmp_0", 72, false],
-        ["tmp_1", 10, false],
-        ["tmp_2", 72, false],
-        ["tmp_3", 10, false],
-        ["tmp_4", 72, false],
-        ["tmp_5", 10, false],
+        ["tmp", 72, false],
+        ["tmp_0", 10, false],
+        ["tmp_1", 72, false],
+        ["tmp_2", 10, false],
+        ["tmp_3", 72, false],
+        ["tmp_4", 10, false],
+        ["tmp_5", 32, false],
         ["tmp_6", 32, false],
         ["tmp_7", 32, false],
-        ["tmp_8", 32, false],
-        ["tmp_9", 72, false],
+        ["tmp_8", 72, false],
+        ["tmp_9", 8, false],
         ["tmp_10", 32, false],
-        ["tmp_11", 32, false],
-        ["tmp_12", 32, false],
+        ["tmp_11", 8, false],
         ["userMetadata.flowid", 72, false],
         ["userMetadata.index1", 32, false],
         ["userMetadata.index2", 32, false],
@@ -26,8 +25,8 @@
         ["userMetadata.count2", 32, false],
         ["userMetadata.count3", 32, false],
         ["userMetadata.min_count", 32, false],
-        ["userMetadata.num_lost_packets", 32, false],
-        ["_padding_0", 1, false]
+        ["userMetadata.num_lost_packets", 8, false],
+        ["_padding_0", 2, false]
       ]
     },
     {
@@ -79,16 +78,6 @@
         ["srcAddr", 32, false],
         ["dstAddr", 32, false]
       ]
-    },
-    {
-      "name" : "ipv4_option_t",
-      "id" : 4,
-      "fields" : [
-        ["value", 8, false],
-        ["optionLength", 8, false],
-        ["swid", 16, false],
-        ["packet_count", 32, false]
-      ]
     }
   ],
   "headers" : [
@@ -117,13 +106,6 @@
       "name" : "ipv4",
       "id" : 3,
       "header_type" : "ipv4_t",
-      "metadata" : false,
-      "pi_omit" : true
-    },
-    {
-      "name" : "ipv4_option",
-      "id" : 4,
-      "header_type" : "ipv4_option_t",
       "metadata" : false,
       "pi_omit" : true
     }
@@ -197,94 +179,6 @@
                 }
               ],
               "op" : "extract"
-            },
-            {
-              "parameters" : [
-                {
-                  "type" : "field",
-                  "value" : ["scalars", "tmp"]
-                },
-                {
-                  "type" : "expression",
-                  "value" : {
-                    "type" : "expression",
-                    "value" : {
-                      "op" : "b2d",
-                      "left" : null,
-                      "right" : {
-                        "type" : "expression",
-                        "value" : {
-                          "op" : ">=",
-                          "left" : {
-                            "type" : "field",
-                            "value" : ["ipv4", "ihl"]
-                          },
-                          "right" : {
-                            "type" : "hexstr",
-                            "value" : "0x05"
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              ],
-              "op" : "set"
-            },
-            {
-              "parameters" : [
-                {
-                  "type" : "expression",
-                  "value" : {
-                    "op" : "d2b",
-                    "left" : null,
-                    "right" : {
-                      "type" : "field",
-                      "value" : ["scalars", "tmp"]
-                    }
-                  }
-                },
-                {
-                  "type" : "hexstr",
-                  "value" : "0x7"
-                }
-              ],
-              "op" : "verify"
-            }
-          ],
-          "transitions" : [
-            {
-              "type" : "hexstr",
-              "value" : "0x05",
-              "mask" : null,
-              "next_state" : null
-            },
-            {
-              "type" : "default",
-              "value" : null,
-              "mask" : null,
-              "next_state" : "parse_ipv4_option"
-            }
-          ],
-          "transition_key" : [
-            {
-              "type" : "field",
-              "value" : ["ipv4", "ihl"]
-            }
-          ]
-        },
-        {
-          "name" : "parse_ipv4_option",
-          "id" : 2,
-          "parser_ops" : [
-            {
-              "parameters" : [
-                {
-                  "type" : "regular",
-                  "value" : "ipv4_option"
-                }
-              ],
-              "op" : "extract"
             }
           ],
           "transitions" : [
@@ -306,8 +200,8 @@
       "name" : "deparser",
       "id" : 0,
       "source_info" : {
-        "filename" : "gtp.p4",
-        "line" : 255,
+        "filename" : "dscp_pl.p4",
+        "line" : 230,
         "column" : 8,
         "source_fragment" : "MyDeparser"
       },
@@ -322,7 +216,7 @@
       "name" : "hashtable1",
       "id" : 0,
       "source_info" : {
-        "filename" : "gtp.p4",
+        "filename" : "dscp_pl.p4",
         "line" : 14,
         "column" : 35,
         "source_fragment" : "hashtable1"
@@ -334,7 +228,7 @@
       "name" : "hashtable2",
       "id" : 1,
       "source_info" : {
-        "filename" : "gtp.p4",
+        "filename" : "dscp_pl.p4",
         "line" : 15,
         "column" : 35,
         "source_fragment" : "hashtable2"
@@ -346,7 +240,7 @@
       "name" : "hashtable3",
       "id" : 2,
       "source_info" : {
-        "filename" : "gtp.p4",
+        "filename" : "dscp_pl.p4",
         "line" : 16,
         "column" : 35,
         "source_fragment" : "hashtable3"
@@ -363,11 +257,11 @@
       "input" : [
         {
           "type" : "field",
-          "value" : ["scalars", "tmp_0"]
+          "value" : ["scalars", "tmp"]
         },
         {
           "type" : "field",
-          "value" : ["scalars", "tmp_1"]
+          "value" : ["scalars", "tmp_0"]
         }
       ]
     },
@@ -378,11 +272,11 @@
       "input" : [
         {
           "type" : "field",
-          "value" : ["scalars", "tmp_2"]
+          "value" : ["scalars", "tmp_1"]
         },
         {
           "type" : "field",
-          "value" : ["scalars", "tmp_3"]
+          "value" : ["scalars", "tmp_2"]
         }
       ]
     },
@@ -393,11 +287,11 @@
       "input" : [
         {
           "type" : "field",
-          "value" : ["scalars", "tmp_4"]
+          "value" : ["scalars", "tmp_3"]
         },
         {
           "type" : "field",
-          "value" : ["scalars", "tmp_5"]
+          "value" : ["scalars", "tmp_4"]
         }
       ]
     },
@@ -405,8 +299,8 @@
       "name" : "calc_2",
       "id" : 3,
       "source_info" : {
-        "filename" : "gtp.p4",
-        "line" : 232,
+        "filename" : "dscp_pl.p4",
+        "line" : 207,
         "column" : 1,
         "source_fragment" : "update_checksum( ..."
       },
@@ -475,8 +369,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 118,
+            "filename" : "dscp_pl.p4",
+            "line" : 99,
             "column" : 8,
             "source_fragment" : "mark_to_drop(standard_metadata)"
           }
@@ -484,7 +378,7 @@
       ]
     },
     {
-      "name" : "gtp136",
+      "name" : "dscp_pl117",
       "id" : 1,
       "runtime_data" : [],
       "primitives" : [
@@ -501,8 +395,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 136,
+            "filename" : "dscp_pl.p4",
+            "line" : 117,
             "column" : 40,
             "source_fragment" : "standard_metadata.egress_spec =0"
           }
@@ -510,7 +404,7 @@
       ]
     },
     {
-      "name" : "gtp143",
+      "name" : "dscp_pl124",
       "id" : 2,
       "runtime_data" : [],
       "primitives" : [
@@ -527,8 +421,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 143,
+            "filename" : "dscp_pl.p4",
+            "line" : 124,
             "column" : 32,
             "source_fragment" : "standard_metadata.egress_spec =1"
           }
@@ -536,7 +430,7 @@
       ]
     },
     {
-      "name" : "gtp154",
+      "name" : "dscp_pl135",
       "id" : 3,
       "runtime_data" : [],
       "primitives" : [
@@ -576,8 +470,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 154,
+            "filename" : "dscp_pl.p4",
+            "line" : 135,
             "column" : 32,
             "source_fragment" : "standard_metadata.egress_spec =1-standard_metadata.ingress_port"
           }
@@ -585,7 +479,7 @@
       ]
     },
     {
-      "name" : "gtp157",
+      "name" : "dscp_pl138",
       "id" : 4,
       "runtime_data" : [],
       "primitives" : [
@@ -625,8 +519,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 157,
+            "filename" : "dscp_pl.p4",
+            "line" : 138,
             "column" : 32,
             "source_fragment" : "standard_metadata.egress_spec =1-standard_metadata.ingress_port"
           }
@@ -694,8 +588,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 176,
+            "filename" : "dscp_pl.p4",
+            "line" : 157,
             "column" : 4,
             "source_fragment" : "meta.flowid[31:0] = hdr.ipv4.srcAddr"
           }
@@ -776,8 +670,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 177,
+            "filename" : "dscp_pl.p4",
+            "line" : 158,
             "column" : 1,
             "source_fragment" : "meta.flowid[63:32] = hdr.ipv4.dstAddr"
           }
@@ -858,8 +752,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 178,
+            "filename" : "dscp_pl.p4",
+            "line" : 159,
             "column" : 1,
             "source_fragment" : "meta.flowid[71:64] = hdr.ipv4.protocol"
           }
@@ -876,7 +770,7 @@
           "parameters" : [
             {
               "type" : "field",
-              "value" : ["scalars", "tmp_0"]
+              "value" : ["scalars", "tmp"]
             },
             {
               "type" : "field",
@@ -884,8 +778,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 181,
+            "filename" : "dscp_pl.p4",
+            "line" : 162,
             "column" : 47,
             "source_fragment" : "meta.flowid"
           }
@@ -895,7 +789,7 @@
           "parameters" : [
             {
               "type" : "field",
-              "value" : ["scalars", "tmp_1"]
+              "value" : ["scalars", "tmp_0"]
             },
             {
               "type" : "hexstr",
@@ -903,8 +797,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 181,
+            "filename" : "dscp_pl.p4",
+            "line" : 162,
             "column" : 60,
             "source_fragment" : "10w33"
           }
@@ -930,10 +824,29 @@
             }
           ],
           "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 181,
+            "filename" : "dscp_pl.p4",
+            "line" : 162,
             "column" : 1,
             "source_fragment" : "hash(meta.index1, HashAlgorithm.crc16, 10w0, {meta.flowid, 10w33}, 10w1023)"
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "tmp_1"]
+            },
+            {
+              "type" : "field",
+              "value" : ["scalars", "userMetadata.flowid"]
+            }
+          ],
+          "source_info" : {
+            "filename" : "dscp_pl.p4",
+            "line" : 163,
+            "column" : 47,
+            "source_fragment" : "meta.flowid"
           }
         },
         {
@@ -944,32 +857,13 @@
               "value" : ["scalars", "tmp_2"]
             },
             {
-              "type" : "field",
-              "value" : ["scalars", "userMetadata.flowid"]
-            }
-          ],
-          "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 182,
-            "column" : 47,
-            "source_fragment" : "meta.flowid"
-          }
-        },
-        {
-          "op" : "assign",
-          "parameters" : [
-            {
-              "type" : "field",
-              "value" : ["scalars", "tmp_3"]
-            },
-            {
               "type" : "hexstr",
               "value" : "0x00ca"
             }
           ],
           "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 182,
+            "filename" : "dscp_pl.p4",
+            "line" : 163,
             "column" : 60,
             "source_fragment" : "10w202"
           }
@@ -995,10 +889,29 @@
             }
           ],
           "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 182,
+            "filename" : "dscp_pl.p4",
+            "line" : 163,
             "column" : 1,
             "source_fragment" : "hash(meta.index2, HashAlgorithm.crc16, 10w0, {meta.flowid, 10w202}, 10w1023)"
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "tmp_3"]
+            },
+            {
+              "type" : "field",
+              "value" : ["scalars", "userMetadata.flowid"]
+            }
+          ],
+          "source_info" : {
+            "filename" : "dscp_pl.p4",
+            "line" : 164,
+            "column" : 47,
+            "source_fragment" : "meta.flowid"
           }
         },
         {
@@ -1009,32 +922,13 @@
               "value" : ["scalars", "tmp_4"]
             },
             {
-              "type" : "field",
-              "value" : ["scalars", "userMetadata.flowid"]
-            }
-          ],
-          "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 183,
-            "column" : 47,
-            "source_fragment" : "meta.flowid"
-          }
-        },
-        {
-          "op" : "assign",
-          "parameters" : [
-            {
-              "type" : "field",
-              "value" : ["scalars", "tmp_5"]
-            },
-            {
               "type" : "hexstr",
               "value" : "0x021d"
             }
           ],
           "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 183,
+            "filename" : "dscp_pl.p4",
+            "line" : 164,
             "column" : 60,
             "source_fragment" : "10w541"
           }
@@ -1060,8 +954,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 183,
+            "filename" : "dscp_pl.p4",
+            "line" : 164,
             "column" : 1,
             "source_fragment" : "hash(meta.index3, HashAlgorithm.crc16, 10w0, {meta.flowid, 10w541}, 10w1023)"
           }
@@ -1090,8 +984,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 186,
+            "filename" : "dscp_pl.p4",
+            "line" : 167,
             "column" : 1,
             "source_fragment" : "hashtable1.read(meta.count1, meta.index1)"
           }
@@ -1113,8 +1007,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 187,
+            "filename" : "dscp_pl.p4",
+            "line" : 168,
             "column" : 1,
             "source_fragment" : "hashtable2.read(meta.count2, meta.index2)"
           }
@@ -1136,8 +1030,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 188,
+            "filename" : "dscp_pl.p4",
+            "line" : 169,
             "column" : 1,
             "source_fragment" : "hashtable3.read(meta.count3, meta.index3)"
           }
@@ -1147,7 +1041,7 @@
           "parameters" : [
             {
               "type" : "field",
-              "value" : ["scalars", "tmp_6"]
+              "value" : ["scalars", "tmp_5"]
             },
             {
               "type" : "expression",
@@ -1178,8 +1072,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 190,
+            "filename" : "dscp_pl.p4",
+            "line" : 171,
             "column" : 31,
             "source_fragment" : "meta.count1 + 1"
           }
@@ -1197,12 +1091,12 @@
             },
             {
               "type" : "field",
-              "value" : ["scalars", "tmp_6"]
+              "value" : ["scalars", "tmp_5"]
             }
           ],
           "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 190,
+            "filename" : "dscp_pl.p4",
+            "line" : 171,
             "column" : 1,
             "source_fragment" : "hashtable1.write(meta.index1, meta.count1 + 1)"
           }
@@ -1212,7 +1106,7 @@
           "parameters" : [
             {
               "type" : "field",
-              "value" : ["scalars", "tmp_7"]
+              "value" : ["scalars", "tmp_6"]
             },
             {
               "type" : "expression",
@@ -1243,8 +1137,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 191,
+            "filename" : "dscp_pl.p4",
+            "line" : 172,
             "column" : 31,
             "source_fragment" : "meta.count2 + 1"
           }
@@ -1262,12 +1156,12 @@
             },
             {
               "type" : "field",
-              "value" : ["scalars", "tmp_7"]
+              "value" : ["scalars", "tmp_6"]
             }
           ],
           "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 191,
+            "filename" : "dscp_pl.p4",
+            "line" : 172,
             "column" : 1,
             "source_fragment" : "hashtable2.write(meta.index2, meta.count2 + 1)"
           }
@@ -1277,7 +1171,7 @@
           "parameters" : [
             {
               "type" : "field",
-              "value" : ["scalars", "tmp_8"]
+              "value" : ["scalars", "tmp_7"]
             },
             {
               "type" : "expression",
@@ -1308,8 +1202,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 192,
+            "filename" : "dscp_pl.p4",
+            "line" : 173,
             "column" : 31,
             "source_fragment" : "meta.count3 + 1"
           }
@@ -1327,12 +1221,12 @@
             },
             {
               "type" : "field",
-              "value" : ["scalars", "tmp_8"]
+              "value" : ["scalars", "tmp_7"]
             }
           ],
           "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 192,
+            "filename" : "dscp_pl.p4",
+            "line" : 173,
             "column" : 1,
             "source_fragment" : "hashtable3.write(meta.index3, meta.count3 + 1)"
           }
@@ -1357,8 +1251,8 @@
             }
           ],
           "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 195,
+            "filename" : "dscp_pl.p4",
+            "line" : 176,
             "column" : 6,
             "source_fragment" : "meta.min_count = cnt1; ..."
           }
@@ -1490,14 +1384,7 @@
               }
             }
           ]
-        }
-      ]
-    },
-    {
-      "name" : "gtp215",
-      "id" : 9,
-      "runtime_data" : [],
-      "primitives" : [
+        },
         {
           "op" : "assign",
           "parameters" : [
@@ -1517,111 +1404,135 @@
                       "op" : "-",
                       "left" : {
                         "type" : "field",
-                        "value" : ["ipv4_option", "packet_count"]
+                        "value" : ["ipv4", "diffserv"]
                       },
                       "right" : {
-                        "type" : "field",
-                        "value" : ["scalars", "userMetadata.min_count"]
+                        "type" : "expression",
+                        "value" : {
+                          "op" : "&",
+                          "left" : {
+                            "type" : "expression",
+                            "value" : {
+                              "op" : "?",
+                              "left" : {
+                                "type" : "field",
+                                "value" : ["scalars", "userMetadata.count3"]
+                              },
+                              "right" : {
+                                "type" : "expression",
+                                "value" : {
+                                  "op" : "?",
+                                  "left" : {
+                                    "type" : "field",
+                                    "value" : ["scalars", "userMetadata.count2"]
+                                  },
+                                  "right" : {
+                                    "type" : "field",
+                                    "value" : ["scalars", "userMetadata.count1"]
+                                  },
+                                  "cond" : {
+                                    "type" : "expression",
+                                    "value" : {
+                                      "op" : ">",
+                                      "left" : {
+                                        "type" : "field",
+                                        "value" : ["scalars", "userMetadata.count1"]
+                                      },
+                                      "right" : {
+                                        "type" : "field",
+                                        "value" : ["scalars", "userMetadata.count2"]
+                                      }
+                                    }
+                                  }
+                                }
+                              },
+                              "cond" : {
+                                "type" : "expression",
+                                "value" : {
+                                  "op" : ">",
+                                  "left" : {
+                                    "type" : "expression",
+                                    "value" : {
+                                      "op" : "?",
+                                      "left" : {
+                                        "type" : "field",
+                                        "value" : ["scalars", "userMetadata.count2"]
+                                      },
+                                      "right" : {
+                                        "type" : "field",
+                                        "value" : ["scalars", "userMetadata.count1"]
+                                      },
+                                      "cond" : {
+                                        "type" : "expression",
+                                        "value" : {
+                                          "op" : ">",
+                                          "left" : {
+                                            "type" : "field",
+                                            "value" : ["scalars", "userMetadata.count1"]
+                                          },
+                                          "right" : {
+                                            "type" : "field",
+                                            "value" : ["scalars", "userMetadata.count2"]
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "right" : {
+                                    "type" : "field",
+                                    "value" : ["scalars", "userMetadata.count3"]
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "right" : {
+                            "type" : "hexstr",
+                            "value" : "0xff"
+                          }
+                        }
                       }
                     }
                   },
                   "right" : {
                     "type" : "hexstr",
-                    "value" : "0xffffffff"
+                    "value" : "0xff"
                   }
                 }
               }
             }
           ],
           "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 215,
-            "column" : 3,
-            "source_fragment" : "meta.num_lost_packets = hdr.ipv4_option.packet_count - meta.min_count"
+            "filename" : "dscp_pl.p4",
+            "line" : 184,
+            "column" : 1,
+            "source_fragment" : "meta.num_lost_packets = hdr.ipv4.diffserv - (bit<8>) meta.min_count"
           }
-        },
+        }
+      ]
+    },
+    {
+      "name" : "dscp_pl194",
+      "id" : 9,
+      "runtime_data" : [],
+      "primitives" : [
         {
           "op" : "assign",
           "parameters" : [
             {
               "type" : "field",
-              "value" : ["ipv4", "ihl"]
+              "value" : ["scalars", "tmp_8"]
             },
-            {
-              "type" : "expression",
-              "value" : {
-                "type" : "expression",
-                "value" : {
-                  "op" : "&",
-                  "left" : {
-                    "type" : "expression",
-                    "value" : {
-                      "op" : "+",
-                      "left" : {
-                        "type" : "field",
-                        "value" : ["ipv4", "ihl"]
-                      },
-                      "right" : {
-                        "type" : "hexstr",
-                        "value" : "0x0e"
-                      }
-                    }
-                  },
-                  "right" : {
-                    "type" : "hexstr",
-                    "value" : "0x0f"
-                  }
-                }
-              }
-            }
-          ],
-          "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 216,
-            "column" : 10,
-            "source_fragment" : "hdr.ipv4.ihl = hdr.ipv4.ihl - 2"
-          }
-        },
-        {
-          "op" : "assign",
-          "parameters" : [
             {
               "type" : "field",
-              "value" : ["ipv4", "totalLen"]
-            },
-            {
-              "type" : "expression",
-              "value" : {
-                "type" : "expression",
-                "value" : {
-                  "op" : "&",
-                  "left" : {
-                    "type" : "expression",
-                    "value" : {
-                      "op" : "+",
-                      "left" : {
-                        "type" : "field",
-                        "value" : ["ipv4", "totalLen"]
-                      },
-                      "right" : {
-                        "type" : "hexstr",
-                        "value" : "0xfff8"
-                      }
-                    }
-                  },
-                  "right" : {
-                    "type" : "hexstr",
-                    "value" : "0xffff"
-                  }
-                }
-              }
+              "value" : ["scalars", "userMetadata.flowid"]
             }
           ],
           "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 217,
-            "column" : 10,
-            "source_fragment" : "hdr.ipv4.totalLen = hdr.ipv4.totalLen - 8"
+            "filename" : "dscp_pl.p4",
+            "line" : 194,
+            "column" : 87,
+            "source_fragment" : "  log_msg(\\\"flow id = {},lasthop-packets={}, currenthop-packets={}, lost packets = {}\\\",{meta.flowid, hdr.ipv4.diffserv, meta.min_count, meta.num_lost_packets});"
           }
         },
         {
@@ -1633,14 +1544,14 @@
             },
             {
               "type" : "field",
-              "value" : ["scalars", "userMetadata.flowid"]
+              "value" : ["ipv4", "diffserv"]
             }
           ],
           "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 218,
-            "column" : 88,
-            "source_fragment" : "   log_msg(\\\"flow id = {},lasthop-packets={}, currenthop-packets={}, lost packets = {}\\\",{meta.flowid, hdr.ipv4_option.packet_count, meta.min_count, meta.num_lost_packets});"
+            "filename" : "dscp_pl.p4",
+            "line" : 194,
+            "column" : 100,
+            "source_fragment" : "  log_msg(\\\"flow id = {},lasthop-packets={}, currenthop-packets={}, lost packets = {}\\\",{meta.flowid, hdr.ipv4.diffserv, meta.min_count, meta.num_lost_packets});"
           }
         },
         {
@@ -1652,14 +1563,14 @@
             },
             {
               "type" : "field",
-              "value" : ["ipv4_option", "packet_count"]
+              "value" : ["scalars", "userMetadata.min_count"]
             }
           ],
           "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 218,
-            "column" : 101,
-            "source_fragment" : "   log_msg(\\\"flow id = {},lasthop-packets={}, currenthop-packets={}, lost packets = {}\\\",{meta.flowid, hdr.ipv4_option.packet_count, meta.min_count, meta.num_lost_packets});"
+            "filename" : "dscp_pl.p4",
+            "line" : 194,
+            "column" : 119,
+            "source_fragment" : "  log_msg(\\\"flow id = {},lasthop-packets={}, currenthop-packets={}, lost packets = {}\\\",{meta.flowid, hdr.ipv4.diffserv, meta.min_count, meta.num_lost_packets});"
           }
         },
         {
@@ -1671,56 +1582,14 @@
             },
             {
               "type" : "field",
-              "value" : ["scalars", "userMetadata.min_count"]
+              "value" : ["scalars", "userMetadata.num_lost_packets"]
             }
           ],
           "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 218,
-            "column" : 131,
-            "source_fragment" : "   log_msg(\\\"flow id = {},lasthop-packets={}, currenthop-packets={}, lost packets = {}\\\",{meta.flowid, hdr.ipv4_option.packet_count, meta.min_count, meta.num_lost_packets});"
-          }
-        },
-        {
-          "op" : "assign",
-          "parameters" : [
-            {
-              "type" : "field",
-              "value" : ["scalars", "tmp_12"]
-            },
-            {
-              "type" : "expression",
-              "value" : {
-                "type" : "expression",
-                "value" : {
-                  "op" : "&",
-                  "left" : {
-                    "type" : "expression",
-                    "value" : {
-                      "op" : "-",
-                      "left" : {
-                        "type" : "field",
-                        "value" : ["ipv4_option", "packet_count"]
-                      },
-                      "right" : {
-                        "type" : "field",
-                        "value" : ["scalars", "userMetadata.min_count"]
-                      }
-                    }
-                  },
-                  "right" : {
-                    "type" : "hexstr",
-                    "value" : "0xffffffff"
-                  }
-                }
-              }
-            }
-          ],
-          "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 215,
-            "column" : 27,
-            "source_fragment" : "hdr.ipv4_option.packet_count - meta.min_count"
+            "filename" : "dscp_pl.p4",
+            "line" : 194,
+            "column" : 135,
+            "source_fragment" : "  log_msg(\\\"flow id = {},lasthop-packets={}, currenthop-packets={}, lost packets = {}\\\",{meta.flowid, hdr.ipv4.diffserv, meta.min_count, meta.num_lost_packets});"
           }
         },
         {
@@ -1735,6 +1604,10 @@
               "value" : [
                 {
                   "type" : "field",
+                  "value" : ["scalars", "tmp_8"]
+                },
+                {
+                  "type" : "field",
                   "value" : ["scalars", "tmp_9"]
                 },
                 {
@@ -1744,34 +1617,15 @@
                 {
                   "type" : "field",
                   "value" : ["scalars", "tmp_11"]
-                },
-                {
-                  "type" : "field",
-                  "value" : ["scalars", "tmp_12"]
                 }
               ]
             }
           ],
           "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 218,
-            "column" : 3,
-            "source_fragment" : "   log_msg(\\\"flow id = {},lasthop-packets={}, currenthop-packets={}, lost packets = {}\\\",{meta.flowid, hdr.ipv4_option.packet_count, meta.min_count, meta.num_lost_packets});"
-          }
-        },
-        {
-          "op" : "remove_header",
-          "parameters" : [
-            {
-              "type" : "header",
-              "value" : "ipv4_option"
-            }
-          ],
-          "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 219,
-            "column" : 3,
-            "source_fragment" : "hdr.ipv4_option.setInvalid()"
+            "filename" : "dscp_pl.p4",
+            "line" : 194,
+            "column" : 2,
+            "source_fragment" : "  log_msg(\\\"flow id = {},lasthop-packets={}, currenthop-packets={}, lost packets = {}\\\",{meta.flowid, hdr.ipv4.diffserv, meta.min_count, meta.num_lost_packets});"
           }
         }
       ]
@@ -1782,19 +1636,19 @@
       "name" : "ingress",
       "id" : 0,
       "source_info" : {
-        "filename" : "gtp.p4",
-        "line" : 113,
+        "filename" : "dscp_pl.p4",
+        "line" : 94,
         "column" : 8,
         "source_fragment" : "MyIngress"
       },
       "init_table" : "node_2",
       "tables" : [
         {
-          "name" : "tbl_gtp136",
+          "name" : "tbl_dscp_pl117",
           "id" : 0,
           "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 136,
+            "filename" : "dscp_pl.p4",
+            "line" : 117,
             "column" : 70,
             "source_fragment" : "="
           },
@@ -1806,10 +1660,10 @@
           "support_timeout" : false,
           "direct_meters" : null,
           "action_ids" : [1],
-          "actions" : ["gtp136"],
+          "actions" : ["dscp_pl117"],
           "base_default_next" : null,
           "next_tables" : {
-            "gtp136" : null
+            "dscp_pl117" : null
           },
           "default_entry" : {
             "action_id" : 1,
@@ -1819,11 +1673,11 @@
           }
         },
         {
-          "name" : "tbl_gtp143",
+          "name" : "tbl_dscp_pl124",
           "id" : 1,
           "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 143,
+            "filename" : "dscp_pl.p4",
+            "line" : 124,
             "column" : 62,
             "source_fragment" : "="
           },
@@ -1835,10 +1689,10 @@
           "support_timeout" : false,
           "direct_meters" : null,
           "action_ids" : [2],
-          "actions" : ["gtp143"],
+          "actions" : ["dscp_pl124"],
           "base_default_next" : null,
           "next_tables" : {
-            "gtp143" : null
+            "dscp_pl124" : null
           },
           "default_entry" : {
             "action_id" : 2,
@@ -1851,8 +1705,8 @@
           "name" : "MyIngress.drop_packet",
           "id" : 2,
           "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 121,
+            "filename" : "dscp_pl.p4",
+            "line" : 102,
             "column" : 9,
             "source_fragment" : "drop_packet"
           },
@@ -1877,11 +1731,11 @@
           }
         },
         {
-          "name" : "tbl_gtp154",
+          "name" : "tbl_dscp_pl135",
           "id" : 3,
           "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 154,
+            "filename" : "dscp_pl.p4",
+            "line" : 135,
             "column" : 62,
             "source_fragment" : "="
           },
@@ -1893,10 +1747,10 @@
           "support_timeout" : false,
           "direct_meters" : null,
           "action_ids" : [3],
-          "actions" : ["gtp154"],
+          "actions" : ["dscp_pl135"],
           "base_default_next" : null,
           "next_tables" : {
-            "gtp154" : null
+            "dscp_pl135" : null
           },
           "default_entry" : {
             "action_id" : 3,
@@ -1906,11 +1760,11 @@
           }
         },
         {
-          "name" : "tbl_gtp157",
+          "name" : "tbl_dscp_pl138",
           "id" : 4,
           "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 157,
+            "filename" : "dscp_pl.p4",
+            "line" : 138,
             "column" : 62,
             "source_fragment" : "="
           },
@@ -1922,10 +1776,10 @@
           "support_timeout" : false,
           "direct_meters" : null,
           "action_ids" : [4],
-          "actions" : ["gtp157"],
+          "actions" : ["dscp_pl138"],
           "base_default_next" : null,
           "next_tables" : {
-            "gtp157" : null
+            "dscp_pl138" : null
           },
           "default_entry" : {
             "action_id" : 4,
@@ -1941,8 +1795,8 @@
           "name" : "node_2",
           "id" : 0,
           "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 130,
+            "filename" : "dscp_pl.p4",
+            "line" : 111,
             "column" : 11,
             "source_fragment" : "hdr.ethernet.dstAddr == 0xffffffffffff"
           },
@@ -1967,8 +1821,8 @@
           "name" : "node_3",
           "id" : 1,
           "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 132,
+            "filename" : "dscp_pl.p4",
+            "line" : 113,
             "column" : 19,
             "source_fragment" : "hdr.ethernet.srcAddr == 0x5254002cc5f9"
           },
@@ -1993,8 +1847,8 @@
           "name" : "node_4",
           "id" : 2,
           "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 134,
+            "filename" : "dscp_pl.p4",
+            "line" : 115,
             "column" : 35,
             "source_fragment" : "standard_metadata.ingress_port==1"
           },
@@ -2013,14 +1867,14 @@
             }
           },
           "false_next" : null,
-          "true_next" : "tbl_gtp136"
+          "true_next" : "tbl_dscp_pl117"
         },
         {
           "name" : "node_6",
           "id" : 3,
           "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 139,
+            "filename" : "dscp_pl.p4",
+            "line" : 120,
             "column" : 24,
             "source_fragment" : "hdr.ethernet.srcAddr == 0xfa163e4c8769"
           },
@@ -2045,8 +1899,8 @@
           "name" : "node_7",
           "id" : 4,
           "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 141,
+            "filename" : "dscp_pl.p4",
+            "line" : 122,
             "column" : 28,
             "source_fragment" : "standard_metadata.ingress_port==0"
           },
@@ -2065,14 +1919,14 @@
             }
           },
           "false_next" : null,
-          "true_next" : "tbl_gtp143"
+          "true_next" : "tbl_dscp_pl124"
         },
         {
           "name" : "node_10",
           "id" : 5,
           "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 152,
+            "filename" : "dscp_pl.p4",
+            "line" : 133,
             "column" : 19,
             "source_fragment" : "hdr.ethernet.dstAddr == 0x5254002cc5f9"
           },
@@ -2090,15 +1944,15 @@
               }
             }
           },
-          "true_next" : "tbl_gtp154",
+          "true_next" : "tbl_dscp_pl135",
           "false_next" : "node_12"
         },
         {
           "name" : "node_12",
           "id" : 6,
           "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 156,
+            "filename" : "dscp_pl.p4",
+            "line" : 137,
             "column" : 24,
             "source_fragment" : "hdr.ethernet.dstAddr == 0xfa163e4c8769"
           },
@@ -2116,7 +1970,7 @@
               }
             }
           },
-          "true_next" : "tbl_gtp157",
+          "true_next" : "tbl_dscp_pl138",
           "false_next" : "MyIngress.drop_packet"
         }
       ]
@@ -2125,8 +1979,8 @@
       "name" : "egress",
       "id" : 1,
       "source_info" : {
-        "filename" : "gtp.p4",
-        "line" : 170,
+        "filename" : "dscp_pl.p4",
+        "line" : 151,
         "column" : 8,
         "source_fragment" : "MyEgress"
       },
@@ -2136,8 +1990,8 @@
           "name" : "tbl_compute_flowid",
           "id" : 5,
           "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 207,
+            "filename" : "dscp_pl.p4",
+            "line" : 190,
             "column" : 2,
             "source_fragment" : "compute_flowid()"
           },
@@ -2165,8 +2019,8 @@
           "name" : "tbl_compute_index",
           "id" : 6,
           "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 208,
+            "filename" : "dscp_pl.p4",
+            "line" : 191,
             "column" : 2,
             "source_fragment" : "compute_index()"
           },
@@ -2194,8 +2048,8 @@
           "name" : "tbl_increment_count",
           "id" : 7,
           "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 209,
+            "filename" : "dscp_pl.p4",
+            "line" : 192,
             "column" : 2,
             "source_fragment" : "increment_count()"
           },
@@ -2223,8 +2077,8 @@
           "name" : "tbl_compute_mincount",
           "id" : 8,
           "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 210,
+            "filename" : "dscp_pl.p4",
+            "line" : 193,
             "column" : 2,
             "source_fragment" : "compute_mincount(meta.count1, meta.count2, meta.count3)"
           },
@@ -2237,9 +2091,9 @@
           "direct_meters" : null,
           "action_ids" : [8],
           "actions" : ["MyEgress.compute_mincount"],
-          "base_default_next" : "node_23",
+          "base_default_next" : "tbl_dscp_pl194",
           "next_tables" : {
-            "MyEgress.compute_mincount" : "node_23"
+            "MyEgress.compute_mincount" : "tbl_dscp_pl194"
           },
           "default_entry" : {
             "action_id" : 8,
@@ -2249,13 +2103,13 @@
           }
         },
         {
-          "name" : "tbl_gtp215",
+          "name" : "tbl_dscp_pl194",
           "id" : 9,
           "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 215,
-            "column" : 25,
-            "source_fragment" : "= hdr.ipv4_option.packet_count - meta.min_count; ..."
+            "filename" : "dscp_pl.p4",
+            "line" : 194,
+            "column" : 2,
+            "source_fragment" : "  log_msg(\\\"flow id = {},lasthop-packets={}, currenthop-packets={}, lost packets = {}\\\",{meta.flowid, hdr.ipv4.diffserv, meta.min_count, meta.num_lost_packets});"
           },
           "key" : [],
           "match_type" : "exact",
@@ -2265,10 +2119,10 @@
           "support_timeout" : false,
           "direct_meters" : null,
           "action_ids" : [9],
-          "actions" : ["gtp215"],
+          "actions" : ["dscp_pl194"],
           "base_default_next" : null,
           "next_tables" : {
-            "gtp215" : null
+            "dscp_pl194" : null
           },
           "default_entry" : {
             "action_id" : 9,
@@ -2284,8 +2138,8 @@
           "name" : "node_17",
           "id" : 7,
           "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 205,
+            "filename" : "dscp_pl.p4",
+            "line" : 188,
             "column" : 4,
             "source_fragment" : "hdr.ethernet.dstAddr == 0x5254002cc5f9"
           },
@@ -2310,8 +2164,8 @@
           "name" : "node_18",
           "id" : 8,
           "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 206,
+            "filename" : "dscp_pl.p4",
+            "line" : 189,
             "column" : 4,
             "source_fragment" : "hdr.ethernet.srcAddr == 0xfa163e4c8769"
           },
@@ -2329,31 +2183,8 @@
               }
             }
           },
-          "true_next" : "tbl_compute_flowid",
-          "false_next" : "node_23"
-        },
-        {
-          "name" : "node_23",
-          "id" : 9,
-          "source_info" : {
-            "filename" : "gtp.p4",
-            "line" : 214,
-            "column" : 5,
-            "source_fragment" : "hdr.ipv4_option.isValid()"
-          },
-          "expression" : {
-            "type" : "expression",
-            "value" : {
-              "op" : "d2b",
-              "left" : null,
-              "right" : {
-                "type" : "field",
-                "value" : ["ipv4_option", "$valid$"]
-              }
-            }
-          },
           "false_next" : null,
-          "true_next" : "tbl_gtp215"
+          "true_next" : "tbl_compute_flowid"
         }
       ]
     }
@@ -2363,8 +2194,8 @@
       "name" : "cksum",
       "id" : 0,
       "source_info" : {
-        "filename" : "gtp.p4",
-        "line" : 232,
+        "filename" : "dscp_pl.p4",
+        "line" : 207,
         "column" : 1,
         "source_fragment" : "update_checksum( ..."
       },
@@ -2426,7 +2257,7 @@
       ["standard_metadata", "priority"]
     ]
   ],
-  "program" : "gtp.bmv2/gtp.p4i",
+  "program" : "dscp_pl.bmv2/dscp_pl.p4i",
   "__meta__" : {
     "version" : [2, 23],
     "compiler" : "https://github.com/p4lang/p4c"
