@@ -155,7 +155,7 @@ control MyIngress(inout headers hdr,
                                         standard_metadata.egress_spec =0;
                                 }
                         }
-                else if(hdr.ethernet.srcAddr == 0x94c6911ef360)
+                else if(hdr.ethernet.srcAddr == 0x00808e8d90ab ) //0x94c6911ef360)
                         {
                          if(standard_metadata.ingress_port==0)
                                 {
@@ -173,7 +173,7 @@ control MyIngress(inout headers hdr,
                         {
                                 standard_metadata.egress_spec =1-standard_metadata.ingress_port;
                         }
-                else if(hdr.ethernet.dstAddr == 0x94c6911ef360){
+                else if(hdr.ethernet.dstAddr == 0x00808e8d90ab){ //0x94c6911ef360){
                                 standard_metadata.egress_spec =1-standard_metadata.ingress_port;
                         }
                 else{
@@ -245,7 +245,7 @@ control MyEgress(inout headers hdr,
 
 
     apply {
-	if(hdr.ethernet.srcAddr == 0x94c6911ef360){
+	if(hdr.ethernet.srcAddr == 0x00808e8d90ab ){ //0x94c6911ef360){
 	if(hdr.ipv4_inner.isValid()){
 		compute_flowid();
 		compute_index();

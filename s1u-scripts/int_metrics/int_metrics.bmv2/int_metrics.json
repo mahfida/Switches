@@ -1726,7 +1726,7 @@
                   "op" : "&",
                   "left" : {
                     "type" : "field",
-                    "value" : ["standard_metadata", "deq_qdepth"]
+                    "value" : ["standard_metadata", "enq_qdepth"]
                   },
                   "right" : {
                     "type" : "hexstr",
@@ -1740,7 +1740,7 @@
             "filename" : "int_metrics.p4",
             "line" : 226,
             "column" : 1,
-            "source_fragment" : "hdr.ipv4_inner_option.qdepth = (bit <16>) standard_metadata.deq_qdepth"
+            "source_fragment" : "hdr.ipv4_inner_option.qdepth = (bit <16>) standard_metadata.enq_qdepth"
           }
         },
         {
@@ -2310,7 +2310,7 @@
             "filename" : "int_metrics.p4",
             "line" : 156,
             "column" : 24,
-            "source_fragment" : "hdr.ethernet.srcAddr == 0x94c6911ef360"
+            "source_fragment" : "hdr.ethernet.srcAddr == 0x00808e8d90ab"
           },
           "expression" : {
             "type" : "expression",
@@ -2322,7 +2322,7 @@
               },
               "right" : {
                 "type" : "hexstr",
-                "value" : "0x94c6911ef360"
+                "value" : "0x00808e8d90ab"
               }
             }
           },
@@ -2388,7 +2388,7 @@
             "filename" : "int_metrics.p4",
             "line" : 174,
             "column" : 24,
-            "source_fragment" : "hdr.ethernet.dstAddr == 0x94c6911ef360"
+            "source_fragment" : "hdr.ethernet.dstAddr == 0x00808e8d90ab"
           },
           "expression" : {
             "type" : "expression",
@@ -2400,7 +2400,7 @@
               },
               "right" : {
                 "type" : "hexstr",
-                "value" : "0x94c6911ef360"
+                "value" : "0x00808e8d90ab"
               }
             }
           },
@@ -2604,7 +2604,7 @@
             "filename" : "int_metrics.p4",
             "line" : 247,
             "column" : 4,
-            "source_fragment" : "hdr.ethernet.srcAddr == 0x94c6911ef360"
+            "source_fragment" : "hdr.ethernet.srcAddr == 0x00808e8d90ab"
           },
           "expression" : {
             "type" : "expression",
@@ -2616,7 +2616,7 @@
               },
               "right" : {
                 "type" : "hexstr",
-                "value" : "0x94c6911ef360"
+                "value" : "0x00808e8d90ab"
               }
             }
           },
