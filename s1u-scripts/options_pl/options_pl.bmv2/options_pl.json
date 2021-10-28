@@ -14,6 +14,7 @@
         ["tmp_6", 32, false],
         ["tmp_7", 32, false],
         ["tmp_8", 32, false],
+        ["tmp_9", 32, false],
         ["userMetadata.flowid", 72, false],
         ["userMetadata.index1", 32, false],
         ["userMetadata.index2", 32, false],
@@ -2004,6 +2005,56 @@
           }
         }
       ]
+    },
+    {
+      "name" : "options_pl259",
+      "id" : 11,
+      "runtime_data" : [],
+      "primitives" : [
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "tmp_9"]
+            },
+            {
+              "type" : "field",
+              "value" : ["standard_metadata", "deq_timedelta"]
+            }
+          ],
+          "source_info" : {
+            "filename" : "options_pl.p4",
+            "line" : 259,
+            "column" : 22,
+            "source_fragment" : "  log_msg(\\\"qtime={}\\\",{standard_metadata.deq_timedelta});"
+          }
+        },
+        {
+          "op" : "log_msg",
+          "parameters" : [
+            {
+              "type" : "string",
+              "value" : "qtime={}"
+            },
+            {
+              "type" : "parameters_vector",
+              "value" : [
+                {
+                  "type" : "field",
+                  "value" : ["scalars", "tmp_9"]
+                }
+              ]
+            }
+          ],
+          "source_info" : {
+            "filename" : "options_pl.p4",
+            "line" : 259,
+            "column" : 2,
+            "source_fragment" : "  log_msg(\\\"qtime={}\\\",{standard_metadata.deq_timedelta});"
+          }
+        }
+      ]
     }
   ],
   "pipelines" : [
@@ -2524,12 +2575,41 @@
           "direct_meters" : null,
           "action_ids" : [9],
           "actions" : ["MyEgress.add_option_header"],
-          "base_default_next" : null,
+          "base_default_next" : "tbl_options_pl259",
           "next_tables" : {
-            "MyEgress.add_option_header" : null
+            "MyEgress.add_option_header" : "tbl_options_pl259"
           },
           "default_entry" : {
             "action_id" : 9,
+            "action_const" : true,
+            "action_data" : [],
+            "action_entry_const" : true
+          }
+        },
+        {
+          "name" : "tbl_options_pl259",
+          "id" : 11,
+          "source_info" : {
+            "filename" : "options_pl.p4",
+            "line" : 259,
+            "column" : 2,
+            "source_fragment" : "  log_msg(\\\"qtime={}\\\",{standard_metadata.deq_timedelta});"
+          },
+          "key" : [],
+          "match_type" : "exact",
+          "type" : "simple",
+          "max_size" : 1024,
+          "with_counters" : false,
+          "support_timeout" : false,
+          "direct_meters" : null,
+          "action_ids" : [11],
+          "actions" : ["options_pl259"],
+          "base_default_next" : null,
+          "next_tables" : {
+            "options_pl259" : null
+          },
+          "default_entry" : {
+            "action_id" : 11,
             "action_const" : true,
             "action_data" : [],
             "action_entry_const" : true
@@ -2561,8 +2641,8 @@
               }
             }
           },
-          "false_next" : null,
-          "true_next" : "node_18"
+          "true_next" : "node_18",
+          "false_next" : "tbl_options_pl259"
         },
         {
           "name" : "node_18",
@@ -2584,8 +2664,8 @@
               }
             }
           },
-          "false_next" : null,
-          "true_next" : "tbl_compute_flowid"
+          "true_next" : "tbl_compute_flowid",
+          "false_next" : "tbl_options_pl259"
         }
       ]
     }

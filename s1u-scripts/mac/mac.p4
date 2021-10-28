@@ -95,7 +95,8 @@ control MyIngress(inout headers hdr,
                 	}
                 else if(hdr.ethernet.dstAddr == 0x00808e8d90ab){ //0x94c6911ef360){
 				standard_metadata.egress_spec =1-standard_metadata.ingress_port;
-			}
+				
+	}
 		else{   
                         drop_packet.apply();
                         }
@@ -110,7 +111,11 @@ control MyIngress(inout headers hdr,
 control MyEgress(inout headers hdr,
                  inout metadata meta,
                  inout standard_metadata_t standard_metadata) {
-    apply {  }
+  
+
+    apply {
+#	 log_msg("qtime={}",{standard_metadata.deq_timedelta});
+	 }
 }
 
 /*************************************************************************
