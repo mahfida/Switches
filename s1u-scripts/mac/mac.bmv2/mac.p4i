@@ -979,7 +979,9 @@ control MyEgress(inout headers hdr,
 
 
     apply {
-# log_msg("qtime={}",{standard_metadata.deq_timedelta});
+ /*	if(hdr.ethernet.srcAddr == 0x00808e8d90ab ){
+		log_msg("qtime={}",{standard_metadata.deq_timedelta});}
+	*/
   }
 }
 
