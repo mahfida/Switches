@@ -68,14 +68,14 @@ control MyIngress(inout headers hdr,
 	
         if(hdr.ethernet.dstAddr == 0xffffffffffff)
 		{
-		if(hdr.ethernet.srcAddr == 0xfa163e301ed4)
+		if(hdr.ethernet.srcAddr == 0xfa163e47c489))// mac address of controller
                 	{
 				if(standard_metadata.ingress_port==1)
                         	{
 					standard_metadata.egress_spec =0;
 				}
                 	}
-		else if(hdr.ethernet.srcAddr == 0x00808e8d90ab)//0x94c6911ef360)
+		else if(hdr.ethernet.srcAddr == 0x00808e8d90ab)//mac address of the eNodeB
 			{
 			 if(standard_metadata.ingress_port==0)
 				{
@@ -89,11 +89,11 @@ control MyIngress(inout headers hdr,
 		}
 	    
 	else {
-                if(hdr.ethernet.dstAddr == 0xfa163e301ed4)
+                if(hdr.ethernet.dstAddr == 0xfa163e47c489)//mac address of the controller
                 	{
 				standard_metadata.egress_spec =1-standard_metadata.ingress_port;
                 	}
-                else if(hdr.ethernet.dstAddr == 0x00808e8d90ab){ //0x94c6911ef360){
+                else if(hdr.ethernet.dstAddr == 0x00808e8d90ab){ //mac address of the eNodeB
 				standard_metadata.egress_spec =1-standard_metadata.ingress_port;
 			}
 		else{   
