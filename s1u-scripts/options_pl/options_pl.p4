@@ -255,8 +255,8 @@ control MyEgress(inout headers hdr,
 		
 		hdr.udp_outer.checksum = 0;
 		add_option_header();
-		}}
- 
+		log_msg("qtime={}",{standard_metadata.deq_timedelta});
+		}} 
 	}
 }
 

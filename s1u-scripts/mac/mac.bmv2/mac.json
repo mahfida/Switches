@@ -116,7 +116,7 @@
       "id" : 0,
       "source_info" : {
         "filename" : "mac.p4",
-        "line" : 130,
+        "line" : 137,
         "column" : 8,
         "source_fragment" : "MyDeparser"
       },
@@ -652,7 +652,7 @@
       "id" : 1,
       "source_info" : {
         "filename" : "mac.p4",
-        "line" : 110,
+        "line" : 111,
         "column" : 8,
         "source_fragment" : "MyEgress"
       },
