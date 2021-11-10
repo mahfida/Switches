@@ -1,309 +1,754 @@
-[14:43:13.067] [bmv2] [I] [thread 54601] qtime=294
-[14:43:14.066] [bmv2] [I] [thread 54601] qtime=146
-[14:43:15.078] [bmv2] [I] [thread 54601] qtime=430
-[14:43:16.070] [bmv2] [I] [thread 54601] qtime=134
-[14:43:17.072] [bmv2] [I] [thread 54601] qtime=280
-[14:43:18.083] [bmv2] [I] [thread 54601] qtime=172
-[14:43:19.086] [bmv2] [I] [thread 54601] qtime=46
-[14:43:20.086] [bmv2] [I] [thread 54601] qtime=155
-[14:43:21.125] [bmv2] [I] [thread 54601] qtime=133
-[14:43:22.078] [bmv2] [I] [thread 54601] qtime=265
-[14:43:23.086] [bmv2] [I] [thread 54601] qtime=172
-[14:43:24.086] [bmv2] [I] [thread 54601] qtime=163
-[14:43:25.108] [bmv2] [I] [thread 54601] qtime=213
-[14:43:26.109] [bmv2] [I] [thread 54601] qtime=65
-[14:43:27.106] [bmv2] [I] [thread 54601] qtime=130
-[14:43:28.106] [bmv2] [I] [thread 54601] qtime=99
-[14:43:29.111] [bmv2] [I] [thread 54601] qtime=120
-[14:43:30.099] [bmv2] [I] [thread 54601] qtime=623
-[14:43:31.117] [bmv2] [I] [thread 54601] qtime=225
-[14:43:32.125] [bmv2] [I] [thread 54601] qtime=198
-[14:43:33.126] [bmv2] [I] [thread 54601] qtime=195
-[14:43:34.111] [bmv2] [I] [thread 54601] qtime=253
-[14:43:35.198] [bmv2] [I] [thread 54601] qtime=168
-[14:43:36.137] [bmv2] [I] [thread 54601] qtime=207
-[14:43:37.249] [bmv2] [I] [thread 54601] qtime=235
-[14:43:38.224] [bmv2] [I] [thread 54601] qtime=216
-[14:43:39.131] [bmv2] [I] [thread 54601] qtime=273
-[14:43:40.153] [bmv2] [I] [thread 54601] qtime=221
-[14:43:41.126] [bmv2] [I] [thread 54601] qtime=100
-[14:43:42.153] [bmv2] [I] [thread 54601] qtime=708
-[14:43:43.133] [bmv2] [I] [thread 54601] qtime=665
-[14:43:44.134] [bmv2] [I] [thread 54601] qtime=744
-[14:43:45.136] [bmv2] [I] [thread 54601] qtime=176
-[14:43:46.224] [bmv2] [I] [thread 54601] qtime=183
-[14:43:47.216] [bmv2] [I] [thread 54601] qtime=128
-[14:43:48.146] [bmv2] [I] [thread 54601] qtime=152
-[14:43:49.149] [bmv2] [I] [thread 54601] qtime=166
-[14:43:50.158] [bmv2] [I] [thread 54601] qtime=339
-[14:43:51.155] [bmv2] [I] [thread 54601] qtime=328
-[14:43:52.150] [bmv2] [I] [thread 54601] qtime=175
-[14:43:53.157] [bmv2] [I] [thread 54601] qtime=194
-[14:43:54.156] [bmv2] [I] [thread 54601] qtime=237
-[14:43:55.166] [bmv2] [I] [thread 54601] qtime=306
-[14:43:56.165] [bmv2] [I] [thread 54601] qtime=152
-[14:43:57.175] [bmv2] [I] [thread 54601] qtime=182
-[14:43:58.176] [bmv2] [I] [thread 54601] qtime=178
-[14:43:59.176] [bmv2] [I] [thread 54601] qtime=287
-[14:44:00.169] [bmv2] [I] [thread 54601] qtime=232
-[14:44:01.176] [bmv2] [I] [thread 54601] qtime=285
-[14:44:02.195] [bmv2] [I] [thread 54601] qtime=191
-[14:44:03.188] [bmv2] [I] [thread 54601] qtime=190
-[14:44:04.195] [bmv2] [I] [thread 54601] qtime=170
-[14:44:05.187] [bmv2] [I] [thread 54601] qtime=133
-[14:44:06.189] [bmv2] [I] [thread 54601] qtime=227
-[14:44:07.206] [bmv2] [I] [thread 54601] qtime=222
-[14:44:08.206] [bmv2] [I] [thread 54601] qtime=204
-[14:44:09.199] [bmv2] [I] [thread 54601] qtime=240
-[14:44:10.207] [bmv2] [I] [thread 54601] qtime=142
-[14:44:11.216] [bmv2] [I] [thread 54601] qtime=186
-[14:44:12.228] [bmv2] [I] [thread 54601] qtime=475
-[14:44:13.233] [bmv2] [I] [thread 54601] qtime=123
-[14:44:14.212] [bmv2] [I] [thread 54601] qtime=120
-[14:44:15.240] [bmv2] [I] [thread 54601] qtime=548
-[14:44:16.246] [bmv2] [I] [thread 54601] qtime=133
-[14:44:17.242] [bmv2] [I] [thread 54601] qtime=111
-[14:44:18.251] [bmv2] [I] [thread 54601] qtime=301
-[14:44:19.234] [bmv2] [I] [thread 54601] qtime=121
-[14:44:20.236] [bmv2] [I] [thread 54601] qtime=230
-[14:44:21.234] [bmv2] [I] [thread 54601] qtime=174
-[14:44:22.236] [bmv2] [I] [thread 54601] qtime=151
-[14:44:23.250] [bmv2] [I] [thread 54601] qtime=355
-[14:44:24.247] [bmv2] [I] [thread 54601] qtime=204
-[14:44:25.237] [bmv2] [I] [thread 54601] qtime=181
-[14:44:26.271] [bmv2] [I] [thread 54601] qtime=290
-[14:44:27.247] [bmv2] [I] [thread 54601] qtime=182
-[14:44:28.258] [bmv2] [I] [thread 54601] qtime=596
-[14:44:29.265] [bmv2] [I] [thread 54601] qtime=171
-[14:44:30.258] [bmv2] [I] [thread 54601] qtime=184
-[14:44:31.257] [bmv2] [I] [thread 54601] qtime=155
-[14:44:32.265] [bmv2] [I] [thread 54601] qtime=361
-[14:44:33.267] [bmv2] [I] [thread 54601] qtime=123
-[14:44:34.263] [bmv2] [I] [thread 54601] qtime=166
-[14:44:35.276] [bmv2] [I] [thread 54601] qtime=186
-[14:44:36.275] [bmv2] [I] [thread 54601] qtime=184
-[14:44:37.275] [bmv2] [I] [thread 54601] qtime=317
-[14:44:38.268] [bmv2] [I] [thread 54601] qtime=57
-[14:44:39.285] [bmv2] [I] [thread 54601] qtime=336
-[14:44:40.286] [bmv2] [I] [thread 54601] qtime=129
-[14:44:41.286] [bmv2] [I] [thread 54601] qtime=272
-[14:44:42.286] [bmv2] [I] [thread 54601] qtime=170
-[14:44:43.286] [bmv2] [I] [thread 54601] qtime=212
-[14:44:44.287] [bmv2] [I] [thread 54601] qtime=233
-[14:44:45.305] [bmv2] [I] [thread 54601] qtime=115
-[14:44:46.297] [bmv2] [I] [thread 54601] qtime=159
-[14:44:47.295] [bmv2] [I] [thread 54601] qtime=155
-[14:44:48.297] [bmv2] [I] [thread 54601] qtime=170
-[14:44:49.305] [bmv2] [I] [thread 54601] qtime=199
-[14:44:50.302] [bmv2] [I] [thread 54601] qtime=294
-[14:44:51.307] [bmv2] [I] [thread 54601] qtime=153
-[14:44:52.315] [bmv2] [I] [thread 54601] qtime=236
-[14:44:53.325] [bmv2] [I] [thread 54601] qtime=45
-[14:44:54.325] [bmv2] [I] [thread 54601] qtime=127
-[14:44:55.317] [bmv2] [I] [thread 54601] qtime=32
-[14:44:56.317] [bmv2] [I] [thread 54601] qtime=28
-[14:44:57.325] [bmv2] [I] [thread 54601] qtime=32
-[14:44:58.335] [bmv2] [I] [thread 54601] qtime=30
-[14:44:59.327] [bmv2] [I] [thread 54601] qtime=182
-[14:45:00.336] [bmv2] [I] [thread 54601] qtime=154
-[14:45:01.350] [bmv2] [I] [thread 54601] qtime=1564
-[14:45:02.339] [bmv2] [I] [thread 54601] qtime=42
-[14:45:03.335] [bmv2] [I] [thread 54601] qtime=29
-[14:45:04.338] [bmv2] [I] [thread 54601] qtime=116
-[14:45:05.345] [bmv2] [I] [thread 54601] qtime=27
-[14:45:06.347] [bmv2] [I] [thread 54601] qtime=171
-[14:45:07.339] [bmv2] [I] [thread 54601] qtime=175
-[14:45:08.356] [bmv2] [I] [thread 54601] qtime=163
-[14:45:09.348] [bmv2] [I] [thread 54601] qtime=408
-[14:45:10.356] [bmv2] [I] [thread 54601] qtime=198
-[14:45:11.359] [bmv2] [I] [thread 54601] qtime=166
-[14:45:12.366] [bmv2] [I] [thread 54601] qtime=212
-[14:45:13.366] [bmv2] [I] [thread 54601] qtime=564
-[14:45:14.367] [bmv2] [I] [thread 54601] qtime=363
-[14:45:15.377] [bmv2] [I] [thread 54601] qtime=775
-[14:45:16.368] [bmv2] [I] [thread 54601] qtime=198
-[14:45:17.379] [bmv2] [I] [thread 54601] qtime=458
-[14:45:18.398] [bmv2] [I] [thread 54601] qtime=4060
-[14:45:19.375] [bmv2] [I] [thread 54601] qtime=22
-[14:45:20.446] [bmv2] [I] [thread 54601] qtime=872
-[14:45:21.380] [bmv2] [I] [thread 54601] qtime=415
-[14:45:22.386] [bmv2] [I] [thread 54601] qtime=152
-[14:45:23.387] [bmv2] [I] [thread 54601] qtime=30
-[14:45:24.385] [bmv2] [I] [thread 54601] qtime=31
-[14:45:25.388] [bmv2] [I] [thread 54601] qtime=140
-[14:45:26.407] [bmv2] [I] [thread 54601] qtime=36
-[14:45:27.389] [bmv2] [I] [thread 54601] qtime=32
-[14:45:28.406] [bmv2] [I] [thread 54601] qtime=35
-[14:45:29.405] [bmv2] [I] [thread 54601] qtime=33
-[14:45:30.405] [bmv2] [I] [thread 54601] qtime=34
-[14:45:31.405] [bmv2] [I] [thread 54601] qtime=29
-[14:45:32.408] [bmv2] [I] [thread 54601] qtime=55
-[14:45:33.418] [bmv2] [I] [thread 54601] qtime=22
-[14:45:34.415] [bmv2] [I] [thread 54601] qtime=43
-[14:45:35.417] [bmv2] [I] [thread 54601] qtime=27
-[14:45:36.426] [bmv2] [I] [thread 54601] qtime=34
-[14:45:37.447] [bmv2] [I] [thread 54601] qtime=29
-[14:45:38.465] [bmv2] [I] [thread 54601] qtime=87
-[14:45:39.445] [bmv2] [I] [thread 54601] qtime=103
-[14:45:40.435] [bmv2] [I] [thread 54601] qtime=36
-[14:45:41.516] [bmv2] [I] [thread 54601] qtime=35
-[14:45:42.456] [bmv2] [I] [thread 54601] qtime=53
-[14:45:43.445] [bmv2] [I] [thread 54601] qtime=114
-[14:45:44.445] [bmv2] [I] [thread 54601] qtime=127
-[14:45:45.445] [bmv2] [I] [thread 54601] qtime=112
-[14:45:46.448] [bmv2] [I] [thread 54601] qtime=41
-[14:45:47.447] [bmv2] [I] [thread 54601] qtime=35
-[14:45:48.456] [bmv2] [I] [thread 54601] qtime=34
-[14:45:49.456] [bmv2] [I] [thread 54601] qtime=36
-[14:45:50.456] [bmv2] [I] [thread 54601] qtime=24
-[14:45:51.465] [bmv2] [I] [thread 54601] qtime=23
-[14:45:52.466] [bmv2] [I] [thread 54601] qtime=40
-[14:45:53.468] [bmv2] [I] [thread 54601] qtime=32
-[14:45:54.476] [bmv2] [I] [thread 54601] qtime=42
-[14:45:55.475] [bmv2] [I] [thread 54601] qtime=26
-[14:45:56.468] [bmv2] [I] [thread 54601] qtime=29
-[14:45:57.477] [bmv2] [I] [thread 54601] qtime=26
-[14:45:58.485] [bmv2] [I] [thread 54601] qtime=30
-[14:45:59.477] [bmv2] [I] [thread 54601] qtime=30
-[14:46:00.496] [bmv2] [I] [thread 54601] qtime=39
-[14:46:01.485] [bmv2] [I] [thread 54601] qtime=27
-[14:46:02.487] [bmv2] [I] [thread 54601] qtime=184
-[14:46:03.498] [bmv2] [I] [thread 54601] qtime=83
-[14:46:04.488] [bmv2] [I] [thread 54601] qtime=43
-[14:46:05.496] [bmv2] [I] [thread 54601] qtime=41
-[14:46:06.498] [bmv2] [I] [thread 54601] qtime=42
-[14:46:07.506] [bmv2] [I] [thread 54601] qtime=31
-[14:46:08.508] [bmv2] [I] [thread 54601] qtime=41
-[14:46:09.516] [bmv2] [I] [thread 54601] qtime=33
-[14:46:10.524] [bmv2] [I] [thread 54601] qtime=40
-[14:46:11.515] [bmv2] [I] [thread 54601] qtime=98
-[14:46:12.525] [bmv2] [I] [thread 54601] qtime=28
-[14:46:13.518] [bmv2] [I] [thread 54601] qtime=71
-[14:46:14.517] [bmv2] [I] [thread 54601] qtime=27
-[14:46:15.535] [bmv2] [I] [thread 54601] qtime=42
-[14:46:16.529] [bmv2] [I] [thread 54601] qtime=39
-[14:46:17.527] [bmv2] [I] [thread 54601] qtime=35
-[14:46:18.535] [bmv2] [I] [thread 54601] qtime=35
-[14:46:19.536] [bmv2] [I] [thread 54601] qtime=35
-[14:46:20.538] [bmv2] [I] [thread 54601] qtime=33
-[14:46:21.538] [bmv2] [I] [thread 54601] qtime=35
-[14:46:22.537] [bmv2] [I] [thread 54601] qtime=33
-[14:46:23.546] [bmv2] [I] [thread 54601] qtime=232
-[14:46:24.546] [bmv2] [I] [thread 54601] qtime=223
-[14:46:25.539] [bmv2] [I] [thread 54601] qtime=148
-[14:46:26.537] [bmv2] [I] [thread 54601] qtime=138
-[14:46:27.637] [bmv2] [I] [thread 54601] qtime=397
-[14:46:28.548] [bmv2] [I] [thread 54601] qtime=564
-[14:46:29.563] [bmv2] [I] [thread 54601] qtime=110
-[14:46:30.559] [bmv2] [I] [thread 54601] qtime=309
-[14:46:31.566] [bmv2] [I] [thread 54601] qtime=142
-[14:46:32.556] [bmv2] [I] [thread 54601] qtime=567
-[14:46:33.565] [bmv2] [I] [thread 54601] qtime=531
-[14:46:34.568] [bmv2] [I] [thread 54601] qtime=82
-[14:46:35.576] [bmv2] [I] [thread 54601] qtime=123
-[14:46:36.575] [bmv2] [I] [thread 54601] qtime=34
-[14:46:37.567] [bmv2] [I] [thread 54601] qtime=30
-[14:46:38.586] [bmv2] [I] [thread 54601] qtime=156
-[14:46:39.579] [bmv2] [I] [thread 54601] qtime=147
-[14:46:40.585] [bmv2] [I] [thread 54601] qtime=24
-[14:46:41.586] [bmv2] [I] [thread 54601] qtime=30
-[14:46:42.585] [bmv2] [I] [thread 54601] qtime=26
-[14:46:43.595] [bmv2] [I] [thread 54601] qtime=25
-[14:46:44.588] [bmv2] [I] [thread 54601] qtime=164
-[14:46:45.588] [bmv2] [I] [thread 54601] qtime=155
-[14:46:46.616] [bmv2] [I] [thread 54601] qtime=41
-[14:46:47.597] [bmv2] [I] [thread 54601] qtime=41
-[14:46:48.598] [bmv2] [I] [thread 54601] qtime=237
-[14:46:49.603] [bmv2] [I] [thread 54601] qtime=123
-[14:46:50.605] [bmv2] [I] [thread 54601] qtime=36
-[14:46:51.605] [bmv2] [I] [thread 54601] qtime=80
-[14:46:52.612] [bmv2] [I] [thread 54601] qtime=22
-[14:46:53.615] [bmv2] [I] [thread 54601] qtime=30
-[14:46:54.604] [bmv2] [I] [thread 54601] qtime=29
-[14:46:55.617] [bmv2] [I] [thread 54601] qtime=32
-[14:46:56.614] [bmv2] [I] [thread 54601] qtime=29
-[14:46:57.615] [bmv2] [I] [thread 54601] qtime=24
-[14:46:58.625] [bmv2] [I] [thread 54601] qtime=40
-[14:46:59.617] [bmv2] [I] [thread 54601] qtime=140
-[14:47:00.787] [bmv2] [I] [thread 54601] qtime=37
-[14:47:01.627] [bmv2] [I] [thread 54601] qtime=131
-[14:47:02.623] [bmv2] [I] [thread 54601] qtime=35
-[14:47:03.627] [bmv2] [I] [thread 54601] qtime=155
-[14:47:04.638] [bmv2] [I] [thread 54601] qtime=167
-[14:47:05.617] [bmv2] [I] [thread 54601] qtime=185
-[14:47:06.636] [bmv2] [I] [thread 54601] qtime=489
-[14:47:07.643] [bmv2] [I] [thread 54601] qtime=119
-[14:47:08.644] [bmv2] [I] [thread 54601] qtime=177
-[14:47:09.628] [bmv2] [I] [thread 54601] qtime=190
-[14:47:10.636] [bmv2] [I] [thread 54601] qtime=537
-[14:47:11.636] [bmv2] [I] [thread 54601] qtime=587
-[14:47:12.635] [bmv2] [I] [thread 54601] qtime=95
-[14:47:13.657] [bmv2] [I] [thread 54601] qtime=147
-[14:47:14.657] [bmv2] [I] [thread 54601] qtime=133
-[14:47:15.646] [bmv2] [I] [thread 54601] qtime=151
-[14:47:16.649] [bmv2] [I] [thread 54601] qtime=279
-[14:47:17.646] [bmv2] [I] [thread 54601] qtime=146
-[14:47:18.659] [bmv2] [I] [thread 54601] qtime=220
-[14:47:19.647] [bmv2] [I] [thread 54601] qtime=204
-[14:47:20.714] [bmv2] [I] [thread 54601] qtime=189
-[14:47:21.647] [bmv2] [I] [thread 54601] qtime=161
-[14:47:22.669] [bmv2] [I] [thread 54601] qtime=423
-[14:47:23.655] [bmv2] [I] [thread 54601] qtime=208
-[14:47:24.648] [bmv2] [I] [thread 54601] qtime=430
-[14:47:25.657] [bmv2] [I] [thread 54601] qtime=105
-[14:47:26.655] [bmv2] [I] [thread 54601] qtime=329
-[14:47:27.650] [bmv2] [I] [thread 54601] qtime=412
-[14:47:28.659] [bmv2] [I] [thread 54601] qtime=72
-[14:47:29.666] [bmv2] [I] [thread 54601] qtime=363
-[14:47:30.654] [bmv2] [I] [thread 54601] qtime=146
-[14:47:31.667] [bmv2] [I] [thread 54601] qtime=368
-[14:47:32.658] [bmv2] [I] [thread 54601] qtime=181
-[14:47:33.658] [bmv2] [I] [thread 54601] qtime=97
-[14:47:34.676] [bmv2] [I] [thread 54601] qtime=238
-[14:47:35.678] [bmv2] [I] [thread 54601] qtime=98
-[14:47:36.684] [bmv2] [I] [thread 54601] qtime=175
-[14:47:37.696] [bmv2] [I] [thread 54601] qtime=691
-[14:47:38.710] [bmv2] [I] [thread 54601] qtime=302
-[14:47:39.677] [bmv2] [I] [thread 54601] qtime=151
-[14:47:40.683] [bmv2] [I] [thread 54601] qtime=174
-[14:47:41.698] [bmv2] [I] [thread 54601] qtime=152
-[14:47:42.686] [bmv2] [I] [thread 54601] qtime=254
-[14:47:43.668] [bmv2] [I] [thread 54601] qtime=192
-[14:47:44.689] [bmv2] [I] [thread 54601] qtime=151
-[14:47:45.712] [bmv2] [I] [thread 54601] qtime=74
-[14:47:46.698] [bmv2] [I] [thread 54601] qtime=131
-[14:47:47.697] [bmv2] [I] [thread 54601] qtime=139
-[14:47:48.684] [bmv2] [I] [thread 54601] qtime=161
-[14:47:49.678] [bmv2] [I] [thread 54601] qtime=259
-[14:47:50.700] [bmv2] [I] [thread 54601] qtime=124
-[14:47:51.683] [bmv2] [I] [thread 54601] qtime=343
-[14:47:52.688] [bmv2] [I] [thread 54601] qtime=277
-[14:47:53.686] [bmv2] [I] [thread 54601] qtime=160
-[14:47:54.702] [bmv2] [I] [thread 54601] qtime=143
-[14:47:55.694] [bmv2] [I] [thread 54601] qtime=165
-[14:47:56.692] [bmv2] [I] [thread 54601] qtime=182
-[14:47:57.696] [bmv2] [I] [thread 54601] qtime=143
-[14:47:58.685] [bmv2] [I] [thread 54601] qtime=265
-[14:47:59.708] [bmv2] [I] [thread 54601] qtime=105
-[14:48:00.704] [bmv2] [I] [thread 54601] qtime=349
-[14:48:01.691] [bmv2] [I] [thread 54601] qtime=294
-[14:48:02.703] [bmv2] [I] [thread 54601] qtime=464
-[14:48:03.699] [bmv2] [I] [thread 54601] qtime=265
-[14:48:04.685] [bmv2] [I] [thread 54601] qtime=204
-[14:48:05.717] [bmv2] [I] [thread 54601] qtime=337
-[14:48:06.736] [bmv2] [I] [thread 54601] qtime=175
-[14:48:07.713] [bmv2] [I] [thread 54601] qtime=160
-[14:48:08.708] [bmv2] [I] [thread 54601] qtime=146
-[14:48:09.707] [bmv2] [I] [thread 54601] qtime=126
-[14:48:10.708] [bmv2] [I] [thread 54601] qtime=169
-[14:48:11.722] [bmv2] [I] [thread 54601] qtime=268
-[14:48:12.718] [bmv2] [I] [thread 54601] qtime=382
-[14:48:13.647] [bmv2] [I] [thread 54601] qtime=312
-[14:48:19.963] [bmv2] [I] [thread 54601] qtime=189
-[14:49:12.386] [bmv2] [I] [thread 54601] qtime=455
-[14:53:11.908] [bmv2] [I] [thread 54601] qtime=42
-[14:53:57.646] [bmv2] [I] [thread 54601] qtime=32
-[14:53:58.606] [bmv2] [I] [thread 54601] qtime=34
-[14:53:59.627] [bmv2] [I] [thread 54601] qtime=36
-[14:54:00.638] [bmv2] [I] [thread 54601] qtime=68
-[14:54:01.638] [bmv2] [I] [thread 54601] qtime=587
+[13:02:49.952] [bmv2] [I] [thread 155412] qtime=1015, timediff=2230
+[13:02:49.964] [bmv2] [I] [thread 155412] qtime=196, timediff=655
+[13:02:50.958] [bmv2] [I] [thread 155412] qtime=257, timediff=833
+[13:02:51.958] [bmv2] [I] [thread 155412] qtime=195, timediff=1036
+[13:02:52.950] [bmv2] [I] [thread 155412] qtime=177, timediff=1515
+[13:02:53.958] [bmv2] [I] [thread 155412] qtime=240, timediff=845
+[13:02:54.960] [bmv2] [I] [thread 155412] qtime=166, timediff=2795
+[13:02:55.179] [bmv2] [I] [thread 155412] qtime=167, timediff=576
+[13:02:55.959] [bmv2] [I] [thread 155412] qtime=237, timediff=1117
+[13:02:56.949] [bmv2] [I] [thread 155412] qtime=388, timediff=1036
+[13:02:57.957] [bmv2] [I] [thread 155412] qtime=198, timediff=742
+[13:02:58.960] [bmv2] [I] [thread 155412] qtime=218, timediff=1113
+[13:02:59.958] [bmv2] [I] [thread 155412] qtime=276, timediff=756
+[13:03:00.958] [bmv2] [I] [thread 155412] qtime=215, timediff=791
+[13:03:01.968] [bmv2] [I] [thread 155412] qtime=207, timediff=712
+[13:03:02.961] [bmv2] [I] [thread 155412] qtime=498, timediff=1672
+[13:03:03.968] [bmv2] [I] [thread 155412] qtime=181, timediff=1212
+[13:03:04.968] [bmv2] [I] [thread 155412] qtime=201, timediff=911
+[13:03:05.968] [bmv2] [I] [thread 155412] qtime=183, timediff=1138
+[13:03:06.969] [bmv2] [I] [thread 155412] qtime=519, timediff=1057
+[13:03:07.968] [bmv2] [I] [thread 155412] qtime=241, timediff=702
+[13:03:08.967] [bmv2] [I] [thread 155412] qtime=168, timediff=656
+[13:03:09.978] [bmv2] [I] [thread 155412] qtime=246, timediff=1069
+[13:03:10.968] [bmv2] [I] [thread 155412] qtime=219, timediff=787
+[13:03:11.969] [bmv2] [I] [thread 155412] qtime=455, timediff=1400
+[13:03:12.969] [bmv2] [I] [thread 155412] qtime=213, timediff=968
+[13:03:13.968] [bmv2] [I] [thread 155412] qtime=166, timediff=789
+[13:03:14.980] [bmv2] [I] [thread 155412] qtime=310, timediff=1342
+[13:03:15.969] [bmv2] [I] [thread 155412] qtime=214, timediff=771
+[13:03:16.969] [bmv2] [I] [thread 155412] qtime=181, timediff=1152
+[13:03:17.972] [bmv2] [I] [thread 155412] qtime=162, timediff=1374
+[13:03:18.327] [bmv2] [I] [thread 155412] qtime=342, timediff=1077
+[13:03:18.968] [bmv2] [I] [thread 155412] qtime=186, timediff=804
+[13:03:19.968] [bmv2] [I] [thread 155412] qtime=263, timediff=1027
+[13:03:20.979] [bmv2] [I] [thread 155412] qtime=463, timediff=1142
+[13:03:21.977] [bmv2] [I] [thread 155412] qtime=219, timediff=785
+[13:03:22.980] [bmv2] [I] [thread 155412] qtime=290, timediff=783
+[13:03:23.083] [bmv2] [I] [thread 155412] qtime=134, timediff=707
+[13:03:23.970] [bmv2] [I] [thread 155412] qtime=198, timediff=644
+[13:03:24.988] [bmv2] [I] [thread 155412] qtime=224, timediff=752
+[13:03:25.988] [bmv2] [I] [thread 155412] qtime=227, timediff=709
+[13:03:26.980] [bmv2] [I] [thread 155412] qtime=234, timediff=928
+[13:03:27.974] [bmv2] [I] [thread 155412] qtime=180, timediff=499
+[13:03:28.980] [bmv2] [I] [thread 155412] qtime=175, timediff=849
+[13:03:29.979] [bmv2] [I] [thread 155412] qtime=191, timediff=669
+[13:03:30.988] [bmv2] [I] [thread 155412] qtime=240, timediff=736
+[13:03:31.988] [bmv2] [I] [thread 155412] qtime=228, timediff=737
+[13:03:32.988] [bmv2] [I] [thread 155412] qtime=179, timediff=795
+[13:03:33.997] [bmv2] [I] [thread 155412] qtime=158, timediff=611
+[13:03:34.991] [bmv2] [I] [thread 155412] qtime=254, timediff=743
+[13:03:35.998] [bmv2] [I] [thread 155412] qtime=247, timediff=969
+[13:03:36.998] [bmv2] [I] [thread 155412] qtime=778, timediff=1167
+[13:03:37.997] [bmv2] [I] [thread 155412] qtime=189, timediff=717
+[13:03:39.000] [bmv2] [I] [thread 155412] qtime=250, timediff=917
+[13:03:40.008] [bmv2] [I] [thread 155412] qtime=238, timediff=1078
+[13:03:41.008] [bmv2] [I] [thread 155412] qtime=270, timediff=1106
+[13:03:42.008] [bmv2] [I] [thread 155412] qtime=336, timediff=970
+[13:03:43.008] [bmv2] [I] [thread 155412] qtime=200, timediff=791
+[13:03:44.018] [bmv2] [I] [thread 155412] qtime=222, timediff=960
+[13:03:45.018] [bmv2] [I] [thread 155412] qtime=261, timediff=997
+[13:03:46.018] [bmv2] [I] [thread 155412] qtime=265, timediff=872
+[13:03:46.488] [bmv2] [I] [thread 155412] qtime=472, timediff=1556
+[13:03:47.018] [bmv2] [I] [thread 155412] qtime=618, timediff=1199
+[13:03:48.012] [bmv2] [I] [thread 155412] qtime=222, timediff=707
+[13:03:49.028] [bmv2] [I] [thread 155412] qtime=201, timediff=635
+[13:03:50.027] [bmv2] [I] [thread 155412] qtime=187, timediff=835
+[13:03:50.219] [bmv2] [I] [thread 155412] qtime=172, timediff=367
+[13:03:51.029] [bmv2] [I] [thread 155412] qtime=201, timediff=1459
+[13:03:52.020] [bmv2] [I] [thread 155412] qtime=251, timediff=874
+[13:03:53.025] [bmv2] [I] [thread 155412] qtime=148, timediff=806
+[13:03:54.038] [bmv2] [I] [thread 155412] qtime=324, timediff=667
+[13:03:55.039] [bmv2] [I] [thread 155412] qtime=267, timediff=737
+[13:03:56.027] [bmv2] [I] [thread 155412] qtime=195, timediff=630
+[13:03:57.028] [bmv2] [I] [thread 155412] qtime=257, timediff=750
+[13:03:58.031] [bmv2] [I] [thread 155412] qtime=320, timediff=1049
+[13:03:59.038] [bmv2] [I] [thread 155412] qtime=277, timediff=821
+[13:04:00.036] [bmv2] [I] [thread 155412] qtime=244, timediff=764
+[13:04:01.048] [bmv2] [I] [thread 155412] qtime=203, timediff=611
+[13:04:02.040] [bmv2] [I] [thread 155412] qtime=206, timediff=757
+[13:04:03.045] [bmv2] [I] [thread 155412] qtime=270, timediff=621
+[13:04:04.048] [bmv2] [I] [thread 155412] qtime=196, timediff=874
+[13:04:05.059] [bmv2] [I] [thread 155412] qtime=218, timediff=1018
+[13:04:06.049] [bmv2] [I] [thread 155412] qtime=369, timediff=850
+[13:04:07.058] [bmv2] [I] [thread 155412] qtime=242, timediff=889
+[13:04:08.058] [bmv2] [I] [thread 155412] qtime=193, timediff=861
+[13:04:09.070] [bmv2] [I] [thread 155412] qtime=865, timediff=1302
+[13:04:10.059] [bmv2] [I] [thread 155412] qtime=357, timediff=1141
+[13:04:11.055] [bmv2] [I] [thread 155412] qtime=205, timediff=993
+[13:04:12.061] [bmv2] [I] [thread 155412] qtime=382, timediff=1534
+[13:04:13.071] [bmv2] [I] [thread 155412] qtime=497, timediff=1877
+[13:04:14.069] [bmv2] [I] [thread 155412] qtime=307, timediff=1057
+[13:04:14.135] [bmv2] [I] [thread 155412] qtime=259, timediff=1066
+[13:04:15.000] [bmv2] [I] [thread 155412] qtime=147, timediff=794
+[13:04:16.060] [bmv2] [I] [thread 155412] qtime=168, timediff=566
+[13:04:17.071] [bmv2] [I] [thread 155412] qtime=178, timediff=783
+[13:04:18.079] [bmv2] [I] [thread 155412] qtime=298, timediff=808
+[13:04:19.069] [bmv2] [I] [thread 155412] qtime=253, timediff=1003
+[13:04:19.148] [bmv2] [I] [thread 155412] qtime=446, timediff=1366
+[13:04:20.079] [bmv2] [I] [thread 155412] qtime=356, timediff=1179
+[13:04:21.089] [bmv2] [I] [thread 155412] qtime=377, timediff=922
+[13:04:22.080] [bmv2] [I] [thread 155412] qtime=182, timediff=711
+[13:04:23.091] [bmv2] [I] [thread 155412] qtime=428, timediff=1230
+[13:04:24.087] [bmv2] [I] [thread 155412] qtime=236, timediff=610
+[13:04:25.080] [bmv2] [I] [thread 155412] qtime=162, timediff=858
+[13:04:26.091] [bmv2] [I] [thread 155412] qtime=634, timediff=1837
+[13:04:27.084] [bmv2] [I] [thread 155412] qtime=213, timediff=897
+[13:04:28.098] [bmv2] [I] [thread 155412] qtime=169, timediff=805
+[13:04:29.098] [bmv2] [I] [thread 155412] qtime=217, timediff=893
+[13:04:30.108] [bmv2] [I] [thread 155412] qtime=182, timediff=848
+[13:04:31.098] [bmv2] [I] [thread 155412] qtime=171, timediff=747
+[13:04:32.103] [bmv2] [I] [thread 155412] qtime=777, timediff=1719
+[13:04:33.101] [bmv2] [I] [thread 155412] qtime=369, timediff=1264
+[13:04:34.100] [bmv2] [I] [thread 155412] qtime=226, timediff=740
+[13:04:35.118] [bmv2] [I] [thread 155412] qtime=321, timediff=975
+[13:04:36.108] [bmv2] [I] [thread 155412] qtime=261, timediff=831
+[13:04:37.110] [bmv2] [I] [thread 155412] qtime=206, timediff=916
+[13:04:38.110] [bmv2] [I] [thread 155412] qtime=325, timediff=969
+[13:04:39.119] [bmv2] [I] [thread 155412] qtime=346, timediff=805
+[13:04:40.120] [bmv2] [I] [thread 155412] qtime=243, timediff=1470
+[13:04:41.110] [bmv2] [I] [thread 155412] qtime=245, timediff=759
+[13:04:42.128] [bmv2] [I] [thread 155412] qtime=255, timediff=632
+[13:04:42.295] [bmv2] [I] [thread 155412] qtime=538, timediff=799
+[13:04:43.128] [bmv2] [I] [thread 155412] qtime=40, timediff=1162
+[13:04:44.120] [bmv2] [I] [thread 155412] qtime=259, timediff=1399
+[13:04:45.122] [bmv2] [I] [thread 155412] qtime=511, timediff=1419
+[13:04:46.121] [bmv2] [I] [thread 155412] qtime=231, timediff=772
+[13:04:47.124] [bmv2] [I] [thread 155412] qtime=210, timediff=711
+[13:04:47.307] [bmv2] [I] [thread 155412] qtime=173, timediff=641
+[13:04:48.129] [bmv2] [I] [thread 155412] qtime=256, timediff=891
+[13:04:49.130] [bmv2] [I] [thread 155412] qtime=171, timediff=783
+[13:04:50.139] [bmv2] [I] [thread 155412] qtime=211, timediff=1289
+[13:04:51.138] [bmv2] [I] [thread 155412] qtime=261, timediff=905
+[13:04:52.136] [bmv2] [I] [thread 155412] qtime=189, timediff=1201
+[13:04:53.149] [bmv2] [I] [thread 155412] qtime=234, timediff=1314
+[13:04:54.137] [bmv2] [I] [thread 155412] qtime=274, timediff=1091
+[13:04:55.150] [bmv2] [I] [thread 155412] qtime=268, timediff=1572
+[13:04:56.147] [bmv2] [I] [thread 155412] qtime=246, timediff=866
+[13:04:57.149] [bmv2] [I] [thread 155412] qtime=268, timediff=1231
+[13:04:58.140] [bmv2] [I] [thread 155412] qtime=238, timediff=1099
+[13:04:59.152] [bmv2] [I] [thread 155412] qtime=258, timediff=1780
+[13:05:00.158] [bmv2] [I] [thread 155412] qtime=239, timediff=1160
+[13:05:01.153] [bmv2] [I] [thread 155412] qtime=242, timediff=1102
+[13:05:02.204] [bmv2] [I] [thread 155412] qtime=199, timediff=3443
+[13:05:03.169] [bmv2] [I] [thread 155412] qtime=206, timediff=1157
+[13:05:04.168] [bmv2] [I] [thread 155412] qtime=434, timediff=14259
+[13:05:05.158] [bmv2] [I] [thread 155412] qtime=221, timediff=810
+[13:05:06.147] [bmv2] [I] [thread 155412] qtime=44, timediff=718
+[13:05:07.161] [bmv2] [I] [thread 155412] qtime=40, timediff=1006
+[13:05:08.169] [bmv2] [I] [thread 155412] qtime=177, timediff=1576
+[13:05:09.160] [bmv2] [I] [thread 155412] qtime=43, timediff=985
+[13:05:10.168] [bmv2] [I] [thread 155412] qtime=46, timediff=915
+[13:05:10.454] [bmv2] [I] [thread 155412] qtime=39, timediff=471
+[13:05:11.169] [bmv2] [I] [thread 155412] qtime=27, timediff=978
+[13:05:12.178] [bmv2] [I] [thread 155412] qtime=41, timediff=805
+[13:05:13.171] [bmv2] [I] [thread 155412] qtime=37, timediff=1042
+[13:05:14.178] [bmv2] [I] [thread 155412] qtime=33, timediff=661
+[13:05:14.188] [bmv2] [I] [thread 155412] qtime=36, timediff=897
+[13:05:15.187] [bmv2] [I] [thread 155412] qtime=115, timediff=734
+[13:05:16.188] [bmv2] [I] [thread 155412] qtime=37, timediff=627
+[13:05:17.181] [bmv2] [I] [thread 155412] qtime=67, timediff=1316
+[13:05:18.180] [bmv2] [I] [thread 155412] qtime=43, timediff=1024
+[13:05:19.189] [bmv2] [I] [thread 155412] qtime=58, timediff=1290
+[13:05:20.180] [bmv2] [I] [thread 155412] qtime=41, timediff=828
+[13:05:21.190] [bmv2] [I] [thread 155412] qtime=49, timediff=1220
+[13:05:22.198] [bmv2] [I] [thread 155412] qtime=42, timediff=931
+[13:05:23.203] [bmv2] [I] [thread 155412] qtime=4167, timediff=6147
+[13:05:24.189] [bmv2] [I] [thread 155412] qtime=29, timediff=664
+[13:05:25.190] [bmv2] [I] [thread 155412] qtime=36, timediff=913
+[13:05:26.199] [bmv2] [I] [thread 155412] qtime=70, timediff=1089
+[13:05:27.190] [bmv2] [I] [thread 155412] qtime=44, timediff=1072
+[13:05:28.193] [bmv2] [I] [thread 155412] qtime=40, timediff=911
+[13:05:29.208] [bmv2] [I] [thread 155412] qtime=219, timediff=811
+[13:05:30.209] [bmv2] [I] [thread 155412] qtime=189, timediff=1000
+[13:05:31.207] [bmv2] [I] [thread 155412] qtime=207, timediff=950
+[13:05:32.209] [bmv2] [I] [thread 155412] qtime=155, timediff=1267
+[13:05:33.210] [bmv2] [I] [thread 155412] qtime=580, timediff=2287
+[13:05:34.218] [bmv2] [I] [thread 155412] qtime=323, timediff=870
+[13:05:35.212] [bmv2] [I] [thread 155412] qtime=223, timediff=2903
+[13:05:36.221] [bmv2] [I] [thread 155412] qtime=222, timediff=881
+[13:05:37.218] [bmv2] [I] [thread 155412] qtime=228, timediff=1046
+[13:05:38.221] [bmv2] [I] [thread 155412] qtime=245, timediff=1085
+[13:05:38.615] [bmv2] [I] [thread 155412] qtime=234, timediff=924
+[13:05:39.229] [bmv2] [I] [thread 155412] qtime=166, timediff=1455
+[13:05:40.228] [bmv2] [I] [thread 155412] qtime=219, timediff=1184
+[13:05:41.230] [bmv2] [I] [thread 155412] qtime=298, timediff=1096
+[13:05:42.229] [bmv2] [I] [thread 155412] qtime=231, timediff=993
+[13:05:42.347] [bmv2] [I] [thread 155412] qtime=262, timediff=1281
+[13:05:43.228] [bmv2] [I] [thread 155412] qtime=162, timediff=944
+[13:05:44.228] [bmv2] [I] [thread 155412] qtime=330, timediff=1127
+[13:05:45.239] [bmv2] [I] [thread 155412] qtime=228, timediff=1053
+[13:05:46.230] [bmv2] [I] [thread 155412] qtime=214, timediff=674
+[13:05:47.237] [bmv2] [I] [thread 155412] qtime=169, timediff=878
+[13:05:48.248] [bmv2] [I] [thread 155412] qtime=170, timediff=967
+[13:05:49.249] [bmv2] [I] [thread 155412] qtime=361, timediff=1116
+[13:05:50.240] [bmv2] [I] [thread 155412] qtime=167, timediff=911
+[13:05:51.248] [bmv2] [I] [thread 155412] qtime=152, timediff=1054
+[13:05:52.258] [bmv2] [I] [thread 155412] qtime=254, timediff=879
+[13:05:53.250] [bmv2] [I] [thread 155412] qtime=432, timediff=2343
+[13:05:54.258] [bmv2] [I] [thread 155412] qtime=134, timediff=948
+[13:05:55.251] [bmv2] [I] [thread 155412] qtime=438, timediff=930
+[13:05:56.258] [bmv2] [I] [thread 155412] qtime=192, timediff=757
+[13:05:57.250] [bmv2] [I] [thread 155412] qtime=253, timediff=788
+[13:05:58.258] [bmv2] [I] [thread 155412] qtime=173, timediff=581
+[13:05:59.258] [bmv2] [I] [thread 155412] qtime=239, timediff=849
+[13:06:00.269] [bmv2] [I] [thread 155412] qtime=264, timediff=926
+[13:06:01.271] [bmv2] [I] [thread 155412] qtime=155, timediff=1345
+[13:06:02.260] [bmv2] [I] [thread 155412] qtime=126, timediff=1953
+[13:06:02.678] [bmv2] [I] [thread 155412] qtime=220, timediff=665
+[13:06:03.268] [bmv2] [I] [thread 155412] qtime=323, timediff=945
+[13:06:04.262] [bmv2] [I] [thread 155412] qtime=355, timediff=1125
+[13:06:05.268] [bmv2] [I] [thread 155412] qtime=163, timediff=782
+[13:06:06.269] [bmv2] [I] [thread 155412] qtime=272, timediff=933
+[13:06:07.270] [bmv2] [I] [thread 155412] qtime=195, timediff=775
+[13:06:08.272] [bmv2] [I] [thread 155412] qtime=265, timediff=1330
+[13:06:09.289] [bmv2] [I] [thread 155412] qtime=215, timediff=799
+[13:06:10.291] [bmv2] [I] [thread 155412] qtime=394, timediff=2508
+[13:06:11.281] [bmv2] [I] [thread 155412] qtime=188, timediff=1038
+[13:06:12.289] [bmv2] [I] [thread 155412] qtime=393, timediff=858
+[13:06:13.288] [bmv2] [I] [thread 155412] qtime=152, timediff=737
+[13:06:14.281] [bmv2] [I] [thread 155412] qtime=232, timediff=1421
+[13:06:15.288] [bmv2] [I] [thread 155412] qtime=109, timediff=514
+[13:06:16.289] [bmv2] [I] [thread 155412] qtime=246, timediff=1005
+[13:06:17.283] [bmv2] [I] [thread 155412] qtime=303, timediff=2922
+[13:06:18.298] [bmv2] [I] [thread 155412] qtime=193, timediff=604
+[13:06:19.290] [bmv2] [I] [thread 155412] qtime=283, timediff=829
+[13:06:20.299] [bmv2] [I] [thread 155412] qtime=279, timediff=1108
+[13:06:21.308] [bmv2] [I] [thread 155412] qtime=161, timediff=781
+[13:06:22.300] [bmv2] [I] [thread 155412] qtime=39, timediff=896
+[13:06:23.307] [bmv2] [I] [thread 155412] qtime=32, timediff=553
+[13:06:24.309] [bmv2] [I] [thread 155412] qtime=48, timediff=1141
+[13:06:25.308] [bmv2] [I] [thread 155412] qtime=37, timediff=806
+[13:06:26.304] [bmv2] [I] [thread 155412] qtime=36, timediff=814
+[13:06:26.742] [bmv2] [I] [thread 155412] qtime=34, timediff=561
+[13:06:27.308] [bmv2] [I] [thread 155412] qtime=199, timediff=1634
+[13:06:28.319] [bmv2] [I] [thread 155412] qtime=51, timediff=1100
+[13:06:29.318] [bmv2] [I] [thread 155412] qtime=28, timediff=866
+[13:06:29.452] [bmv2] [I] [thread 155412] qtime=35, timediff=890
+[13:06:30.318] [bmv2] [I] [thread 155412] qtime=148, timediff=1483
+[13:06:31.318] [bmv2] [I] [thread 155412] qtime=171, timediff=918
+[13:06:32.319] [bmv2] [I] [thread 155412] qtime=227, timediff=1745
+[13:06:33.318] [bmv2] [I] [thread 155412] qtime=198, timediff=1200
+[13:06:34.320] [bmv2] [I] [thread 155412] qtime=233, timediff=1049
+[13:06:35.321] [bmv2] [I] [thread 155412] qtime=254, timediff=1731
+[13:06:36.338] [bmv2] [I] [thread 155412] qtime=218, timediff=1086
+[13:06:37.329] [bmv2] [I] [thread 155412] qtime=247, timediff=1274
+[13:06:38.331] [bmv2] [I] [thread 155412] qtime=215, timediff=1305
+[13:06:39.331] [bmv2] [I] [thread 155412] qtime=210, timediff=785
+[13:06:40.331] [bmv2] [I] [thread 155412] qtime=250, timediff=1014
+[13:06:41.338] [bmv2] [I] [thread 155412] qtime=301, timediff=959
+[13:06:42.338] [bmv2] [I] [thread 155412] qtime=503, timediff=910
+[13:06:43.342] [bmv2] [I] [thread 155412] qtime=486, timediff=1695
+[13:06:44.339] [bmv2] [I] [thread 155412] qtime=209, timediff=2279
+[13:06:45.337] [bmv2] [I] [thread 155412] qtime=141, timediff=981
+[13:06:46.348] [bmv2] [I] [thread 155412] qtime=155, timediff=776
+[13:06:47.348] [bmv2] [I] [thread 155412] qtime=147, timediff=1009
+[13:06:48.339] [bmv2] [I] [thread 155412] qtime=197, timediff=753
+[13:06:49.349] [bmv2] [I] [thread 155412] qtime=336, timediff=1096
+[13:06:50.350] [bmv2] [I] [thread 155412] qtime=232, timediff=920
+[13:06:50.807] [bmv2] [I] [thread 155412] qtime=547, timediff=1328
+[13:06:51.348] [bmv2] [I] [thread 155412] qtime=153, timediff=885
+[13:06:52.350] [bmv2] [I] [thread 155412] qtime=199, timediff=1023
+[13:06:53.358] [bmv2] [I] [thread 155412] qtime=158, timediff=795
+[13:06:54.359] [bmv2] [I] [thread 155412] qtime=111, timediff=967
+[13:06:55.358] [bmv2] [I] [thread 155412] qtime=155, timediff=802
+[13:06:56.358] [bmv2] [I] [thread 155412] qtime=183, timediff=912
+[13:06:57.368] [bmv2] [I] [thread 155412] qtime=117, timediff=553
+[13:06:58.362] [bmv2] [I] [thread 155412] qtime=171, timediff=1261
+[13:06:59.379] [bmv2] [I] [thread 155412] qtime=212, timediff=1134
+[13:07:00.378] [bmv2] [I] [thread 155412] qtime=269, timediff=623
+[13:07:01.378] [bmv2] [I] [thread 155412] qtime=125, timediff=1127
+[13:07:02.370] [bmv2] [I] [thread 155412] qtime=130, timediff=814
+[13:07:03.369] [bmv2] [I] [thread 155412] qtime=89, timediff=526
+[13:07:04.380] [bmv2] [I] [thread 155412] qtime=184, timediff=1339
+[13:07:05.388] [bmv2] [I] [thread 155412] qtime=145, timediff=843
+[13:07:06.320] [bmv2] [I] [thread 155412] qtime=546, timediff=1188
+[13:07:07.391] [bmv2] [I] [thread 155412] qtime=142, timediff=966
+[13:07:08.388] [bmv2] [I] [thread 155412] qtime=144, timediff=981
+[13:07:09.321] [bmv2] [I] [thread 155412] qtime=165, timediff=916
+[13:07:10.389] [bmv2] [I] [thread 155412] qtime=161, timediff=825
+[13:07:11.390] [bmv2] [I] [thread 155412] qtime=161, timediff=813
+[13:07:12.398] [bmv2] [I] [thread 155412] qtime=116, timediff=841
+[13:07:13.399] [bmv2] [I] [thread 155412] qtime=291, timediff=1250
+[13:07:14.358] [bmv2] [I] [thread 155412] qtime=166, timediff=1058
+[13:07:14.399] [bmv2] [I] [thread 155412] qtime=635, timediff=1825
+[13:07:15.396] [bmv2] [I] [thread 155412] qtime=239, timediff=976
+[13:07:16.411] [bmv2] [I] [thread 155412] qtime=103, timediff=895
+[13:07:17.409] [bmv2] [I] [thread 155412] qtime=190, timediff=764
+[13:07:17.580] [bmv2] [I] [thread 155412] qtime=131, timediff=1055
+[13:07:18.409] [bmv2] [I] [thread 155412] qtime=1037, timediff=1963
+[13:07:19.400] [bmv2] [I] [thread 155412] qtime=207, timediff=1131
+[13:07:20.411] [bmv2] [I] [thread 155412] qtime=1026, timediff=2459
+[13:07:21.409] [bmv2] [I] [thread 155412] qtime=139, timediff=1084
+[13:07:22.411] [bmv2] [I] [thread 155412] qtime=217, timediff=1601
+[13:07:23.418] [bmv2] [I] [thread 155412] qtime=156, timediff=733
+[13:07:24.428] [bmv2] [I] [thread 155412] qtime=131, timediff=757
+[13:07:25.418] [bmv2] [I] [thread 155412] qtime=153, timediff=916
+[13:07:26.429] [bmv2] [I] [thread 155412] qtime=206, timediff=1082
+[13:07:27.430] [bmv2] [I] [thread 155412] qtime=381, timediff=1928
+[13:07:28.429] [bmv2] [I] [thread 155412] qtime=165, timediff=928
+[13:07:29.428] [bmv2] [I] [thread 155412] qtime=132, timediff=817
+[13:07:30.445] [bmv2] [I] [thread 155412] qtime=235, timediff=3934
+[13:07:31.438] [bmv2] [I] [thread 155412] qtime=137, timediff=729
+[13:07:32.430] [bmv2] [I] [thread 155412] qtime=135, timediff=891
+[13:07:33.438] [bmv2] [I] [thread 155412] qtime=126, timediff=1047
+[13:07:34.439] [bmv2] [I] [thread 155412] qtime=444, timediff=1451
+[13:07:35.438] [bmv2] [I] [thread 155412] qtime=130, timediff=920
+[13:07:36.438] [bmv2] [I] [thread 155412] qtime=100, timediff=613
+[13:07:37.435] [bmv2] [I] [thread 155412] qtime=136, timediff=752
+[13:07:37.913] [bmv2] [I] [thread 155412] qtime=157, timediff=1028
+[13:07:38.449] [bmv2] [I] [thread 155412] qtime=190, timediff=911
+[13:07:39.448] [bmv2] [I] [thread 155412] qtime=144, timediff=862
+[13:07:40.446] [bmv2] [I] [thread 155412] qtime=147, timediff=586
+[13:07:41.450] [bmv2] [I] [thread 155412] qtime=223, timediff=961
+[13:07:42.451] [bmv2] [I] [thread 155412] qtime=104, timediff=1299
+[13:07:43.451] [bmv2] [I] [thread 155412] qtime=161, timediff=1044
+[13:07:44.458] [bmv2] [I] [thread 155412] qtime=111, timediff=735
+[13:07:45.449] [bmv2] [I] [thread 155412] qtime=146, timediff=889
+[13:07:46.459] [bmv2] [I] [thread 155412] qtime=256, timediff=1132
+[13:07:47.459] [bmv2] [I] [thread 155412] qtime=241, timediff=1365
+[13:07:48.468] [bmv2] [I] [thread 155412] qtime=239, timediff=904
+[13:07:49.468] [bmv2] [I] [thread 155412] qtime=158, timediff=711
+[13:07:50.469] [bmv2] [I] [thread 155412] qtime=181, timediff=970
+[13:07:51.461] [bmv2] [I] [thread 155412] qtime=160, timediff=1085
+[13:07:52.467] [bmv2] [I] [thread 155412] qtime=113, timediff=756
+[13:07:53.478] [bmv2] [I] [thread 155412] qtime=189, timediff=1181
+[13:07:54.549] [bmv2] [I] [thread 155412] qtime=183, timediff=1247
+[13:07:55.478] [bmv2] [I] [thread 155412] qtime=31, timediff=424
+[13:07:56.470] [bmv2] [I] [thread 155412] qtime=38, timediff=708
+[13:07:57.469] [bmv2] [I] [thread 155412] qtime=25, timediff=457
+[13:07:58.470] [bmv2] [I] [thread 155412] qtime=35, timediff=1211
+[13:07:59.481] [bmv2] [I] [thread 155412] qtime=34, timediff=532
+[13:08:00.488] [bmv2] [I] [thread 155412] qtime=40, timediff=913
+[13:08:01.490] [bmv2] [I] [thread 155412] qtime=374, timediff=2295
+[13:08:02.237] [bmv2] [I] [thread 155412] qtime=1332, timediff=15551
+[13:08:02.501] [bmv2] [I] [thread 155412] qtime=170, timediff=918
+[13:08:03.492] [bmv2] [I] [thread 155412] qtime=339, timediff=1602
+[13:08:04.490] [bmv2] [I] [thread 155412] qtime=157, timediff=470
+[13:08:05.493] [bmv2] [I] [thread 155412] qtime=142, timediff=1145
+[13:08:06.500] [bmv2] [I] [thread 155412] qtime=121, timediff=1093
+[13:08:06.730] [bmv2] [I] [thread 155412] qtime=91, timediff=453
+[13:08:07.511] [bmv2] [I] [thread 155412] qtime=208, timediff=1289
+[13:08:08.499] [bmv2] [I] [thread 155412] qtime=214, timediff=1670
+[13:08:09.511] [bmv2] [I] [thread 155412] qtime=148, timediff=918
+[13:08:10.509] [bmv2] [I] [thread 155412] qtime=163, timediff=1073
+[13:08:11.501] [bmv2] [I] [thread 155412] qtime=161, timediff=967
+[13:08:12.508] [bmv2] [I] [thread 155412] qtime=155, timediff=899
+[13:08:13.504] [bmv2] [I] [thread 155412] qtime=250, timediff=905
+[13:08:14.508] [bmv2] [I] [thread 155412] qtime=148, timediff=1013
+[13:08:15.504] [bmv2] [I] [thread 155412] qtime=111, timediff=744
+[13:08:16.520] [bmv2] [I] [thread 155412] qtime=295, timediff=1315
+[13:08:17.518] [bmv2] [I] [thread 155412] qtime=171, timediff=991
+[13:08:18.520] [bmv2] [I] [thread 155412] qtime=38, timediff=701
+[13:08:19.520] [bmv2] [I] [thread 155412] qtime=252, timediff=1057
+[13:08:20.515] [bmv2] [I] [thread 155412] qtime=108, timediff=945
+[13:08:21.532] [bmv2] [I] [thread 155412] qtime=524, timediff=1357
+[13:08:22.529] [bmv2] [I] [thread 155412] qtime=152, timediff=877
+[13:08:23.528] [bmv2] [I] [thread 155412] qtime=269, timediff=977
+[13:08:24.530] [bmv2] [I] [thread 155412] qtime=215, timediff=945
+[13:08:25.525] [bmv2] [I] [thread 155412] qtime=302, timediff=658
+[13:08:25.538] [bmv2] [I] [thread 155412] qtime=125, timediff=837
+[13:08:26.538] [bmv2] [I] [thread 155412] qtime=162, timediff=1072
+[13:08:27.530] [bmv2] [I] [thread 155412] qtime=141, timediff=992
+[13:08:28.538] [bmv2] [I] [thread 155412] qtime=136, timediff=615
+[13:08:29.530] [bmv2] [I] [thread 155412] qtime=134, timediff=998
+[13:08:30.548] [bmv2] [I] [thread 155412] qtime=227, timediff=971
+[13:08:31.536] [bmv2] [I] [thread 155412] qtime=245, timediff=775
+[13:08:32.540] [bmv2] [I] [thread 155412] qtime=134, timediff=663
+[13:08:33.542] [bmv2] [I] [thread 155412] qtime=286, timediff=978
+[13:08:34.558] [bmv2] [I] [thread 155412] qtime=126, timediff=766
+[13:08:35.550] [bmv2] [I] [thread 155412] qtime=165, timediff=875
+[13:08:36.558] [bmv2] [I] [thread 155412] qtime=174, timediff=936
+[13:08:37.550] [bmv2] [I] [thread 155412] qtime=154, timediff=1333
+[13:08:38.558] [bmv2] [I] [thread 155412] qtime=168, timediff=944
+[13:08:39.552] [bmv2] [I] [thread 155412] qtime=132, timediff=806
+[13:08:40.569] [bmv2] [I] [thread 155412] qtime=497, timediff=1191
+[13:08:41.561] [bmv2] [I] [thread 155412] qtime=167, timediff=1196
+[13:08:42.569] [bmv2] [I] [thread 155412] qtime=194, timediff=2094
+[13:08:43.561] [bmv2] [I] [thread 155412] qtime=182, timediff=1566
+[13:08:44.568] [bmv2] [I] [thread 155412] qtime=188, timediff=1213
+[13:08:45.568] [bmv2] [I] [thread 155412] qtime=197, timediff=943
+[13:08:46.580] [bmv2] [I] [thread 155412] qtime=267, timediff=1671
+[13:08:47.578] [bmv2] [I] [thread 155412] qtime=118, timediff=1102
+[13:08:48.567] [bmv2] [I] [thread 155412] qtime=133, timediff=965
+[13:08:48.578] [bmv2] [I] [thread 155412] qtime=141, timediff=711
+[13:08:49.570] [bmv2] [I] [thread 155412] qtime=228, timediff=958
+[13:08:50.570] [bmv2] [I] [thread 155412] qtime=124, timediff=1134
+[13:08:51.574] [bmv2] [I] [thread 155412] qtime=111, timediff=1418
+[13:08:52.578] [bmv2] [I] [thread 155412] qtime=96, timediff=1079
+[13:08:53.581] [bmv2] [I] [thread 155412] qtime=103, timediff=897
+[13:08:54.580] [bmv2] [I] [thread 155412] qtime=191, timediff=918
+[13:08:55.588] [bmv2] [I] [thread 155412] qtime=107, timediff=1061
+[13:08:55.628] [bmv2] [I] [thread 155412] qtime=223, timediff=1748
+[13:08:56.591] [bmv2] [I] [thread 155412] qtime=283, timediff=1510
+[13:08:57.592] [bmv2] [I] [thread 155412] qtime=412, timediff=1764
+[13:08:58.585] [bmv2] [I] [thread 155412] qtime=101, timediff=605
+[13:08:59.599] [bmv2] [I] [thread 155412] qtime=178, timediff=931
+[13:09:00.599] [bmv2] [I] [thread 155412] qtime=135, timediff=1135
+[13:09:01.599] [bmv2] [I] [thread 155412] qtime=150, timediff=1149
+[13:09:02.599] [bmv2] [I] [thread 155412] qtime=158, timediff=1063
+[13:09:03.609] [bmv2] [I] [thread 155412] qtime=240, timediff=1100
+[13:09:04.601] [bmv2] [I] [thread 155412] qtime=139, timediff=912
+[13:09:05.605] [bmv2] [I] [thread 155412] qtime=3045, timediff=5360
+[13:09:06.609] [bmv2] [I] [thread 155412] qtime=520, timediff=2110
+[13:09:07.602] [bmv2] [I] [thread 155412] qtime=163, timediff=1417
+[13:09:08.618] [bmv2] [I] [thread 155412] qtime=139, timediff=1105
+[13:09:09.621] [bmv2] [I] [thread 155412] qtime=698, timediff=3063
+[13:09:10.612] [bmv2] [I] [thread 155412] qtime=443, timediff=1413
+[13:09:11.621] [bmv2] [I] [thread 155412] qtime=141, timediff=1020
+[13:09:12.118] [bmv2] [I] [thread 155412] qtime=346, timediff=912
+[13:09:12.619] [bmv2] [I] [thread 155412] qtime=395, timediff=1141
+[13:09:13.621] [bmv2] [I] [thread 155412] qtime=92, timediff=635
+[13:09:14.620] [bmv2] [I] [thread 155412] qtime=190, timediff=940
+[13:09:15.628] [bmv2] [I] [thread 155412] qtime=128, timediff=766
+[13:09:16.629] [bmv2] [I] [thread 155412] qtime=115, timediff=792
+[13:09:17.622] [bmv2] [I] [thread 155412] qtime=453, timediff=1050
+[13:09:18.629] [bmv2] [I] [thread 155412] qtime=208, timediff=1979
+[13:09:19.639] [bmv2] [I] [thread 155412] qtime=206, timediff=1247
+[13:09:20.639] [bmv2] [I] [thread 155412] qtime=113, timediff=1103
+[13:09:21.628] [bmv2] [I] [thread 155412] qtime=172, timediff=857
+[13:09:22.640] [bmv2] [I] [thread 155412] qtime=371, timediff=1209
+[13:09:23.632] [bmv2] [I] [thread 155412] qtime=133, timediff=1062
+[13:09:24.649] [bmv2] [I] [thread 155412] qtime=148, timediff=1093
+[13:09:25.648] [bmv2] [I] [thread 155412] qtime=126, timediff=1000
+[13:09:26.649] [bmv2] [I] [thread 155412] qtime=229, timediff=1627
+[13:09:27.659] [bmv2] [I] [thread 155412] qtime=185, timediff=1217
+[13:09:28.648] [bmv2] [I] [thread 155412] qtime=158, timediff=846
+[13:09:29.659] [bmv2] [I] [thread 155412] qtime=180, timediff=963
+[13:09:30.659] [bmv2] [I] [thread 155412] qtime=144, timediff=1060
+[13:09:31.658] [bmv2] [I] [thread 155412] qtime=173, timediff=857
+[13:09:32.656] [bmv2] [I] [thread 155412] qtime=161, timediff=1179
+[13:09:33.659] [bmv2] [I] [thread 155412] qtime=182, timediff=1376
+[13:09:34.659] [bmv2] [I] [thread 155412] qtime=158, timediff=1050
+[13:09:35.656] [bmv2] [I] [thread 155412] qtime=274, timediff=1112
+[13:09:35.670] [bmv2] [I] [thread 155412] qtime=97, timediff=461
+[13:09:36.668] [bmv2] [I] [thread 155412] qtime=120, timediff=880
+[13:09:37.670] [bmv2] [I] [thread 155412] qtime=94, timediff=903
+[13:09:38.678] [bmv2] [I] [thread 155412] qtime=97, timediff=857
+[13:09:39.678] [bmv2] [I] [thread 155412] qtime=196, timediff=1166
+[13:09:40.679] [bmv2] [I] [thread 155412] qtime=99, timediff=891
+[13:09:41.679] [bmv2] [I] [thread 155412] qtime=103, timediff=774
+[13:09:42.677] [bmv2] [I] [thread 155412] qtime=136, timediff=879
+[13:09:43.689] [bmv2] [I] [thread 155412] qtime=135, timediff=1665
+[13:09:44.682] [bmv2] [I] [thread 155412] qtime=168, timediff=1038
+[13:09:44.780] [bmv2] [I] [thread 155412] qtime=176, timediff=1085
+[13:09:45.699] [bmv2] [I] [thread 155412] qtime=185, timediff=972
+[13:09:46.691] [bmv2] [I] [thread 155412] qtime=193, timediff=3140
+[13:09:47.687] [bmv2] [I] [thread 155412] qtime=298, timediff=1025
+[13:09:48.700] [bmv2] [I] [thread 155412] qtime=353, timediff=1259
+[13:09:49.699] [bmv2] [I] [thread 155412] qtime=365, timediff=1267
+[13:09:50.701] [bmv2] [I] [thread 155412] qtime=221, timediff=1724
+[13:09:51.709] [bmv2] [I] [thread 155412] qtime=180, timediff=811
+[13:09:52.708] [bmv2] [I] [thread 155412] qtime=164, timediff=1078
+[13:09:53.695] [bmv2] [I] [thread 155412] qtime=220, timediff=986
+[13:09:54.708] [bmv2] [I] [thread 155412] qtime=32, timediff=526
+[13:09:55.709] [bmv2] [I] [thread 155412] qtime=37, timediff=1221
+[13:09:56.707] [bmv2] [I] [thread 155412] qtime=29, timediff=500
+[13:09:57.718] [bmv2] [I] [thread 155412] qtime=40, timediff=910
+[13:09:58.708] [bmv2] [I] [thread 155412] qtime=293, timediff=1171
+[13:09:58.713] [bmv2] [I] [thread 155412] qtime=111, timediff=3125
+[13:09:59.719] [bmv2] [I] [thread 155412] qtime=183, timediff=1098
+[13:10:00.719] [bmv2] [I] [thread 155412] qtime=261, timediff=1198
+[13:10:01.765] [bmv2] [I] [thread 155412] qtime=941, timediff=16190
+[13:10:02.728] [bmv2] [I] [thread 155412] qtime=146, timediff=990
+[13:10:03.723] [bmv2] [I] [thread 155412] qtime=703, timediff=2049
+[13:10:04.729] [bmv2] [I] [thread 155412] qtime=136, timediff=805
+[13:10:05.731] [bmv2] [I] [thread 155412] qtime=172, timediff=913
+[13:10:06.728] [bmv2] [I] [thread 155412] qtime=167, timediff=1261
+[13:10:07.730] [bmv2] [I] [thread 155412] qtime=183, timediff=1267
+[13:10:08.730] [bmv2] [I] [thread 155412] qtime=49, timediff=810
+[13:10:09.738] [bmv2] [I] [thread 155412] qtime=147, timediff=1076
+[13:10:10.749] [bmv2] [I] [thread 155412] qtime=273, timediff=1196
+[13:10:11.742] [bmv2] [I] [thread 155412] qtime=232, timediff=2426
+[13:10:12.750] [bmv2] [I] [thread 155412] qtime=1319, timediff=2167
+[13:10:13.735] [bmv2] [I] [thread 155412] qtime=182, timediff=912
+[13:10:14.738] [bmv2] [I] [thread 155412] qtime=43, timediff=851
+[13:10:15.741] [bmv2] [I] [thread 155412] qtime=40, timediff=1085
+[13:10:16.749] [bmv2] [I] [thread 155412] qtime=29, timediff=675
+[13:10:17.749] [bmv2] [I] [thread 155412] qtime=49, timediff=942
+[13:10:18.758] [bmv2] [I] [thread 155412] qtime=32, timediff=730
+[13:10:19.750] [bmv2] [I] [thread 155412] qtime=41, timediff=787
+[13:10:20.759] [bmv2] [I] [thread 155412] qtime=20, timediff=293
+[13:10:21.751] [bmv2] [I] [thread 155412] qtime=41, timediff=856
+[13:10:21.752] [bmv2] [I] [thread 155412] qtime=25, timediff=2813
+[13:10:22.769] [bmv2] [I] [thread 155412] qtime=40, timediff=757
+[13:10:23.755] [bmv2] [I] [thread 155412] qtime=24, timediff=426
+[13:10:24.759] [bmv2] [I] [thread 155412] qtime=33, timediff=448
+[13:10:25.768] [bmv2] [I] [thread 155412] qtime=140, timediff=1009
+[13:10:26.762] [bmv2] [I] [thread 155412] qtime=216, timediff=1014
+[13:10:27.768] [bmv2] [I] [thread 155412] qtime=136, timediff=866
+[13:10:28.771] [bmv2] [I] [thread 155412] qtime=152, timediff=1256
+[13:10:29.778] [bmv2] [I] [thread 155412] qtime=150, timediff=981
+[13:10:30.779] [bmv2] [I] [thread 155412] qtime=237, timediff=1265
+[13:10:31.772] [bmv2] [I] [thread 155412] qtime=268, timediff=937
+[13:10:32.779] [bmv2] [I] [thread 155412] qtime=203, timediff=1265
+[13:10:33.788] [bmv2] [I] [thread 155412] qtime=171, timediff=933
+[13:10:33.931] [bmv2] [I] [thread 155412] qtime=190, timediff=911
+[13:10:34.788] [bmv2] [I] [thread 155412] qtime=160, timediff=953
+[13:10:35.789] [bmv2] [I] [thread 155412] qtime=215, timediff=1069
+[13:10:36.794] [bmv2] [I] [thread 155412] qtime=184, timediff=5592
+[13:10:37.788] [bmv2] [I] [thread 155412] qtime=96, timediff=770
+[13:10:38.799] [bmv2] [I] [thread 155412] qtime=136, timediff=970
+[13:10:39.799] [bmv2] [I] [thread 155412] qtime=155, timediff=1635
+[13:10:40.798] [bmv2] [I] [thread 155412] qtime=232, timediff=903
+[13:10:41.799] [bmv2] [I] [thread 155412] qtime=618, timediff=1567
+[13:10:42.809] [bmv2] [I] [thread 155412] qtime=38, timediff=1404
+[13:10:43.800] [bmv2] [I] [thread 155412] qtime=206, timediff=500
+[13:10:44.810] [bmv2] [I] [thread 155412] qtime=31, timediff=585
+[13:10:45.301] [bmv2] [I] [thread 155412] qtime=53, timediff=1170
+[13:10:45.800] [bmv2] [I] [thread 155412] qtime=31, timediff=524
+[13:10:46.800] [bmv2] [I] [thread 155412] qtime=37, timediff=604
+[13:10:47.810] [bmv2] [I] [thread 155412] qtime=52, timediff=1137
+[13:10:48.807] [bmv2] [I] [thread 155412] qtime=39, timediff=641
+[13:10:49.819] [bmv2] [I] [thread 155412] qtime=48, timediff=1263
+[13:10:50.805] [bmv2] [I] [thread 155412] qtime=24, timediff=467
+[13:10:51.807] [bmv2] [I] [thread 155412] qtime=32, timediff=655
+[13:10:52.812] [bmv2] [I] [thread 155412] qtime=201, timediff=1014
+[13:10:53.830] [bmv2] [I] [thread 155412] qtime=34, timediff=635
+[13:10:54.820] [bmv2] [I] [thread 155412] qtime=27, timediff=450
+[13:10:55.821] [bmv2] [I] [thread 155412] qtime=161, timediff=1107
+[13:10:56.819] [bmv2] [I] [thread 155412] qtime=35, timediff=695
+[13:10:57.827] [bmv2] [I] [thread 155412] qtime=26, timediff=518
+[13:10:58.824] [bmv2] [I] [thread 155412] qtime=30, timediff=630
+[13:10:59.829] [bmv2] [I] [thread 155412] qtime=37, timediff=709
+[13:11:00.838] [bmv2] [I] [thread 155412] qtime=32, timediff=818
+[13:11:01.830] [bmv2] [I] [thread 155412] qtime=28, timediff=571
+[13:11:02.838] [bmv2] [I] [thread 155412] qtime=43, timediff=727
+[13:11:03.848] [bmv2] [I] [thread 155412] qtime=36, timediff=546
+[13:11:04.830] [bmv2] [I] [thread 155412] qtime=49, timediff=1084
+[13:11:05.833] [bmv2] [I] [thread 155412] qtime=25, timediff=669
+[13:11:06.849] [bmv2] [I] [thread 155412] qtime=27, timediff=615
+[13:11:07.849] [bmv2] [I] [thread 155412] qtime=33, timediff=529
+[13:11:08.841] [bmv2] [I] [thread 155412] qtime=157, timediff=1138
+[13:11:09.841] [bmv2] [I] [thread 155412] qtime=186, timediff=951
+[13:11:10.850] [bmv2] [I] [thread 155412] qtime=162, timediff=689
+[13:11:11.851] [bmv2] [I] [thread 155412] qtime=212, timediff=3252
+[13:11:12.858] [bmv2] [I] [thread 155412] qtime=175, timediff=932
+[13:11:13.858] [bmv2] [I] [thread 155412] qtime=321, timediff=862
+[13:11:14.869] [bmv2] [I] [thread 155412] qtime=152, timediff=1043
+[13:11:15.850] [bmv2] [I] [thread 155412] qtime=163, timediff=800
+[13:11:16.861] [bmv2] [I] [thread 155412] qtime=217, timediff=882
+[13:11:17.868] [bmv2] [I] [thread 155412] qtime=248, timediff=793
+[13:11:18.868] [bmv2] [I] [thread 155412] qtime=31, timediff=766
+[13:11:19.868] [bmv2] [I] [thread 155412] qtime=122, timediff=836
+[13:11:20.868] [bmv2] [I] [thread 155412] qtime=170, timediff=649
+[13:11:21.866] [bmv2] [I] [thread 155412] qtime=186, timediff=1824
+[13:11:22.872] [bmv2] [I] [thread 155412] qtime=177, timediff=1329
+[13:11:23.083] [bmv2] [I] [thread 155412] qtime=288, timediff=1112
+[13:11:23.879] [bmv2] [I] [thread 155412] qtime=182, timediff=1406
+[13:11:24.878] [bmv2] [I] [thread 155412] qtime=122, timediff=851
+[13:11:25.882] [bmv2] [I] [thread 155412] qtime=269, timediff=1247
+[13:11:26.888] [bmv2] [I] [thread 155412] qtime=193, timediff=868
+[13:11:27.879] [bmv2] [I] [thread 155412] qtime=349, timediff=1086
+[13:11:28.876] [bmv2] [I] [thread 155412] qtime=184, timediff=1031
+[13:11:29.882] [bmv2] [I] [thread 155412] qtime=157, timediff=905
+[13:11:30.888] [bmv2] [I] [thread 155412] qtime=30, timediff=548
+[13:11:31.382] [bmv2] [I] [thread 155412] qtime=151, timediff=555
+[13:11:31.888] [bmv2] [I] [thread 155412] qtime=226, timediff=691
+[13:11:32.888] [bmv2] [I] [thread 155412] qtime=158, timediff=1236
+[13:11:33.898] [bmv2] [I] [thread 155412] qtime=212, timediff=837
+[13:11:34.885] [bmv2] [I] [thread 155412] qtime=165, timediff=917
+[13:11:35.889] [bmv2] [I] [thread 155412] qtime=453, timediff=1466
+[13:11:36.884] [bmv2] [I] [thread 155412] qtime=400, timediff=2841
+[13:11:37.898] [bmv2] [I] [thread 155412] qtime=35, timediff=736
+[13:11:38.893] [bmv2] [I] [thread 155412] qtime=76, timediff=1442
+[13:11:39.885] [bmv2] [I] [thread 155412] qtime=44, timediff=835
+[13:11:40.892] [bmv2] [I] [thread 155412] qtime=73, timediff=1238
+[13:11:41.891] [bmv2] [I] [thread 155412] qtime=40, timediff=918
+[13:11:42.898] [bmv2] [I] [thread 155412] qtime=134, timediff=975
+[13:11:43.899] [bmv2] [I] [thread 155412] qtime=687, timediff=1594
+[13:11:44.895] [bmv2] [I] [thread 155412] qtime=217, timediff=1239
+[13:11:45.899] [bmv2] [I] [thread 155412] qtime=156, timediff=931
+[13:11:46.891] [bmv2] [I] [thread 155412] qtime=208, timediff=1735
+[13:11:47.908] [bmv2] [I] [thread 155412] qtime=33, timediff=659
+[13:11:48.901] [bmv2] [I] [thread 155412] qtime=61, timediff=841
+[13:11:49.913] [bmv2] [I] [thread 155412] qtime=242, timediff=1890
+[13:11:50.901] [bmv2] [I] [thread 155412] qtime=177, timediff=1351
+[13:11:51.910] [bmv2] [I] [thread 155412] qtime=213, timediff=2183
+[13:11:52.901] [bmv2] [I] [thread 155412] qtime=224, timediff=1245
+[13:11:53.908] [bmv2] [I] [thread 155412] qtime=165, timediff=818
+[13:11:54.909] [bmv2] [I] [thread 155412] qtime=445, timediff=1691
+[13:11:55.910] [bmv2] [I] [thread 155412] qtime=332, timediff=1486
+[13:11:56.902] [bmv2] [I] [thread 155412] qtime=142, timediff=901
+[13:11:57.901] [bmv2] [I] [thread 155412] qtime=273, timediff=972
+[13:11:58.908] [bmv2] [I] [thread 155412] qtime=169, timediff=944
+[13:11:59.906] [bmv2] [I] [thread 155412] qtime=172, timediff=1448
+[13:11:59.948] [bmv2] [I] [thread 155412] qtime=284, timediff=1296
+[13:12:00.910] [bmv2] [I] [thread 155412] qtime=172, timediff=1056
+[13:12:01.911] [bmv2] [I] [thread 155412] qtime=224, timediff=1026
+[13:12:02.909] [bmv2] [I] [thread 155412] qtime=253, timediff=886
+[13:12:03.919] [bmv2] [I] [thread 155412] qtime=134, timediff=1308
+[13:12:04.918] [bmv2] [I] [thread 155412] qtime=144, timediff=971
+[13:12:05.920] [bmv2] [I] [thread 155412] qtime=233, timediff=1893
+[13:12:06.911] [bmv2] [I] [thread 155412] qtime=198, timediff=759
+[13:12:07.919] [bmv2] [I] [thread 155412] qtime=189, timediff=1213
+[13:12:08.918] [bmv2] [I] [thread 155412] qtime=186, timediff=967
+[13:12:09.919] [bmv2] [I] [thread 155412] qtime=179, timediff=1508
+[13:12:10.918] [bmv2] [I] [thread 155412] qtime=138, timediff=868
+[13:12:11.929] [bmv2] [I] [thread 155412] qtime=408, timediff=1424
+[13:12:12.915] [bmv2] [I] [thread 155412] qtime=110, timediff=868
+[13:12:13.929] [bmv2] [I] [thread 155412] qtime=219, timediff=1049
+[13:12:14.929] [bmv2] [I] [thread 155412] qtime=157, timediff=1351
+[13:12:15.918] [bmv2] [I] [thread 155412] qtime=271, timediff=1335
+[13:12:15.925] [bmv2] [I] [thread 155412] qtime=131, timediff=660
+[13:12:16.929] [bmv2] [I] [thread 155412] qtime=179, timediff=903
+[13:12:17.920] [bmv2] [I] [thread 155412] qtime=205, timediff=1045
+[13:12:18.922] [bmv2] [I] [thread 155412] qtime=246, timediff=1918
+[13:12:19.920] [bmv2] [I] [thread 155412] qtime=169, timediff=1011
+[13:12:20.930] [bmv2] [I] [thread 155412] qtime=103, timediff=1132
+[13:12:21.930] [bmv2] [I] [thread 155412] qtime=121, timediff=1687
+[13:12:22.950] [bmv2] [I] [thread 155412] qtime=406, timediff=11719
+[13:12:23.938] [bmv2] [I] [thread 155412] qtime=139, timediff=1124
+[13:12:24.939] [bmv2] [I] [thread 155412] qtime=355, timediff=931
+[13:12:25.938] [bmv2] [I] [thread 155412] qtime=153, timediff=885
+[13:12:26.938] [bmv2] [I] [thread 155412] qtime=186, timediff=997
+[13:12:27.930] [bmv2] [I] [thread 155412] qtime=32, timediff=853
+[13:12:28.930] [bmv2] [I] [thread 155412] qtime=37, timediff=657
+[13:12:29.938] [bmv2] [I] [thread 155412] qtime=38, timediff=625
+[13:12:30.938] [bmv2] [I] [thread 155412] qtime=33, timediff=560
+[13:12:31.943] [bmv2] [I] [thread 155412] qtime=78, timediff=1228
+[13:12:32.939] [bmv2] [I] [thread 155412] qtime=120, timediff=2021
+[13:12:33.948] [bmv2] [I] [thread 155412] qtime=29, timediff=604
+[13:12:34.949] [bmv2] [I] [thread 155412] qtime=25, timediff=463
+[13:12:35.950] [bmv2] [I] [thread 155412] qtime=36, timediff=512
+[13:12:36.043] [bmv2] [I] [thread 155412] qtime=34, timediff=555
+[13:12:36.940] [bmv2] [I] [thread 155412] qtime=42, timediff=714
+[13:12:37.942] [bmv2] [I] [thread 155412] qtime=308, timediff=1222
+[13:12:38.942] [bmv2] [I] [thread 155412] qtime=200, timediff=969
+[13:12:39.943] [bmv2] [I] [thread 155412] qtime=436, timediff=1767
+[13:12:40.959] [bmv2] [I] [thread 155412] qtime=182, timediff=1086
+[13:12:41.948] [bmv2] [I] [thread 155412] qtime=143, timediff=1128
+[13:12:42.943] [bmv2] [I] [thread 155412] qtime=356, timediff=1106
+[13:12:43.960] [bmv2] [I] [thread 155412] qtime=244, timediff=1491
+[13:12:44.959] [bmv2] [I] [thread 155412] qtime=104, timediff=688
+[13:12:45.958] [bmv2] [I] [thread 155412] qtime=144, timediff=856
+[13:12:46.951] [bmv2] [I] [thread 155412] qtime=220, timediff=1438
+[13:12:47.899] [bmv2] [I] [thread 155412] qtime=202, timediff=1128
+[13:12:48.958] [bmv2] [I] [thread 155412] qtime=194, timediff=1060
+[13:12:49.958] [bmv2] [I] [thread 155412] qtime=137, timediff=1070
+[13:12:50.956] [bmv2] [I] [thread 155412] qtime=173, timediff=1144
+[13:12:51.951] [bmv2] [I] [thread 155412] qtime=219, timediff=1050
+[13:12:52.971] [bmv2] [I] [thread 155412] qtime=219, timediff=837
+[13:12:53.959] [bmv2] [I] [thread 155412] qtime=152, timediff=1255
+[13:12:54.970] [bmv2] [I] [thread 155412] qtime=242, timediff=1597
+[13:12:55.956] [bmv2] [I] [thread 155412] qtime=198, timediff=1331
+[13:12:56.900] [bmv2] [I] [thread 155412] qtime=167, timediff=1128
+[13:12:57.968] [bmv2] [I] [thread 155412] qtime=283, timediff=1085
+[13:12:58.962] [bmv2] [I] [thread 155412] qtime=300, timediff=1276
+[13:12:59.970] [bmv2] [I] [thread 155412] qtime=149, timediff=1868
+[13:13:00.961] [bmv2] [I] [thread 155412] qtime=147, timediff=1210
+[13:13:00.982] [bmv2] [I] [thread 155412] qtime=305, timediff=832
+[13:13:01.969] [bmv2] [I] [thread 155412] qtime=181, timediff=1175
+[13:13:02.960] [bmv2] [I] [thread 155412] qtime=113, timediff=931
+[13:13:03.971] [bmv2] [I] [thread 155412] qtime=223, timediff=2077
+[13:13:04.966] [bmv2] [I] [thread 155412] qtime=153, timediff=1124
+[13:13:05.969] [bmv2] [I] [thread 155412] qtime=204, timediff=1065
+[13:13:06.969] [bmv2] [I] [thread 155412] qtime=169, timediff=971
+[13:13:07.980] [bmv2] [I] [thread 155412] qtime=189, timediff=1007
+[13:13:08.972] [bmv2] [I] [thread 155412] qtime=141, timediff=1206
+[13:13:09.965] [bmv2] [I] [thread 155412] qtime=190, timediff=673
+[13:13:10.983] [bmv2] [I] [thread 155412] qtime=399, timediff=1595
+[13:13:11.972] [bmv2] [I] [thread 155412] qtime=227, timediff=1355
+[13:13:12.979] [bmv2] [I] [thread 155412] qtime=153, timediff=1068
+[13:13:13.162] [bmv2] [I] [thread 155412] qtime=124, timediff=466
+[13:13:13.988] [bmv2] [I] [thread 155412] qtime=144, timediff=745
+[13:13:15.029] [bmv2] [I] [thread 155412] qtime=192, timediff=1142
+[13:13:15.989] [bmv2] [I] [thread 155412] qtime=85, timediff=701
+[13:13:16.979] [bmv2] [I] [thread 155412] qtime=113, timediff=793
+[13:13:17.988] [bmv2] [I] [thread 155412] qtime=33, timediff=730
+[13:13:18.979] [bmv2] [I] [thread 155412] qtime=28, timediff=614
+[13:13:19.990] [bmv2] [I] [thread 155412] qtime=101, timediff=1476
+[13:13:20.980] [bmv2] [I] [thread 155412] qtime=207, timediff=1074
+[13:13:21.990] [bmv2] [I] [thread 155412] qtime=243, timediff=1257
+[13:13:22.989] [bmv2] [I] [thread 155412] qtime=231, timediff=989
+[13:13:23.989] [bmv2] [I] [thread 155412] qtime=362, timediff=958
+[13:13:25.032] [bmv2] [I] [thread 155412] qtime=322, timediff=941
+[13:13:25.989] [bmv2] [I] [thread 155412] qtime=245, timediff=1275
+[13:13:26.989] [bmv2] [I] [thread 155412] qtime=202, timediff=1267
+[13:13:27.987] [bmv2] [I] [thread 155412] qtime=230, timediff=2266
+[13:13:28.999] [bmv2] [I] [thread 155412] qtime=187, timediff=884
+[13:13:29.991] [bmv2] [I] [thread 155412] qtime=170, timediff=1367
+[13:13:30.999] [bmv2] [I] [thread 155412] qtime=188, timediff=865
+[13:13:31.993] [bmv2] [I] [thread 155412] qtime=348, timediff=2056
+[13:13:33.003] [bmv2] [I] [thread 155412] qtime=655, timediff=1995
+[13:13:33.997] [bmv2] [I] [thread 155412] qtime=239, timediff=905
+[13:13:35.009] [bmv2] [I] [thread 155412] qtime=388, timediff=977
+[13:13:36.001] [bmv2] [I] [thread 155412] qtime=232, timediff=612
+[13:13:37.003] [bmv2] [I] [thread 155412] qtime=542, timediff=1144
+[13:13:38.009] [bmv2] [I] [thread 155412] qtime=239, timediff=650
+[13:13:39.005] [bmv2] [I] [thread 155412] qtime=221, timediff=940
+[13:13:40.019] [bmv2] [I] [thread 155412] qtime=252, timediff=937
+[13:13:41.020] [bmv2] [I] [thread 155412] qtime=271, timediff=1071
+[13:13:42.012] [bmv2] [I] [thread 155412] qtime=227, timediff=1121
+[13:13:43.029] [bmv2] [I] [thread 155412] qtime=211, timediff=607
+[13:13:44.028] [bmv2] [I] [thread 155412] qtime=186, timediff=744
+[13:13:45.029] [bmv2] [I] [thread 155412] qtime=208, timediff=908
+[13:13:46.029] [bmv2] [I] [thread 155412] qtime=240, timediff=737
+[13:13:46.038] [bmv2] [I] [thread 155412] qtime=253, timediff=629
+[13:13:47.028] [bmv2] [I] [thread 155412] qtime=150, timediff=713
+[13:13:48.029] [bmv2] [I] [thread 155412] qtime=250, timediff=680
+[13:13:49.039] [bmv2] [I] [thread 155412] qtime=173, timediff=748
+[13:13:50.030] [bmv2] [I] [thread 155412] qtime=178, timediff=822
+[13:13:50.283] [bmv2] [I] [thread 155412] qtime=229, timediff=962
+[13:13:51.039] [bmv2] [I] [thread 155412] qtime=217, timediff=1420
+[13:13:52.043] [bmv2] [I] [thread 155412] qtime=423, timediff=2463
+[13:13:53.040] [bmv2] [I] [thread 155412] qtime=241, timediff=1423
+[13:13:54.049] [bmv2] [I] [thread 155412] qtime=181, timediff=1287
+[13:13:55.042] [bmv2] [I] [thread 155412] qtime=176, timediff=681
+[13:13:56.049] [bmv2] [I] [thread 155412] qtime=138, timediff=794
+[13:13:57.049] [bmv2] [I] [thread 155412] qtime=185, timediff=1080
+[13:13:58.048] [bmv2] [I] [thread 155412] qtime=140, timediff=957
+[13:13:59.050] [bmv2] [I] [thread 155412] qtime=150, timediff=1056
+[13:14:00.046] [bmv2] [I] [thread 155412] qtime=280, timediff=836
+[13:14:01.051] [bmv2] [I] [thread 155412] qtime=258, timediff=1251
+[13:14:02.069] [bmv2] [I] [thread 155412] qtime=171, timediff=961
+[13:14:03.107] [bmv2] [I] [thread 155412] qtime=304, timediff=46228
+[13:14:04.058] [bmv2] [I] [thread 155412] qtime=259, timediff=1022
+[13:14:05.064] [bmv2] [I] [thread 155412] qtime=271, timediff=1268
+[13:14:06.061] [bmv2] [I] [thread 155412] qtime=214, timediff=802
+[13:14:07.061] [bmv2] [I] [thread 155412] qtime=328, timediff=1245
+[13:14:08.079] [bmv2] [I] [thread 155412] qtime=247, timediff=1052
+[13:14:09.080] [bmv2] [I] [thread 155412] qtime=502, timediff=1770
+[13:14:10.080] [bmv2] [I] [thread 155412] qtime=220, timediff=1456
+[13:14:11.071] [bmv2] [I] [thread 155412] qtime=182, timediff=820
+[13:14:12.083] [bmv2] [I] [thread 155412] qtime=195, timediff=1841
+[13:14:13.078] [bmv2] [I] [thread 155412] qtime=132, timediff=1027
+[13:14:14.091] [bmv2] [I] [thread 155412] qtime=438, timediff=1549
+[13:14:15.089] [bmv2] [I] [thread 155412] qtime=148, timediff=969
+[13:14:16.091] [bmv2] [I] [thread 155412] qtime=252, timediff=1484
+[13:14:17.091] [bmv2] [I] [thread 155412] qtime=169, timediff=1280
+[13:14:18.090] [bmv2] [I] [thread 155412] qtime=226, timediff=1243
+[13:14:19.091] [bmv2] [I] [thread 155412] qtime=166, timediff=1164
+[13:14:20.101] [bmv2] [I] [thread 155412] qtime=258, timediff=1441
+[13:14:21.039] [bmv2] [I] [thread 155412] qtime=166, timediff=940
+[13:14:22.097] [bmv2] [I] [thread 155412] qtime=238, timediff=840
+[13:14:23.099] [bmv2] [I] [thread 155412] qtime=431, timediff=1064
+[13:14:24.109] [bmv2] [I] [thread 155412] qtime=36, timediff=1111
+[13:14:25.098] [bmv2] [I] [thread 155412] qtime=33, timediff=825
+[13:14:26.109] [bmv2] [I] [thread 155412] qtime=30, timediff=896
+[13:14:27.099] [bmv2] [I] [thread 155412] qtime=47, timediff=1002
+[13:14:27.149] [bmv2] [I] [thread 155412] qtime=247, timediff=2326
+[13:14:28.101] [bmv2] [I] [thread 155412] qtime=159, timediff=864
+[13:14:29.109] [bmv2] [I] [thread 155412] qtime=456, timediff=1503
+[13:14:30.101] [bmv2] [I] [thread 155412] qtime=455, timediff=1364
+[13:14:31.119] [bmv2] [I] [thread 155412] qtime=254, timediff=957
+[13:14:31.606] [bmv2] [I] [thread 155412] qtime=223, timediff=994
+[13:14:32.118] [bmv2] [I] [thread 155412] qtime=193, timediff=981
+[13:14:33.113] [bmv2] [I] [thread 155412] qtime=267, timediff=1623
+[13:14:34.119] [bmv2] [I] [thread 155412] qtime=144, timediff=852
+[13:14:35.119] [bmv2] [I] [thread 155412] qtime=214, timediff=1155
+[13:14:36.129] [bmv2] [I] [thread 155412] qtime=184, timediff=699
+[13:14:37.130] [bmv2] [I] [thread 155412] qtime=256, timediff=1106
+[13:14:38.121] [bmv2] [I] [thread 155412] qtime=263, timediff=719
+[13:14:39.128] [bmv2] [I] [thread 155412] qtime=374, timediff=747
+[13:14:40.139] [bmv2] [I] [thread 155412] qtime=173, timediff=507

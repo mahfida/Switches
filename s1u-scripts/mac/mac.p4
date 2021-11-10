@@ -68,14 +68,14 @@ control MyIngress(inout headers hdr,
 	
         if(hdr.ethernet.dstAddr == 0xffffffffffff)
 		{
-		if(hdr.ethernet.srcAddr == 0xfa163e301ed4)
+		if(hdr.ethernet.srcAddr == 0xfa163e301ed4) //mac address of the SPGW-U
                 	{
 				if(standard_metadata.ingress_port==1)
                         	{
 					standard_metadata.egress_spec =0;
 				}
                 	}
-		else if(hdr.ethernet.srcAddr == 0x00808e8d90ab)//0x94c6911ef360)
+		else if(hdr.ethernet.srcAddr == 0x00808e8d90ab)// mac address of eNB)
 			{
 			 if(standard_metadata.ingress_port==0)
 				{
@@ -113,10 +113,11 @@ control MyEgress(inout headers hdr,
                  inout standard_metadata_t standard_metadata) {
   
 
-    apply {/*
+    apply {
 		if(hdr.ethernet.srcAddr == 0x00808e8d90ab ){
-		log_msg("qtime={}",{standard_metadata.deq_timedelta});}
-	*/
+		bit <48> time_diff = (standard_metadata.egress_global_timestamp - standard_metadata.ingress_global_timestamp);
+		log_msg("qtime={}, timediff={}",{standard_metadata.deq_timedelta, time_diff});}
+	
 	 }
 }
 
