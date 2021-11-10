@@ -15,6 +15,7 @@
         ["tmp_7", 32, false],
         ["tmp_8", 32, false],
         ["tmp_9", 32, false],
+        ["tmp_10", 48, false],
         ["userMetadata.flowid", 72, false],
         ["userMetadata.index1", 32, false],
         ["userMetadata.index2", 32, false],
@@ -429,7 +430,7 @@
       "id" : 0,
       "source_info" : {
         "filename" : "options_pl.p4",
-        "line" : 311,
+        "line" : 316,
         "column" : 8,
         "source_fragment" : "MyDeparser"
       },
@@ -528,7 +529,7 @@
       "id" : 3,
       "source_info" : {
         "filename" : "options_pl.p4",
-        "line" : 271,
+        "line" : 276,
         "column" : 2,
         "source_fragment" : "update_checksum( ..."
       },
@@ -585,7 +586,7 @@
       "id" : 4,
       "source_info" : {
         "filename" : "options_pl.p4",
-        "line" : 288,
+        "line" : 293,
         "column" : 1,
         "source_fragment" : "update_checksum( ..."
       },
@@ -2007,7 +2008,7 @@
       ]
     },
     {
-      "name" : "options_pl258",
+      "name" : "options_pl260",
       "id" : 11,
       "runtime_data" : [],
       "primitives" : [
@@ -2025,9 +2026,51 @@
           ],
           "source_info" : {
             "filename" : "options_pl.p4",
-            "line" : 258,
-            "column" : 22,
-            "source_fragment" : "  log_msg(\\\"qtime={}\\\",{standard_metadata.deq_timedelta});"
+            "line" : 260,
+            "column" : 49,
+            "source_fragment" : "                log_msg(\\\"qtime={}, timediff={}\\\",{standard_metadata.deq_timedelta, time_diff});"
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
+              "value" : ["scalars", "tmp_10"]
+            },
+            {
+              "type" : "expression",
+              "value" : {
+                "type" : "expression",
+                "value" : {
+                  "op" : "&",
+                  "left" : {
+                    "type" : "expression",
+                    "value" : {
+                      "op" : "-",
+                      "left" : {
+                        "type" : "field",
+                        "value" : ["standard_metadata", "egress_global_timestamp"]
+                      },
+                      "right" : {
+                        "type" : "field",
+                        "value" : ["standard_metadata", "ingress_global_timestamp"]
+                      }
+                    }
+                  },
+                  "right" : {
+                    "type" : "hexstr",
+                    "value" : "0xffffffffffff"
+                  }
+                }
+              }
+            }
+          ],
+          "source_info" : {
+            "filename" : "options_pl.p4",
+            "line" : 259,
+            "column" : 24,
+            "source_fragment" : "standard_metadata.egress_global_timestamp - standard_metadata.ingress_global_timestamp"
           }
         },
         {
@@ -2035,7 +2078,7 @@
           "parameters" : [
             {
               "type" : "string",
-              "value" : "qtime={}"
+              "value" : "qtime={}, timediff={}"
             },
             {
               "type" : "parameters_vector",
@@ -2043,15 +2086,19 @@
                 {
                   "type" : "field",
                   "value" : ["scalars", "tmp_9"]
+                },
+                {
+                  "type" : "field",
+                  "value" : ["scalars", "tmp_10"]
                 }
               ]
             }
           ],
           "source_info" : {
             "filename" : "options_pl.p4",
-            "line" : 258,
-            "column" : 2,
-            "source_fragment" : "  log_msg(\\\"qtime={}\\\",{standard_metadata.deq_timedelta});"
+            "line" : 260,
+            "column" : 16,
+            "source_fragment" : "                log_msg(\\\"qtime={}, timediff={}\\\",{standard_metadata.deq_timedelta, time_diff});"
           }
         }
       ]
@@ -2575,9 +2622,9 @@
           "direct_meters" : null,
           "action_ids" : [9],
           "actions" : ["MyEgress.add_option_header"],
-          "base_default_next" : "tbl_options_pl258",
+          "base_default_next" : "tbl_options_pl260",
           "next_tables" : {
-            "MyEgress.add_option_header" : "tbl_options_pl258"
+            "MyEgress.add_option_header" : "tbl_options_pl260"
           },
           "default_entry" : {
             "action_id" : 9,
@@ -2587,13 +2634,13 @@
           }
         },
         {
-          "name" : "tbl_options_pl258",
+          "name" : "tbl_options_pl260",
           "id" : 11,
           "source_info" : {
             "filename" : "options_pl.p4",
-            "line" : 258,
-            "column" : 2,
-            "source_fragment" : "  log_msg(\\\"qtime={}\\\",{standard_metadata.deq_timedelta});"
+            "line" : 260,
+            "column" : 16,
+            "source_fragment" : "                log_msg(\\\"qtime={}, timediff={}\\\",{standard_metadata.deq_timedelta, time_diff});"
           },
           "key" : [],
           "match_type" : "exact",
@@ -2603,10 +2650,10 @@
           "support_timeout" : false,
           "direct_meters" : null,
           "action_ids" : [11],
-          "actions" : ["options_pl258"],
+          "actions" : ["options_pl260"],
           "base_default_next" : null,
           "next_tables" : {
-            "options_pl258" : null
+            "options_pl260" : null
           },
           "default_entry" : {
             "action_id" : 11,
@@ -2664,8 +2711,8 @@
               }
             }
           },
-          "false_next" : null,
-          "true_next" : "tbl_compute_flowid"
+          "true_next" : "tbl_compute_flowid",
+          "false_next" : "tbl_options_pl260"
         }
       ]
     }
@@ -2676,7 +2723,7 @@
       "id" : 0,
       "source_info" : {
         "filename" : "options_pl.p4",
-        "line" : 271,
+        "line" : 276,
         "column" : 2,
         "source_fragment" : "update_checksum( ..."
       },
@@ -2702,7 +2749,7 @@
       "id" : 1,
       "source_info" : {
         "filename" : "options_pl.p4",
-        "line" : 288,
+        "line" : 293,
         "column" : 1,
         "source_fragment" : "update_checksum( ..."
       },

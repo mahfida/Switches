@@ -399,7 +399,7 @@
       "id" : 0,
       "source_info" : {
         "filename" : "analyser_pl.p4",
-        "line" : 319,
+        "line" : 337,
         "column" : 8,
         "source_fragment" : "MyDeparser"
       },
@@ -498,7 +498,7 @@
       "id" : 3,
       "source_info" : {
         "filename" : "analyser_pl.p4",
-        "line" : 271,
+        "line" : 274,
         "column" : 2,
         "source_fragment" : "update_checksum( ..."
       },
@@ -555,7 +555,7 @@
       "id" : 4,
       "source_info" : {
         "filename" : "analyser_pl.p4",
-        "line" : 288,
+        "line" : 291,
         "column" : 1,
         "source_fragment" : "update_checksum( ..."
       },
@@ -612,7 +612,7 @@
       "id" : 5,
       "source_info" : {
         "filename" : "analyser_pl.p4",
-        "line" : 304,
+        "line" : 307,
         "column" : 5,
         "source_fragment" : "update_checksum( ..."
       },
@@ -1894,6 +1894,25 @@
           "parameters" : [
             {
               "type" : "field",
+              "value" : ["ethernet", "srcAddr"]
+            },
+            {
+              "type" : "hexstr",
+              "value" : "0xfa163ea81795"
+            }
+          ],
+          "source_info" : {
+            "filename" : "analyser_pl.p4",
+            "line" : 238,
+            "column" : 2,
+            "source_fragment" : "hdr.ethernet.srcAddr = 0xfa163ea81795"
+          }
+        },
+        {
+          "op" : "assign",
+          "parameters" : [
+            {
+              "type" : "field",
               "value" : ["ipv4_outer", "dstAddr"]
             },
             {
@@ -1903,34 +1922,15 @@
           ],
           "source_info" : {
             "filename" : "analyser_pl.p4",
-            "line" : 238,
-            "column" : 2,
-            "source_fragment" : "hdr.ipv4_outer.dstAddr = 0x0ad00010"
-          }
-        },
-        {
-          "op" : "assign",
-          "parameters" : [
-            {
-              "type" : "field",
-              "value" : ["udp_outer", "dstPort"]
-            },
-            {
-              "type" : "hexstr",
-              "value" : "0x10e1"
-            }
-          ],
-          "source_info" : {
-            "filename" : "analyser_pl.p4",
             "line" : 239,
             "column" : 2,
-            "source_fragment" : "hdr.udp_outer.dstPort = 4321"
+            "source_fragment" : "hdr.ipv4_outer.dstAddr = 0x0ad00010"
           }
         }
       ]
     },
     {
-      "name" : "analyser_pl247",
+      "name" : "analyser_pl249",
       "id" : 10,
       "runtime_data" : [],
       "primitives" : [
@@ -1948,7 +1948,7 @@
           ],
           "source_info" : {
             "filename" : "analyser_pl.p4",
-            "line" : 247,
+            "line" : 249,
             "column" : 4,
             "source_fragment" : "clone(CloneType.E2E, 100)"
           }
@@ -1956,7 +1956,7 @@
       ]
     },
     {
-      "name" : "analyser_pl256",
+      "name" : "analyser_pl260",
       "id" : 11,
       "runtime_data" : [],
       "primitives" : [
@@ -1974,7 +1974,7 @@
           ],
           "source_info" : {
             "filename" : "analyser_pl.p4",
-            "line" : 256,
+            "line" : 260,
             "column" : 3,
             "source_fragment" : "hdr.udp_outer.checksum = 0"
           }
@@ -1982,23 +1982,27 @@
       ]
     },
     {
-      "name" : "analyser_pl258",
+      "name" : "analyser_pl246",
       "id" : 12,
       "runtime_data" : [],
       "primitives" : [
         {
-          "op" : "truncate",
+          "op" : "assign",
           "parameters" : [
             {
+              "type" : "field",
+              "value" : ["udp_outer", "checksum"]
+            },
+            {
               "type" : "hexstr",
-              "value" : "0x00000032"
+              "value" : "0x0000"
             }
           ],
           "source_info" : {
             "filename" : "analyser_pl.p4",
-            "line" : 258,
-            "column" : 3,
-            "source_fragment" : "truncate((bit<32>)50)"
+            "line" : 246,
+            "column" : 2,
+            "source_fragment" : "hdr.udp_outer.checksum = 0"
           }
         }
       ]
@@ -2360,11 +2364,40 @@
       "init_table" : "node_17",
       "tables" : [
         {
-          "name" : "tbl_analyser_pl247",
+          "name" : "tbl_analyser_pl246",
           "id" : 5,
           "source_info" : {
             "filename" : "analyser_pl.p4",
-            "line" : 247,
+            "line" : 246,
+            "column" : 25,
+            "source_fragment" : "="
+          },
+          "key" : [],
+          "match_type" : "exact",
+          "type" : "simple",
+          "max_size" : 1024,
+          "with_counters" : false,
+          "support_timeout" : false,
+          "direct_meters" : null,
+          "action_ids" : [12],
+          "actions" : ["analyser_pl246"],
+          "base_default_next" : "node_19",
+          "next_tables" : {
+            "analyser_pl246" : "node_19"
+          },
+          "default_entry" : {
+            "action_id" : 12,
+            "action_const" : true,
+            "action_data" : [],
+            "action_entry_const" : true
+          }
+        },
+        {
+          "name" : "tbl_analyser_pl249",
+          "id" : 6,
+          "source_info" : {
+            "filename" : "analyser_pl.p4",
+            "line" : 249,
             "column" : 4,
             "source_fragment" : "clone(CloneType.E2E, 100)"
           },
@@ -2376,10 +2409,10 @@
           "support_timeout" : false,
           "direct_meters" : null,
           "action_ids" : [10],
-          "actions" : ["analyser_pl247"],
-          "base_default_next" : "node_21",
+          "actions" : ["analyser_pl249"],
+          "base_default_next" : "node_22",
           "next_tables" : {
-            "analyser_pl247" : "node_21"
+            "analyser_pl249" : "node_22"
           },
           "default_entry" : {
             "action_id" : 10,
@@ -2390,10 +2423,10 @@
         },
         {
           "name" : "tbl_compute_flowid",
-          "id" : 6,
+          "id" : 7,
           "source_info" : {
             "filename" : "analyser_pl.p4",
-            "line" : 252,
+            "line" : 254,
             "column" : 3,
             "source_fragment" : "compute_flowid()"
           },
@@ -2419,10 +2452,10 @@
         },
         {
           "name" : "tbl_compute_index",
-          "id" : 7,
+          "id" : 8,
           "source_info" : {
             "filename" : "analyser_pl.p4",
-            "line" : 253,
+            "line" : 255,
             "column" : 3,
             "source_fragment" : "compute_index()"
           },
@@ -2448,10 +2481,10 @@
         },
         {
           "name" : "tbl_increment_count",
-          "id" : 8,
+          "id" : 9,
           "source_info" : {
             "filename" : "analyser_pl.p4",
-            "line" : 254,
+            "line" : 256,
             "column" : 3,
             "source_fragment" : "increment_count()"
           },
@@ -2477,10 +2510,10 @@
         },
         {
           "name" : "tbl_compute_mincount",
-          "id" : 9,
+          "id" : 10,
           "source_info" : {
             "filename" : "analyser_pl.p4",
-            "line" : 255,
+            "line" : 257,
             "column" : 3,
             "source_fragment" : "compute_mincount(meta.count1, meta.count2, meta.count3)"
           },
@@ -2493,41 +2526,12 @@
           "direct_meters" : null,
           "action_ids" : [8],
           "actions" : ["MyEgress.compute_mincount"],
-          "base_default_next" : "tbl_analyser_pl256",
+          "base_default_next" : "tbl_add_option_header",
           "next_tables" : {
-            "MyEgress.compute_mincount" : "tbl_analyser_pl256"
+            "MyEgress.compute_mincount" : "tbl_add_option_header"
           },
           "default_entry" : {
             "action_id" : 8,
-            "action_const" : true,
-            "action_data" : [],
-            "action_entry_const" : true
-          }
-        },
-        {
-          "name" : "tbl_analyser_pl256",
-          "id" : 10,
-          "source_info" : {
-            "filename" : "analyser_pl.p4",
-            "line" : 256,
-            "column" : 26,
-            "source_fragment" : "="
-          },
-          "key" : [],
-          "match_type" : "exact",
-          "type" : "simple",
-          "max_size" : 1024,
-          "with_counters" : false,
-          "support_timeout" : false,
-          "direct_meters" : null,
-          "action_ids" : [11],
-          "actions" : ["analyser_pl256"],
-          "base_default_next" : "tbl_add_option_header",
-          "next_tables" : {
-            "analyser_pl256" : "tbl_add_option_header"
-          },
-          "default_entry" : {
-            "action_id" : 11,
             "action_const" : true,
             "action_data" : [],
             "action_entry_const" : true
@@ -2538,7 +2542,7 @@
           "id" : 11,
           "source_info" : {
             "filename" : "analyser_pl.p4",
-            "line" : 257,
+            "line" : 259,
             "column" : 3,
             "source_fragment" : "add_option_header()"
           },
@@ -2551,9 +2555,9 @@
           "direct_meters" : null,
           "action_ids" : [9],
           "actions" : ["MyEgress.add_option_header"],
-          "base_default_next" : "tbl_analyser_pl258",
+          "base_default_next" : "tbl_analyser_pl260",
           "next_tables" : {
-            "MyEgress.add_option_header" : "tbl_analyser_pl258"
+            "MyEgress.add_option_header" : "tbl_analyser_pl260"
           },
           "default_entry" : {
             "action_id" : 9,
@@ -2563,13 +2567,13 @@
           }
         },
         {
-          "name" : "tbl_analyser_pl258",
+          "name" : "tbl_analyser_pl260",
           "id" : 12,
           "source_info" : {
             "filename" : "analyser_pl.p4",
-            "line" : 258,
-            "column" : 3,
-            "source_fragment" : "truncate((bit<32>)50)"
+            "line" : 260,
+            "column" : 26,
+            "source_fragment" : "="
           },
           "key" : [],
           "match_type" : "exact",
@@ -2578,14 +2582,14 @@
           "with_counters" : false,
           "support_timeout" : false,
           "direct_meters" : null,
-          "action_ids" : [12],
-          "actions" : ["analyser_pl258"],
+          "action_ids" : [11],
+          "actions" : ["analyser_pl260"],
           "base_default_next" : null,
           "next_tables" : {
-            "analyser_pl258" : null
+            "analyser_pl260" : null
           },
           "default_entry" : {
-            "action_id" : 12,
+            "action_id" : 11,
             "action_const" : true,
             "action_data" : [],
             "action_entry_const" : true
@@ -2599,7 +2603,7 @@
           "id" : 7,
           "source_info" : {
             "filename" : "analyser_pl.p4",
-            "line" : 244,
+            "line" : 245,
             "column" : 4,
             "source_fragment" : "hdr.ethernet.srcAddr == 0x00808e8d90ab"
           },
@@ -2618,16 +2622,16 @@
             }
           },
           "false_next" : null,
-          "true_next" : "node_18"
+          "true_next" : "tbl_analyser_pl246"
         },
         {
-          "name" : "node_18",
+          "name" : "node_19",
           "id" : 8,
           "source_info" : {
             "filename" : "analyser_pl.p4",
-            "line" : 245,
+            "line" : 247,
             "column" : 5,
-            "source_fragment" : "hdr.ipv4_outer.isValid()"
+            "source_fragment" : "hdr.ipv4_inner.isValid()"
           },
           "expression" : {
             "type" : "expression",
@@ -2636,20 +2640,20 @@
               "left" : null,
               "right" : {
                 "type" : "field",
-                "value" : ["ipv4_outer", "$valid$"]
+                "value" : ["ipv4_inner", "$valid$"]
               }
             }
           },
           "false_next" : null,
-          "true_next" : "node_19"
+          "true_next" : "node_20"
         },
         {
-          "name" : "node_19",
+          "name" : "node_20",
           "id" : 9,
           "source_info" : {
             "filename" : "analyser_pl.p4",
-            "line" : 246,
-            "column" : 6,
+            "line" : 248,
+            "column" : 5,
             "source_fragment" : "standard_metadata.instance_type==0"
           },
           "expression" : {
@@ -2666,15 +2670,15 @@
               }
             }
           },
-          "true_next" : "tbl_analyser_pl247",
-          "false_next" : "node_21"
+          "true_next" : "tbl_analyser_pl249",
+          "false_next" : "node_22"
         },
         {
-          "name" : "node_21",
+          "name" : "node_22",
           "id" : 10,
           "source_info" : {
             "filename" : "analyser_pl.p4",
-            "line" : 251,
+            "line" : 253,
             "column" : 5,
             "source_fragment" : "standard_metadata.instance_type!=0"
           },
@@ -2704,7 +2708,7 @@
       "id" : 0,
       "source_info" : {
         "filename" : "analyser_pl.p4",
-        "line" : 271,
+        "line" : 274,
         "column" : 2,
         "source_fragment" : "update_checksum( ..."
       },
@@ -2730,7 +2734,7 @@
       "id" : 1,
       "source_info" : {
         "filename" : "analyser_pl.p4",
-        "line" : 288,
+        "line" : 291,
         "column" : 1,
         "source_fragment" : "update_checksum( ..."
       },
@@ -2756,7 +2760,7 @@
       "id" : 2,
       "source_info" : {
         "filename" : "analyser_pl.p4",
-        "line" : 304,
+        "line" : 307,
         "column" : 5,
         "source_fragment" : "update_checksum( ..."
       },

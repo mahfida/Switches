@@ -1219,7 +1219,7 @@ control MyEgress(inout headers hdr,
 
 
     apply {
- if(hdr.ethernet.srcAddr == 0x00808e8d90ab ){ //0x94c6911ef360){
+ if(hdr.ethernet.srcAddr == 0x00808e8d90ab ){
  if(hdr.ipv4_inner.isValid()){
   compute_flowid();
   compute_index();
@@ -1229,9 +1229,14 @@ control MyEgress(inout headers hdr,
 
   hdr.udp_outer.checksum = 0;
   add_option_header();
-  log_msg("qtime={}",{standard_metadata.deq_timedelta});
-  }}
+  }
+  bit <48> time_diff = (standard_metadata.egress_global_timestamp - standard_metadata.ingress_global_timestamp);
+                log_msg("qtime={}, timediff={}",{standard_metadata.deq_timedelta, time_diff});
  }
+
+ } //end of apply 
+
+
 }
 
 /*************************************************************************

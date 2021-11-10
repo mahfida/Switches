@@ -134,7 +134,7 @@ control MyIngress(inout headers hdr,
         mark_to_drop(standard_metadata);
     }
 
-    /*action clone_packet() {
+  /* action clone_packet() {
         // Clone from ingress to egress pipeline
         clone(CloneType.I2E, 100);}*/
 	
@@ -231,19 +231,21 @@ control MyEgress(inout headers hdr,
 		hdr.ipv4_outer_option.packet_count = meta.min_count;//4 bytes
 		hdr.ipv4_outer_option.optionLength =  8;
 		hdr.ipv4_outer.ihl  = hdr.ipv4_outer.ihl  + 2;
-		hdr.ipv4_outer.totalLen  = hdr.ipv4_outer.totalLen  + 8;// increase in bytes
+		hdr.ipv4_outer.totalLen  =  hdr.ipv4_outer.totalLen  + 8;// increase in bytes
 		
 		hdr.ipv4_outer.srcAddr= 0x0ad000d6; //10.208.0.214
 		hdr.ethernet.dstAddr = 0xfa163e47c489;
+		hdr.ethernet.srcAddr = 0xfa163ea81795;
 		hdr.ipv4_outer.dstAddr = 0x0ad00010; //10.208.0.16;
-		hdr.udp_outer.dstPort = 4321;
+		//hdr.udp_outer.dstPort = 4321;
 	}
 
 
     apply {
 	if(hdr.ethernet.srcAddr == 0x00808e8d90ab ){
-		if(hdr.ipv4_outer.isValid()){
-			if(standard_metadata.instance_type==0){
+		hdr.udp_outer.checksum = 0;
+		if(hdr.ipv4_inner.isValid()){
+		if(standard_metadata.instance_type==0){
 				clone(CloneType.E2E, 100);
 			}
 		
@@ -253,9 +255,9 @@ control MyEgress(inout headers hdr,
 			compute_index();
 			increment_count();
 			compute_mincount(meta.count1, meta.count2, meta.count3);
-			hdr.udp_outer.checksum = 0;
 			add_option_header();
-			truncate((bit<32>)50); //ethernet(14) + ip_outer(20) + option headers(8)+ udp_outer(8)
+			hdr.udp_outer.checksum = 0;
+			//truncate((bit<32>)50); //ethernet(14) + ip_outer(20) + option headers(8)+ udp_outer(8)
 			}} 
 	}}
 }
@@ -309,6 +311,21 @@ control MyComputeChecksum(inout headers  hdr, inout metadata meta) {
               hdr.ipv4_outer_option.packet_count},
             hdr.ipv4_outer.hdrChecksum,
             HashAlgorithm.csum16);
+
+
+	   /*update_checksum_with_payload(hdr.udp_outer.isValid(),
+		{
+    		hdr.ipv4_outer.srcAddr,
+    		hdr.ipv4_outer.dstAddr,
+    		8w0,
+    		hdr.ipv4_outer.protocol,
+    		hdr.udp_outer.plength,
+		hdr.udp_outer.srcPort,
+		hdr.udp_outer.dstPort, 
+		hdr.udp_outer.plength
+		},
+	    	hdr.udp_outer.checksum,
+            HashAlgorithm.csum16);*/
 	}
 }
 
