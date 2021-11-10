@@ -3,7 +3,7 @@
 # 1 "<command-line>"
 # 1 "mac.p4"
 /* -*- P4_16 -*- */
-# 1 "/usr/local/share/p4c/p4include/core.p4" 1
+# 1 "/usr/share/p4c/p4include/core.p4" 1
 /*
 Copyright 2013-present Barefoot Networks, Inc.
 
@@ -87,7 +87,7 @@ match_kind {
     lpm
 }
 # 3 "mac.p4" 2
-# 1 "/usr/local/share/p4c/p4include/v1model.p4" 1
+# 1 "/usr/share/p4c/p4include/v1model.p4" 1
 /*
 Copyright 2013-present Barefoot Networks, Inc.
 
@@ -109,7 +109,7 @@ limitations under the License.
 /* Note 1: More details about the definition of v1model architecture
  * can be found at the location below.
  *
- * https://github.com/p4lang/behavioral-model/blob/main/docs/simple_switch.md
+ * https://github.com/p4lang/behavioral-model/blob/master/docs/simple_switch.md
  *
  * Note 2: There were several discussions among P4 working group
  * members in early 2019 regarding exactly how resubmit, recirculate,
@@ -117,7 +117,7 @@ limitations under the License.
  * controls, but the values of the fields to be preserved is the value
  * they have when that control is finished executing.  That is how
  * these operations are defined in P4_14.  See
- * https://github.com/p4lang/behavioral-model/blob/main/docs/simple_switch.md#restrictions-on-recirculate-resubmit-and-clone-operations
+ * https://github.com/p4lang/behavioral-model/blob/master/docs/simple_switch.md#restrictions-on-recirculate-resubmit-and-clone-operations
  * for more details on the current state of affairs.
  *
  * Note 3: There are at least some P4_14 implementations where
@@ -139,7 +139,7 @@ limitations under the License.
 
 
 
-# 1 "/usr/local/share/p4c/p4include/core.p4" 1
+# 1 "/usr/share/p4c/p4include/core.p4" 1
 /*
 Copyright 2013-present Barefoot Networks, Inc.
 
@@ -157,7 +157,7 @@ limitations under the License.
 */
 
 /* This is the P4-16 core library, which declares some built-in P4 constructs using P4 */
-# 53 "/usr/local/share/p4c/p4include/v1model.p4" 2
+# 53 "/usr/share/p4c/p4include/v1model.p4" 2
 
 
 
@@ -533,7 +533,7 @@ extern void mark_to_drop();
  * packet to do something other than drop.
  *
  * See
- * https://github.com/p4lang/behavioral-model/blob/main/docs/simple_switch.md
+ * https://github.com/p4lang/behavioral-model/blob/master/docs/simple_switch.md
  * -- in particular the section "Pseudocode for what happens at the
  * end of ingress and egress processing" -- for the relative priority
  * of the different possible things that can happen to a packet when
@@ -933,14 +933,14 @@ control MyIngress(inout headers hdr,
 
         if(hdr.ethernet.dstAddr == 0xffffffffffff)
   {
-  if(hdr.ethernet.srcAddr == 0xfa163e301ed4)
+  if(hdr.ethernet.srcAddr == 0xfa163e47c489)// mac address of controller
                  {
     if(standard_metadata.ingress_port==1)
                          {
      standard_metadata.egress_spec =0;
     }
                  }
-  else if(hdr.ethernet.srcAddr == 0x00808e8d90ab)//0x94c6911ef360)
+  else if(hdr.ethernet.srcAddr == 0x00808e8d90ab)//mac address of the eNodeB
    {
     if(standard_metadata.ingress_port==0)
     {
@@ -954,11 +954,11 @@ control MyIngress(inout headers hdr,
   }
 
  else {
-                if(hdr.ethernet.dstAddr == 0xfa163e301ed4)
+                if(hdr.ethernet.dstAddr == 0xfa163e47c489)//mac address of the controller
                  {
     standard_metadata.egress_spec =1-standard_metadata.ingress_port;
                  }
-                else if(hdr.ethernet.dstAddr == 0x00808e8d90ab){ //0x94c6911ef360){
+                else if(hdr.ethernet.dstAddr == 0x00808e8d90ab){ //mac address of the eNodeB
     standard_metadata.egress_spec =1-standard_metadata.ingress_port;
    }
   else{

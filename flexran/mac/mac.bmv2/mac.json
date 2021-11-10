@@ -496,7 +496,7 @@
             "filename" : "mac.p4",
             "line" : 71,
             "column" : 5,
-            "source_fragment" : "hdr.ethernet.srcAddr == 0xfa163e301ed4"
+            "source_fragment" : "hdr.ethernet.srcAddr == 0xfa163e47c489"
           },
           "expression" : {
             "type" : "expression",
@@ -508,7 +508,7 @@
               },
               "right" : {
                 "type" : "hexstr",
-                "value" : "0xfa163e301ed4"
+                "value" : "0xfa163e47c489"
               }
             }
           },
@@ -600,7 +600,7 @@
             "filename" : "mac.p4",
             "line" : 92,
             "column" : 19,
-            "source_fragment" : "hdr.ethernet.dstAddr == 0xfa163e301ed4"
+            "source_fragment" : "hdr.ethernet.dstAddr == 0xfa163e47c489"
           },
           "expression" : {
             "type" : "expression",
@@ -612,7 +612,7 @@
               },
               "right" : {
                 "type" : "hexstr",
-                "value" : "0xfa163e301ed4"
+                "value" : "0xfa163e47c489"
               }
             }
           },

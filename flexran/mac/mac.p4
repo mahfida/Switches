@@ -68,7 +68,7 @@ control MyIngress(inout headers hdr,
 	
         if(hdr.ethernet.dstAddr == 0xffffffffffff)
 		{
-		if(hdr.ethernet.srcAddr == 0xfa163e47c489))// mac address of controller
+		if(hdr.ethernet.srcAddr == 0xfa163ee9367e)// mac address of flex-ran controller
                 	{
 				if(standard_metadata.ingress_port==1)
                         	{
@@ -89,7 +89,7 @@ control MyIngress(inout headers hdr,
 		}
 	    
 	else {
-                if(hdr.ethernet.dstAddr == 0xfa163e47c489)//mac address of the controller
+                if(hdr.ethernet.dstAddr == 0xfa163ee9367e)//mac address of the flex-ran controller
                 	{
 				standard_metadata.egress_spec =1-standard_metadata.ingress_port;
                 	}
