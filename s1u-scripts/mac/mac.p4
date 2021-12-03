@@ -93,7 +93,7 @@ control MyIngress(inout headers hdr,
                 	{
 				standard_metadata.egress_spec =1-standard_metadata.ingress_port;
                 	}
-                else if(hdr.ethernet.dstAddr == 0x00808e8d90ab){ //0x94c6911ef360){
+                else if(hdr.ethernet.dstAddr == 0x00808e8d90ab){{
 				standard_metadata.egress_spec =1-standard_metadata.ingress_port;
 				
 	}

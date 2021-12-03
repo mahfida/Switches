@@ -10,6 +10,10 @@ const bit<32> HASH_TABLE_SIZE = 1024;
 register<bit<32>>(HASH_TABLE_SIZE) hashtable1;
 register<bit<32>>(HASH_TABLE_SIZE) hashtable2;
 register<bit<32>>(HASH_TABLE_SIZE) hashtable3;
+register<int<19>>(1) bytesRemaining;
+register<bit<32>>(1) reg_packet_length;
+register<bit<19>>(1) reg_deq_qdepth;
+register<bit<32>>(1) reg_deq_timedelta;
 const int<19> THRESHOLD = 10000; // Threshold number of bytes to mark packet as part of a burst
 /*************************************************************************
 *********************** H E A D E R S  ***********************************
@@ -23,7 +27,7 @@ typedef bit<16> packet_count_t;
 
 
 // Option field for inner ipv4
-header ipv4_outer_option_t{
+header ipv4_option_t{
 	bit<1> copyFlag;
         bit<2> optClass;
         bit<5> option;
@@ -31,9 +35,10 @@ header ipv4_outer_option_t{
 	
 	//option data
 	switchID_t swid; //3 bits
+	bit <104> flowid;//104 bits
 	packet_count_t flow_packet_count;//16 bits
-	bit<10> packets_in_queue; // <10>
-	bit<32> queue_timedelta; //<32>
+	bit<8> packets_in_queue; // <8>
+	bit<26> queue_timedelta; //<26>
 	bit<1> hitter;// 
 	bit<18> packet_length;
 }
@@ -45,7 +50,7 @@ header gre_t {
 
 }
 struct metadata {
-   	bit<72> flowid;
+   	bit<104> flowid;
 	
 	//hash indices;
 	bit<32> index1;
@@ -68,7 +73,9 @@ struct headers {
     gtp_t 	 gtp;
     gre_t	 gre;
     ipv4_t 	 ipv4_inner;
-    ipv4_outer_option_t ipv4_outer_option;
+    ipv4_option_t ipv4_option;
+    udp_t	udp_inner;
+    tcp_t       tcp_inner;
   }
 
 error { IPHeaderTooShort }
@@ -115,17 +122,22 @@ parser MyParser(packet_in packet,
     }
 
     
-        state parse_ipv4_inner {
+     state parse_ipv4_inner {
         packet.extract(hdr.ipv4_inner);
-        verify(hdr.ipv4_inner.ihl >= 5, error.IPHeaderTooShort);
-        #transition select(hdr.ipv4_inner.ihl) {
-        #    5             : accept;
-        #    default       : parse_ipv4_inner_option;
-        transition accept; 
+            transition select(hdr.ipv4_inner.protocol){
+            IPPROTO_UDP  : parse_udp_inner;
+	    IPPROTO_TCP  : parse_tcp_inner;
+	    default      : accept;
+        }}
+     state parse_udp_inner{
+	packet.extract(hdr.udp_inner);
+        transition accept;
 	}
-    
-
-
+   state parse_tcp_inner{
+        packet.extract(hdr.tcp_inner);
+        transition accept;
+        }
+  
 }
 
 /*************************************************************************
@@ -149,10 +161,7 @@ control MyIngress(inout headers hdr,
         mark_to_drop(standard_metadata);
     }
 
-  /* action clone_packet() {
-        // Clone from ingress to egress pipeline
-        clone(CloneType.I2E, 100);}*/
-	
+ 	
    table drop_packet{
         actions = {
             drop;
@@ -175,7 +184,6 @@ control MyIngress(inout headers hdr,
                          if(standard_metadata.ingress_port==0)
                                 {
                                 standard_metadata.egress_spec =1;
-				//clone_packet();
                                 }
                         }
                 else{
@@ -188,7 +196,6 @@ control MyIngress(inout headers hdr,
                 if(hdr.ethernet.dstAddr == 0xfa163e301ed4)
                         {
                                 standard_metadata.egress_spec =1-standard_metadata.ingress_port;
-				//clone_packet();
                         }
                 else if(hdr.ethernet.dstAddr == 0x00808e8d90ab){ //0x94c6911ef360){
                                 standard_metadata.egress_spec =1-standard_metadata.ingress_port;
@@ -206,23 +213,22 @@ control MyIngress(inout headers hdr,
 
 control MyEgress(inout headers hdr,
                  inout metadata meta,
-                 inout standard_metadata_t standard_metadata) {
+                 inout standard_metadata_t standard_metadata){
 
-
-
-	/*Values of bytesRemaining need to be maintained between
-        all incoming data packets. This variable is implemented using register.
-        */
-
-        register<int<19>>(1) bytesRemaining; // bytes count stored in a register
-        int<19> bytes_int; // temporary bytes count in int<> format
+   // VARIABLES USED IN EGRESS FOR CLONED PACKET
+	int<19> bytes_int; // temporary bytes count in int<> format
         int<19> deqQdepth=0;
+	bit<32> var_packet_length;
+	bit<19> var_deq_qdepth;
+	bit<32> var_deq_timedelta;
 
   // MATCH-ACTION TBLE FOR THE PACKET COUNT
-   action compute_flowid(){
+   action compute_flowid(bit<16> srcPort, bit<16> dstPort){
    	meta.flowid[31:0] = hdr.ipv4_inner.srcAddr;
 	meta.flowid[63:32] = hdr.ipv4_inner.dstAddr;
 	meta.flowid[71:64] = hdr.ipv4_inner.protocol;
+	meta.flowid[87:72] = srcPort;
+	meta.flowid[103:88] =dstPort;
 	}
    action compute_index(){
 	hash(meta.index1, HashAlgorithm.crc16, 10w0, {meta.flowid, 10w33}, 10w1023);
@@ -250,24 +256,24 @@ control MyEgress(inout headers hdr,
     
     // ACTION FOR MARKING A PACKET, AS PART OF HEAVY HITTER
     action is_heavy_hitter(){
-                bytesRemaining.read(bytes_int, 1);
+                bytesRemaining.read(bytes_int, 0);
                 // See if the qdepth size in bytes > than threshold
                 // qdepth gives only number of packets, it is therefore multiplied by MTU (1500 bytes)
-		deqQdepth = (int<19>)(standard_metadata.deq_qdepth * 19w1500);
+		deqQdepth = (int<19>)(var_deq_qdepth * 19w1500);
 		if(deqQdepth > THRESHOLD){
-                                bytes_int = (deqQdepth - (int<19>)(bit<19>)standard_metadata.packet_length);
-                                meta.marker = 0;
+                                bytes_int = (deqQdepth - (int<19>)(bit<19>)var_packet_length);
+                                   meta.marker = 1;
                         }
                 else{
                                 if(bytes_int > 0){
-                                    bytes_int = bytes_int - (int<19>)(bit<19>)standard_metadata.packet_length;
+                                    bytes_int = bytes_int - (int<19>)(bit<19>)var_packet_length;
                                     meta.marker = 1;
                                 }
                     }
                 if(bytes_int < 0){
                                 bytes_int = 0;
                 }
-                 bytesRemaining.write(1, bytes_int);
+                 bytesRemaining.write(0, bytes_int);
 
                 }
                  
@@ -275,8 +281,12 @@ control MyEgress(inout headers hdr,
 
     //MATCH-ACTION TABLE FOR  SWITCH HEADER
     action add_option_header(){
-		hdr.ipv4_outer_option.setValid();
-                //Set UDP, GTP INVALID
+
+		// SET IP OPTIONS VALID
+		hdr.ipv4_option.setValid();
+		hdr.gre.setValid();
+		
+		//Set UDP, GTP INVALID
                 hdr.gtp.setInvalid();
                 hdr.udp_outer.setInvalid();
 
@@ -286,8 +296,8 @@ control MyEgress(inout headers hdr,
                 hdr.ipv4_outer.identification= hdr.ipv4_inner.identification;
                 hdr.ipv4_outer.flags=hdr.ipv4_inner.flags;
                 hdr.ipv4_outer.fragOffset=hdr.ipv4_inner.fragOffset;
-                hdr.ipv4_outer.ttl=hdr.ipv4_inner.ttl;
-                hdr.ipv4_outer.protocol=0x2f;
+                hdr.ipv4_outer.ttl=30; //hdr.ipv4_inner.ttl;
+                hdr.ipv4_outer.protocol=0x2f; //gre protocol
 
 
                 //Change some fields
@@ -297,58 +307,89 @@ control MyEgress(inout headers hdr,
                 hdr.ipv4_outer.dstAddr = 0x0ad00010; //10.208.0.16;
 
                 //Inband Telemetry with IP OPTIONS...with OUTER IP
-                hdr.ipv4_outer_option.setValid();
-                hdr.ipv4_outer_option.copyFlag = 0;
-                hdr.ipv4_outer_option.optClass = 0;
-                hdr.ipv4_outer_option.option= 31;//1 byte
-                hdr.ipv4_outer_option.swid = 1; //3 bits
-                hdr.ipv4_outer_option.flow_packet_count = (bit<16>) meta.min_count;//2 bytes
-                hdr.ipv4_outer_option.packets_in_queue = (bit<10>) standard_metadata.deq_qdepth;
-                hdr.ipv4_outer_option.hitter = meta.marker; //1 bit
-                hdr.ipv4_outer_option.queue_timedelta = standard_metadata.deq_timedelta;
-                hdr.ipv4_outer_option.packet_length= (bit<18>)standard_metadata.packet_length;
-		hdr.ipv4_outer_option.optionLength =  12; //total number of byte
+                hdr.ipv4_option.copyFlag = 1;
+                hdr.ipv4_option.optClass = 0;
+                hdr.ipv4_option.option= 31;//1 byte
+                hdr.ipv4_option.swid = 1; //3 bits
+		hdr.ipv4_option.flowid = meta.flowid;
+                hdr.ipv4_option.flow_packet_count = (bit<16>) meta.min_count;//2 bytes
+                hdr.ipv4_option.packets_in_queue = (bit<8>) var_deq_qdepth;
+                hdr.ipv4_option.hitter = meta.marker; //1 bit
+                hdr.ipv4_option.queue_timedelta = (bit<26>) var_deq_timedelta;
+                hdr.ipv4_option.packet_length= (bit<18>)var_packet_length;
+		hdr.ipv4_option.optionLength =  24; //total number of byte
 
                 // Change Header Details Because of Adding IP Options
-                hdr.ipv4_outer.ihl  = hdr.ipv4_inner.ihl;
-                hdr.ipv4_inner.ihl =  hdr.ipv4_inner.ihl +3 ;//same as inner ip plus 2 (32 bits) from ip options
-                hdr.ipv4_inner.totalLen =  hdr.ipv4_inner.totalLen + 12;
-                hdr.ipv4_outer.totalLen  =  hdr.ipv4_inner.totalLen + 20 + 4; // inner ip len + this header + 8 bytes option +2 bytesgre
-
+		hdr.ipv4_outer.ihl  = hdr.ipv4_inner.ihl;
+                hdr.ipv4_inner.ihl =  hdr.ipv4_inner.ihl +6 ;//same as inner ip plus 2 (32 bits) from ip options
+                hdr.ipv4_inner.totalLen =  hdr.ipv4_inner.totalLen + 24;
+                hdr.ipv4_outer.totalLen  =  hdr.ipv4_inner.totalLen + 20 + 4; // inner ip len + this header + 4 bytes gre
 
                 // Have next header as GRE
-                hdr.gre.setValid();
                 hdr.gre.protocol = 0x0800;
                 hdr.gre.flag_ver = 0;
+		
 	}
 
 
     apply {
-	if(hdr.ethernet.srcAddr == 0x00808e8d90ab ){
+	
+		if((hdr.ethernet.dstAddr == 0xfa163e301ed4 && hdr.ethernet.srcAddr == 0x00808e8d90ab)||
+		(hdr.ethernet.srcAddr == 0xfa163e301ed4 && hdr.ethernet.dstAddr == 0x00808e8d90ab)){
 		hdr.udp_outer.checksum = 0;
-		if(hdr.ipv4_inner.isValid()){
 		if(standard_metadata.instance_type==0){
-				clone(CloneType.E2E, 100);
+			 reg_packet_length.write(0, standard_metadata.packet_length);
+        		 reg_deq_qdepth.write(0,standard_metadata.deq_qdepth);
+        		 reg_deq_timedelta.write(0,standard_metadata.deq_timedelta);
+			 //log_msg("marker={}, count={}",{meta.marker, standard_metadata.packet_length});
+			 clone(CloneType.E2E, 100);
 			}
 		
 		//handle the cloned packet... truncate payload
 		if(standard_metadata.instance_type!=0){
-
+			//MOVE DATA FROM REGISTERS TO VARIABLES
+			reg_packet_length.read(var_packet_length,0);
+			reg_deq_qdepth.read(var_deq_qdepth,0);
+			reg_deq_timedelta.read(var_deq_timedelta,0);
+			bytesRemaining.read(bytes_int,0);
+			//log_msg("marker={}, count2={}",{meta.check, var_packet_length});
 			//COUNTING PACKETS IN A FLOW
-			compute_flowid();
+			// this is  for packets that are not in gtp tunnel
+			if(!hdr.ipv4_inner.isValid())
+			{
+			  hdr.ipv4_inner.setValid();
+			  hdr.ipv4_inner = hdr.ipv4_outer;
+			if(hdr.udp_outer.isValid())
+				{
+				hdr.udp_inner.setValid();
+                          	hdr.udp_inner = hdr.udp_outer;
+				}
+			}
+			
+			if(hdr.udp_inner.isValid()){
+				compute_flowid(hdr.udp_inner.srcPort, hdr.udp_inner.dstPort);
+			}
+			else if(hdr.tcp_inner.isValid())
+			{
+				compute_flowid(hdr.tcp_inner.srcPort, hdr.tcp_inner.dstPort);
+			}else
+			{
+				compute_flowid(0, 0);
+			}
 			compute_index();
 			increment_count();
-			compute_mincount(meta.count1, meta.count2, meta.count3);
-
+			compute_mincount(meta.count1, meta.count2, meta.count3);		
+			
 			//CHECKING IF PACKET IS PART OF HEAVY HITTER
-			is_heavy_hitter();
-
+			meta.marker=0;
+			is_heavy_hitter();	
 			//ADD OPTION HEADER
 			add_option_header();
-			hdr.udp_outer.checksum = 0;
-			//truncate((bit<32>)50); //ethernet(14) + ip_outer(20) + option headers(8)+ udp_outer(8)
-			}} 
-	}} // end of apply
+                        log_msg("marker={}, count2={}, packet_size={}, flowid={}",{meta.marker, meta.min_count, var_packet_length, meta.flowid});
+			
+		}
+	} 
+	} // end of apply
 }
 
 /*************************************************************************
@@ -393,27 +434,27 @@ control MyComputeChecksum(inout headers  hdr, inout metadata meta) {
             HashAlgorithm.csum16);
 	   /*
 	    update_checksum(
-            hdr.ipv4_outer_option.isValid(),
-            { hdr.ipv4_outer_option.value,
-              hdr.ipv4_outer_option.optionLength,       // update checksum for IP Option header
-              hdr.ipv4_outer_option.swid,
-              hdr.ipv4_outer_option.packet_count},
-            hdr.ipv4_outer.hdrChecksum,
-            HashAlgorithm.csum16);*/
+            hdr.ipv4_option.isValid(),
+            { hdr.ipv4_option.value,
+              hdr.ipv4_option.optionLength,       // update checksum for IP Option header
+              hdr.ipv4_option.swid,
+              hdr.ipv4_option.packet_count},
+            hdr.ipv4_inner.hdrChecksum,
+            HashAlgorithm.csum16);
 
 
-	   /*update_checksum_with_payload(hdr.udp_outer.isValid(),
+	   update_checksum_with_payload(hdr.udp_inner.isValid(),
 		{
-    		hdr.ipv4_outer.srcAddr,
-    		hdr.ipv4_outer.dstAddr,
+    		hdr.ipv4_inner.srcAddr,
+    		hdr.ipv4_inner.dstAddr,
     		8w0,
-    		hdr.ipv4_outer.protocol,
-    		hdr.udp_outer.plength,
-		hdr.udp_outer.srcPort,
-		hdr.udp_outer.dstPort, 
-		hdr.udp_outer.plength
+    		hdr.ipv4_inner.protocol,
+    		hdr.udp_inner.plength,
+		hdr.udp_inner.srcPort,
+		hdr.udp_inner.dstPort, 
+		hdr.udp_inner.plength
 		},
-	    	hdr.udp_outer.checksum,
+	    	hdr.udp_inner.checksum,
             HashAlgorithm.csum16);*/
 	}
 }
@@ -430,8 +471,10 @@ control MyDeparser(packet_out packet, in headers hdr) {
                 packet.emit(hdr.udp_outer);//skip this in mirrored packet
                 packet.emit(hdr.gtp);//skip this in mirrored packet
                 packet.emit(hdr.ipv4_inner); //modify in the mirrored packet
-                packet.emit(hdr.ipv4_outer_option);//add this in the mirrored packet    
-	  }
+                packet.emit(hdr.ipv4_option);//add this in the mirrored packet  
+		packet.emit(hdr.udp_inner);
+		packet.emit(hdr.tcp_inner);
+		}
 }
 
 /*************************************************************************
